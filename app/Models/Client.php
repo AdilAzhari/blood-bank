@@ -18,7 +18,7 @@ class Client extends Model
     ];
     public function clientable()
     {
-        return $this->morphTo();
+        return $this->morphToMany(Client::class, 'clientable');
     }
     public function city()
     {

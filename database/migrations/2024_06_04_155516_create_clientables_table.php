@@ -11,14 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('contacts', function (Blueprint $table) {
+        Schema::create('clientables', function (Blueprint $table) {
             $table->id();
-            $table->string('name', 255);
-            $table->string('email', 255);
-            $table->string('phone_number', 255);
-            $table->text('message');
-            $table->string('subject', 255);
-            $table->string('message_header', 255);
+            $table->foreignId('client_id')->constrained();
+            // $table->morphs('clientable');
+            $table->string('clientable_type', 255);
+            $table->string('clientable_id', 255);
             $table->timestamps();
         });
     }
@@ -28,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('contacts');
+        Schema::dropIfExists('clientables');
     }
 };

@@ -8,4 +8,14 @@ use Illuminate\Database\Eloquent\Model;
 class Settings extends Model
 {
     use HasFactory;
+    protected $fillable = [
+        'about_app',
+        'phone_number',
+        'email',
+        'fb_link',
+        'tw_link',
+        'insta_link',
+        'notification_setting_text',
+    ];
+
 }

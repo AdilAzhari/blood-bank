@@ -13,8 +13,17 @@ return new class extends Migration
     {
         Schema::create('clients', function (Blueprint $table) {
             $table->id();
+            $table->string('phone', 255);
+            $table->string('email', 255);
+            $table->string('password', 255);
+            $table->string('name', 255);
+            $table->date('d_o_b');
+            $table->date('last_donation_date')->nullable();
+            $table->string('pin_code', 255)->nullable();
+            $table->morphs('clientable');
             $table->timestamps();
-        });
+		});
+
     }
 
     /**

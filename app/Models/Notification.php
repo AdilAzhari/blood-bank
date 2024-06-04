@@ -8,4 +8,18 @@ use Illuminate\Database\Eloquent\Model;
 class Notification extends Model
 {
     use HasFactory;
+    protected $fillable = [
+        'title',
+        'content',
+        'user_id',
+        'is_read'
+    ];
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+    public function clients()
+    {
+        return $this->morphMany(Client::class, 'clientable');
+    }
 }

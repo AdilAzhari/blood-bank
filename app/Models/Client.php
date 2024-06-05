@@ -12,9 +12,10 @@ class Client extends Model
         'name',
         'email',
         'phone',
-        'dob',
+        'd_o_b',
         'last_donation_date',
         'pin_code',
+        // 'city_id',
     ];
     public function clientable()
     {

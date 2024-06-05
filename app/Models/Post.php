@@ -12,7 +12,7 @@ class Post extends Model
         'title',
         'content',
         'category_id',
-        'image'
+        'image',
     ];
     public function category()
     {

@@ -11,15 +11,14 @@ class Notification extends Model
     protected $fillable = [
         'title',
         'content',
-        'user_id',
-        'is_read'
+        'donation_request_id',
     ];
-    public function user()
-    {
-        return $this->belongsTo(User::class);
-    }
     public function clients()
     {
-        return $this->morphMany(Client::class, 'clientable');
+        return $this->morphToMany(Client::class, 'clientable');
+    }
+    public function donationRequest()
+    {
+        return $this->belongsTo(Donation_request::class);
     }
 }

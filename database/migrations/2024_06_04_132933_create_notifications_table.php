@@ -11,15 +11,17 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('notifications', function (Blueprint $table) {
-            $table->id();
-            $table->string('title', 255);
-            $table->text('content');
-            $table->foreignId('donation_request_id')->constrained();
-            $table->timestamps();
-        });
-    }
+        if (!Schema::hasTable('cities')) {
 
+            Schema::create('notifications', function (Blueprint $table) {
+                $table->id();
+                $table->string('title', 255);
+                $table->text('content');
+                $table->foreignId('donation_request_id')->constrained('donation_requests')->cascadeOnDelete();
+                $table->timestamps();
+            });
+        }
+    }
     /**
      * Reverse the migrations.
      */

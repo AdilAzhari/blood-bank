@@ -13,13 +13,13 @@ return new class extends Migration
     {
         Schema::create('settings', function (Blueprint $table) {
             $table->id();
-            $table->text('about_app')->nullable();
-            $table->string('phone_number', 255)->nullable();
-            $table->text('notification_setting_text')->nullable();
-            $table->string('email', 255)->nullable();
-            $table->string('fb_link', 255)->nullable();
-            $table->string('tw_link', 255)->nullable();
-            $table->string('insta_link', 255)->nullable();
+            $table->string('about_app');
+            $table->string('phone_number');
+            $table->string('email');
+            $table->string('fb_link');
+            $table->string('tw_link');
+            $table->string('insta_link');
+            $table->string('notification_setting_text');
             $table->timestamps();
         });
     }

@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('clientables', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('client_id')->constrained();
+            $table->foreignId('client_id')->constrained('clients')->cascadeOnDelete();
             // $table->morphs('clientable');
             $table->string('clientable_type', 255);
             $table->string('clientable_id', 255);

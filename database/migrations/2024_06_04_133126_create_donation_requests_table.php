@@ -22,13 +22,12 @@ return new class extends Migration
                 $table->tinyInteger('bags_number');
                 $table->text('hospital_address')->nullable();
                 $table->text('details')->nullable();
-                $table->string('notes', 255)->nullable();
                 $table->decimal('latitude', 10, 8)->nullable();
-                $table->decimal('longitude', 10, 8)->nullable();
-                $table->enum('blood_typ', ['A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-']);
+                $table->decimal('longitude', 11, 8)->nullable();
 
                 $table->foreignId('city_id')->constrained('cities')->cascadeOnDelete();
                 $table->foreignId('client_id')->constrained('clients')->cascadeOnDelete();
+                $table->foreignId('blood_type_id')->constrained('blood_types')->cascadeOnDelete();
                 $table->timestamps();
             });
         }

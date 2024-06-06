@@ -21,10 +21,10 @@ class DatabaseSeeder extends Seeder
             // CategorySeeder::class,
             // PostSeeder::class,
             // ClientSeeder::class,
-            // NotificationSeeder::class,
             // settingSeeder::class,
             // ContactSeeder::class,
             DonationRequestSeeder::class,
+            NotificationSeeder::class,
         ]);
 
         User::factory()->create([

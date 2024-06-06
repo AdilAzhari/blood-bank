@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Blood_type extends Model
+class BloodType extends Model
 {
     use HasFactory;
     protected $fillable = [
@@ -13,10 +13,10 @@ class Blood_type extends Model
     ];
     public function clients()
     {
-        return $this->morphToMany(Client::class, 'clientable');
+        return $this->morphedByMany(Client::class, 'clientable');
     }
     public function donations()
     {
-        return $this->hasMany(Donation_request::class);
+        return $this->hasMany(DonationRequest::class);
     }
 }

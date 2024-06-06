@@ -2,13 +2,13 @@
 
 namespace Database\Factories;
 
-use App\Models\Blood_type;
+use App\Models\BloodType;
 use App\Models\City;
 use App\Models\Client;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Donation_request>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\DonationRequest>
  */
 class DonationRequestFactory extends Factory
 {
@@ -31,8 +31,7 @@ class DonationRequestFactory extends Factory
             'latitude' => $this->faker->latitude,
             'longitude' => $this->faker->longitude,
             'client_id' => Client::inRandomOrder()->first()->id,
-            'blood_type_id' => Blood_type::inRandomOrder()->first()->id,
-            'created_at' => '2021-09-01 00:00:00',
+            'blood_type_id' => BloodType::inRandomOrder()->first()->id,
         ];
     }
 }

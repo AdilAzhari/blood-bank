@@ -11,14 +11,15 @@ return new class extends Migration
      */
     public function up(): void
     {
-        if (!Schema::hasTable('cities')) {
-            Schema::create('cities', function (Blueprint $table) {
-                $table->id();
-                $table->string('name', 255);
-                $table->foreignId('governorate_id')->constrained('governorates')->cascadeOnDelete();
-                $table->timestamps();
-            });
+        if (Schema::hasTable('cities')) {
+            return;
         }
+        Schema::create('cities', function (Blueprint $table) {
+            $table->id();
+            $table->string('name', 255);
+            $table->foreignId('governorate_id')->constrained('governorates')->cascadeOnDelete();
+            $table->timestamps();
+        });
     }
 
     /**

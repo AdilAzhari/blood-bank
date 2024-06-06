@@ -8,12 +8,11 @@ trait ApiResponser
 {
     protected function successResponse($data, $message = 'Success', $code = 200)
     {
-        return ClientResource::collection($data);
-        // json([
-        //     'status' => 'success',
-        //     'message' => $message,
-        //     'data' => $data
-        // ], $code);
+        return response()->json([
+                'status' => 'success',
+                'message' => $message,
+                'data' => $data
+            ], $code);
     }
 
     protected function errorResponse($message, $code)
@@ -27,12 +26,12 @@ trait ApiResponser
 
     protected function customResponse($status, $data, $message, $code)
     {
-        return ClientResource::collection($data);
+        // return ClientResource::collection($data);
 
-        // response()->json([
-        //     'status' => $status,
-        //     'message' => $message,
-        //     'data' => $data
-        // ], $code);
+        response()->json([
+            'status' => $status,
+            'message' => $message,
+            'data' => $data
+        ], $code);
     }
 }

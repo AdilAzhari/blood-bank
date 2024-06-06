@@ -25,10 +25,10 @@ class ClientFactory extends Factory
             'last_donation_date' => $this->faker->dateTimeBetween('-1 years', 'now')->format('Y-m-d'),
             'pin_code' => $this->faker->postcode,
             'password' => bcrypt('123456'),
-            'clientable_type' => 'App\Models\Client',
-            'clientable_id' => $this->faker->unique()->numberBetween(1, 50),
-            // 'blood_type_id' => $this->faker->numberBetween(1, 8),
-            // 'city_id' => City::inRandomOrder()->first()->id,
+            // 'clientable_type' => 'App\Models\Client',
+            // 'clientable_id' => $this->faker->unique()->numberBetween(1, 50),
+            'blood_type_id' => $this->faker->numberBetween(1, 8),
+            'city_id' => City::inRandomOrder()->first()->id,
         ];
     }
 }

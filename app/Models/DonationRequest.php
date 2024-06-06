@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Donation_request extends Model
+class DonationRequest extends Model
 {
     use HasFactory;
     protected $fillable = [
@@ -34,6 +34,6 @@ class Donation_request extends Model
 
     public function bloodType()
     {
-        return $this->belongsTo(Blood_type::class);
+        return $this->belongsTo(BloodType::class);
     }
 }

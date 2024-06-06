@@ -11,23 +11,19 @@ return new class extends Migration
      */
     public function up(): void
     {
-        if (Schema::hasTable('cities')) {
-            return;
-        }
-
-        Schema::create('notifications', function (Blueprint $table) {
+        Schema::create('client_post', function (Blueprint $table) {
             $table->id();
-            $table->string('title', 255);
-            $table->text('content');
-            $table->foreignId('donation_request_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('client_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('post_id')->constrained()->cascadeOnDelete();
             $table->timestamps();
         });
     }
+
     /**
      * Reverse the migrations.
      */
     public function down(): void
     {
-        Schema::dropIfExists('notifications');
+        Schema::dropIfExists('client_post');
     }
 };

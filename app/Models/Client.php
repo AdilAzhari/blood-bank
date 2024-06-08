@@ -3,23 +3,26 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
+use Laravel\Sanctum\HasApiTokens;
+use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\Notifiable;
 
-class Client extends Model
+class Client extends Authenticatable
 {
-    use HasFactory;
+    use HasFactory, HasApiTokens, Notifiable;
     protected $fillable = [
         'name', 'email', 'phone', 'd_o_b', 'last_donation_date',
-        'pin_code', 'password', 'is_active',
-
-        // 'city_id',
-        // 'blood_type_id',
-        // 'post_id',
+        'pin_code', 'is_active', 'password', 'city_id', 'blood_type_id',
     ];
     protected $hidden = [
         'password',
         'api_token',
     ];
+    public function routeNotificationForMail($notification)
+    {
+        // Return the email address where the notification should be sent.
+        return $this->email;
+    }
     public function bloodType()
     {
         return $this->belongsTo(BloodType::class);

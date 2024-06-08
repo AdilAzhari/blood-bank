@@ -26,8 +26,6 @@ trait ApiResponser
 
     protected function customResponse($status, $data, $message, $code)
     {
-        // return ClientResource::collection($data);
-
         response()->json([
             'status' => $status,
             'message' => $message,

@@ -11,11 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('client_governorate', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('client_id')->constrained()->cascadeOnDelete();
-            $table->foreignId('governorate_id')->constrained()->cascadeOnDelete();
-            $table->timestamps();
+        Schema::table('clients', function (Blueprint $table) {
+            $table->foreignId('blood_type_id')->constrained()->cascadeOnDelete();
         });
     }
 
@@ -24,6 +21,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('client_governorate');
+        Schema::table('clients', function (Blueprint $table) {
+            $table->dropConstrainedForeignId('blood_type_id');
+        });
     }
 };

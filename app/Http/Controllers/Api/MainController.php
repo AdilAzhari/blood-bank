@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Http\Requests\ClientProfileRequest;
 use App\Models\City;
 use App\Models\Governorate;
 use App\Traits\ApiResponser;
@@ -42,5 +43,15 @@ class MainController
         //     $cities,
         //     200
         // );
+    }
+
+    public function profile(ClientProfileRequest $request)
+    {
+
+        return $this->successResponse(
+            auth()->user(),
+            'Hello World',
+            200
+        );
     }
 }

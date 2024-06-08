@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\DonationRequest;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -20,7 +21,7 @@ class NotificationFactory extends Factory
         return [
             'title' => $this->faker->title,
             'content' => $this->faker->text,
-            'donation_request_id' => donation_request::inRandomOrder()->first()->id,
+            'donation_request_id' => DonationRequest::inRandomOrder()->first()->id,
         ];
     }
 }

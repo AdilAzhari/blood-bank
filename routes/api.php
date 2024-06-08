@@ -21,20 +21,27 @@ Route::get('/user', function (Request $request) {
     return $request->user();
 })->middleware('auth:sanctum');
 
-Route::prefix('v1')->group(function () {
-    // Route::resource('clients', ClientController::class);
-    // Route::resource('notifications', NotificationController::class);
-    // Route::resource('posts', PostController::class);
-    // // Route::resource('cities', CityController::class);
-    // Route::resource('blood_types', BloodTypeController::class);
-    // Route::resource('donation_requests', DonationRequestController::class);
-    // Route::resource('governorates', GovernorateController::class);
-    // Route::resource('categories', CategoryController::class);
-    // Route::resource('contacts', ContactController::class);
-    // Route::resource('settings', SettingController::class);
-    // Route::get('main',[MainController::class, 'index']);
+// 'always-accept-json'
+
+Route::prefix('v1')->middleware(['api'])->group(function () {
+
+    Route::controller(authController::class)->group(function () {
+        Route::post('register', 'register');
+        Route::post('login', 'login');
+        Route::post('password/reset', 'sendResetCode');
+        Route::post('password/reset/verify', 'verifyResetCode');
+    });
+
+    Route::apiResource('clients', ClientController::class);
+    Route::apiResource('notifications', NotificationController::class);
+    Route::apiResource('posts', PostController::class);
+    Route::apiResource('cities', CityController::class);
+    Route::apiResource('blood_types', BloodTypeController::class);
+    Route::apiResource('donation_requests', DonationRequestController::class);
+    Route::apiResource('governorates', GovernorateController::class);
+    Route::apiResource('categories', CategoryController::class);
+    Route::apiResource('contacts', ContactController::class);
+    Route::apiResource('settings', SettingController::class);
+    Route::get('main', [MainController::class, 'index']);
     Route::get('cities', [MainController::class, 'cities']);
-    Route::get('governorates', [MainController::class, 'governorates']);
-    Route::post('register', [AuthController::class, 'register']);
-    Route::post('login', [AuthController::class, 'login']);
 });

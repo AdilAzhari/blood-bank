@@ -14,5 +14,19 @@ class DonationRequestSeeder extends Seeder
     public function run(): void
     {
         DonationRequest::factory(10)->create();
+        // DonationRequest::factory()->create([
+        //     'patient_name' => 'Test Patient',
+        //     'patient_age' => 30,
+        //     'bags_num' => 2,
+        //     'hospital_name' => 'Test Hospital',
+        //     'hospital_address' => 'Test Hospital Address',
+        //     'phone' => '01012345678',
+        //     'notes' => 'Test Notes',
+        //     'latitude' => 30.123456,
+        //     'longitude' => 31.123456,
+        //     'client_id' => 1,
+        //     'city_id' => 1,
+        //     'blood_type_id' => 1,
+        // ]);
     }
 }

@@ -13,7 +13,7 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // User::factory(10)->create();
+        User::factory(10)->create();
         $this->call([
             // BloodTypeSeeder::class,
             // GovernorateSeeder::class,
@@ -21,9 +21,12 @@ class DatabaseSeeder extends Seeder
             // CategorySeeder::class,
             // PostSeeder::class,
             // ClientSeeder::class,
+
             // settingSeeder::class,
             // ContactSeeder::class,
-            DonationRequestSeeder::class,
+
+            // DonationRequestSeeder::class,
+
             NotificationSeeder::class,
         ]);
 

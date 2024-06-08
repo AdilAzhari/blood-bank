@@ -17,9 +17,7 @@ class CityResource extends JsonResource
         return [
             'id' => $this->id,
             'name' => $this->name,
-            'governorate_id' => $this->governorate_id,
-            'created_at' => $this->created_at,
-            'updated_at' => $this->updated_at,
+            'governorate' => GovernorateResource::make($this->whenLoaded('governorate')),
         ];
     }
 }

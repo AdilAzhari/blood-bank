@@ -15,12 +15,18 @@ class ClientResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
+            'id' => $this->id,
             'name' => $this->name,
-            'phone' => $this->phone,
             'email' => $this->email,
+            'phone' => $this->phone,
             'd_o_b' => $this->d_o_b,
             'last_donation_date' => $this->last_donation_date,
-            'pin_code' => $this->pin_code,
+            'city_id' => $this->city_id,
+            'blood_type_id' => $this->blood_type_id,
+            'is_active' => $this->is_active,
+            'city' => CityResource::make($this->whenLoaded('city')),
+            'blood_type' => BloodTypeResource::make($this->whenLoaded('blood_type')),
+
         ];
     }
 }

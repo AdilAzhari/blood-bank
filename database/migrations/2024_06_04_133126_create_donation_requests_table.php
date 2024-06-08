@@ -11,7 +11,6 @@ return new class extends Migration
      */
     public function up(): void
     {
-        if (!Schema::hasTable('cities')) {
 
             Schema::create('donation_requests', function (Blueprint $table) {
                 $table->id();
@@ -30,7 +29,7 @@ return new class extends Migration
                 $table->foreignId('blood_type_id')->constrained('blood_types')->cascadeOnDelete();
                 $table->timestamps();
             });
-        }
+
     }
     /**
      * Reverse the migrations.

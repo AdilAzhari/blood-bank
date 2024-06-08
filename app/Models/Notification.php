@@ -15,7 +15,7 @@ class Notification extends Model
     ];
     public function clients()
     {
-        return $this->morphToMany(Client::class, 'clientable');
+        return $this->morphedByMany(Client::class, 'clientable');
     }
     public function donationRequest()
     {

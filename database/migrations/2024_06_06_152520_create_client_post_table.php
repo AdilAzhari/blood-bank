@@ -11,10 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
+        if (Schema::hasTable('client_post')) {
+            return;
+        }
         Schema::create('client_post', function (Blueprint $table) {
             $table->id();
             $table->foreignId('client_id')->constrained()->cascadeOnDelete();
             $table->foreignId('post_id')->constrained()->cascadeOnDelete();
+            $table->boolean('is_favorite')->default(false);
             $table->timestamps();
         });
     }

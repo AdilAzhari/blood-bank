@@ -22,9 +22,9 @@ class ClientController
             $message = 'No Clients Found';
             $data = null;
         }
-        return ClientResource::collection(Client::all());
+        // return ClientResource::collection(Client::all());
 
-        // return $this->customResponse($data,$status, $message, 200);
+        return $this->customResponse($data,$status, $message, 200);
     }
     public function Show($id)
     {

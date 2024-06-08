@@ -23,7 +23,7 @@ class StoreAuthLoginRequest extends FormRequest
     {
         return [
             'phone' => 'required|exists:clients',
-            'password' => 'required|string|exists:password',
+            'password' => 'required|string',
         ];
     }
 }

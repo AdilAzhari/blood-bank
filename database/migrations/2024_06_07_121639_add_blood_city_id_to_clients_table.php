@@ -11,12 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        if(Schema::hasTable('client_notification')) {
+        if (Schema::hasColumn('clients', 'city_id')) {
             return;
         }
-        Schema::create('client_notification', function (Blueprint $table) {
-            $table->foreignId('client_id')->constrained()->cascadeOnDelete();
-            $table->foreignId('notification_id')->constrained()->cascadeOnDelete();
+        Schema::table('clients', function (Blueprint $table) {
+            $table->foreignId('city_id')->constrained('city')->cascadeOnDelete();
         });
     }
 
@@ -25,6 +24,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('client_notification');
+        Schema::table('clients', function (Blueprint $table) {
+            $table->dropConstrainedForeignId('city_id');
+        });
     }
 };

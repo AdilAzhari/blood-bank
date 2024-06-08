@@ -11,17 +11,18 @@ return new class extends Migration
      */
     public function up(): void
     {
-        if (!Schema::hasTable('cities')) {
-
-            Schema::create('posts', function (Blueprint $table) {
-                $table->id();
-                $table->string('title', 255);
-                $table->text('content');
-                $table->string('image', 255)->nullable();
-                $table->foreignId('category_id')->constrained('categories')->cascadeOnDelete();
-                $table->timestamps();
-            });
+        if(Schema::hasTable('posts')) {
+            return;
         }
+
+        Schema::create('posts', function (Blueprint $table) {
+            $table->id();
+            $table->string('title', 255);
+            $table->text('content');
+            $table->string('image', 255)->nullable();
+            $table->foreignId('category_id')->constrained()->cascadeOnDelete();
+            $table->timestamps();
+        });
     }
 
     /**

@@ -29,11 +29,16 @@ Route::prefix('v1')->middleware(['api'])->group(function () {
         Route::post('register', 'register');
         Route::post('login', 'login');
         Route::post('password/reset', 'sendResetCode');
-        Route::post('password/reset/verify', 'verifyResetCode');
+        Route::post('password/reset/verify', 'resetPassword');
+        Route::post('donationRequest', 'createDonationRequest');
+        Route::post('notification/setting', 'notificationSetting');
     });
 
     Route::apiResource('clients', ClientController::class);
-    Route::apiResource('notifications', NotificationController::class);
+    Route::controller(NotificationController::class)->group(function () {
+        Route::get('/notifications', 'index');
+        // Route::post('/orders', 'store');
+    });
     Route::apiResource('posts', PostController::class);
     Route::apiResource('cities', CityController::class);
     Route::apiResource('blood_types', BloodTypeController::class);

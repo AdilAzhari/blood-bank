@@ -1,28 +1,32 @@
 <?php
 
-namespace App\Http\Controllers\Api;
+namespace App\Http\Controllers\Dashboard;
 
-use App\Http\Requests\StoreGovernorateRequest;
-use App\Http\Resources\GovernorateResource;
-use App\Models\Governorate;
-use App\Traits\ApiResponser;
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
-class GovernorateController
+class PostController extends Controller
 {
-    use ApiResponser;
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $governorates = Governorate::with('cities')->get();
-        // return view('governorates.index', compact('governorates'));
+        //
     }
+
+    /**
+     * Show the form for creating a new resource.
+     */
+    public function create()
+    {
+        //
+    }
+
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreGovernorateRequest $request)
+    public function store(Request $request)
     {
         //
     }
@@ -31,6 +35,14 @@ class GovernorateController
      * Display the specified resource.
      */
     public function show(string $id)
+    {
+        //
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     */
+    public function edit(string $id)
     {
         //
     }

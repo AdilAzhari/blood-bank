@@ -14,10 +14,10 @@ class City extends Model
     ];
     public function governorate()
     {
-        return $this->belongsTo(Governorate::class);
+        return $this->belongsTo(Governorate::class)->withDefault('No Governorate');
     }
     public function clients()
     {
-        return $this->hasMany(Client::class);
+        return $this->hasMany(Client::class)->withDefault('No Clients');
     }
 }

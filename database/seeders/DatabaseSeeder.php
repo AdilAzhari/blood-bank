@@ -15,24 +15,22 @@ class DatabaseSeeder extends Seeder
     {
         User::factory(10)->create();
         $this->call([
-            // BloodTypeSeeder::class,
-            // GovernorateSeeder::class,
-            // CitySeeder::class,
-            // CategorySeeder::class,
-            // PostSeeder::class,
-            // ClientSeeder::class,
-
-            // settingSeeder::class,
-            // ContactSeeder::class,
-
-            // DonationRequestSeeder::class,
-
+            BloodTypeSeeder::class,
+            GovernorateSeeder::class,
+            CitySeeder::class,
+            CategorySeeder::class,
+            PostSeeder::class,
+            ClientSeeder::class,
+            settingSeeder::class,
+            ContactSeeder::class,
+            DonationRequestSeeder::class,
             NotificationSeeder::class,
+            PermissionSeeder::class,
         ]);
 
-        User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
-        ]);
+        // User::factory()->create([
+        //     'name' => 'Test User',
+        //     'email' => 'test@example.com',
+        // ]);
     }
 }

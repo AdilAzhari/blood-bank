@@ -18,6 +18,6 @@ class City extends Model
     }
     public function clients()
     {
-        return $this->hasMany(Client::class)->withDefault('No Clients');
+        return $this->morphedByMany(Client::class,'clientable');
     }
 }

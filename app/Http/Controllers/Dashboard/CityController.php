@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Dashboard;
 
 use App\Http\Controllers\Controller;
 use App\Models\City;
+use App\Models\Client;
 use App\Models\Governorate;
 use Illuminate\Http\Request;
 
@@ -15,6 +16,11 @@ class CityController extends Controller
     public function index()
     {
         $cities = City::with('governorate')->paginate();
+        // $clients = Client::with('city')->count();
+        // dd($clients);
+        // foreach ($clients as $client) {
+        //     dd($client->city);
+        // }
         return view('cities.index', compact('cities'));
     }
 
@@ -78,6 +84,8 @@ class CityController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $city = City::findOrFail($id);
+        $city->delete();
+        return redirect()->route('cities.index')->with('Danger', 'City deleted successfully');
     }
 }

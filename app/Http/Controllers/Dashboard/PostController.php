@@ -3,63 +3,79 @@
 namespace App\Http\Controllers\Dashboard;
 
 use App\Http\Controllers\Controller;
+use App\Models\Category;
+use App\Models\Client;
+use App\Models\Post;
 use Illuminate\Http\Request;
 
 class PostController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
-        //
+        $posts = Post::with('category')->paginate(10);
+        return view('posts.index', compact('posts'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create()
     {
-        //
+        $categories = Category::all();
+        return view('posts.create', compact('categories'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'title' => 'required|string|max:255',
+            'content' => 'required|string',
+            'image' => 'nullable|image|max:2048',
+            'category_id' => 'required|exists:categories,id',
+        ]);
+
+        $post = new Post($request->only('title', 'content', 'category_id'));
+        if ($request->hasFile('image')) {
+            $post->image = $request->file('image')->store('images', 'public');
+        }
+        $post->save();
+
+        return redirect()->route('posts.index')->with('Info', 'Post created successfully.');
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
+    public function edit(Post $post)
     {
-        //
+        $categories = Category::all();
+        return view('posts.edit', compact('post', 'categories'));
+    }
+    public function show(Post $post)
+    {
+        // $clients = Client::whereHas('posts', function ($query) use ($post) {
+        //     $query->where('clientables.client_id', $post); // Corrected reference
+        // })->get();
+        // dd($clients);
+
+        return view('posts.show', compact('post'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
+    public function update(Request $request, Post $post)
     {
-        //
+        $request->validate([
+            'title' => 'required|string|max:255',
+            'content' => 'required|string',
+            'image' => 'nullable|image|max:2048',
+            'category_id' => 'required|exists:categories,id',
+        ]);
+
+        $post->fill($request->only('title', 'content', 'category_id'));
+        if ($request->hasFile('image')) {
+            $post->image = $request->file('image')->store('images', 'public');
+        }
+        $post->save();
+
+        return redirect()->route('posts.index')->with('success', 'Post updated successfully.');
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
+    public function destroy(Post $post)
     {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
+        $post->delete();
+        return redirect()->route('posts.index')->with('success', 'Post deleted successfully.');
     }
 }

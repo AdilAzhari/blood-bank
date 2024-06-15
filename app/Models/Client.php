@@ -12,7 +12,7 @@ class Client extends Authenticatable
     use HasFactory, HasApiTokens, Notifiable;
     protected $fillable = [
         'name', 'email', 'phone', 'd_o_b', 'last_donation_date',
-        'pin_code', 'is_active', 'password', 'city_id', 'blood_type_id', 'fcm_token'
+        'pin_code', 'is_active', 'password', 'city_id', 'blood_type_id', 'fcm_token', 'cstatus','governorate_id'
     ];
     protected $hidden = [
         'password',
@@ -53,10 +53,20 @@ class Client extends Authenticatable
 
     public function governorates()
     {
-        return $this->morphToMany(Governorate::class, 'clientable');
+        return $this->morphedByMany(Governorate::class, 'clientable');
     }
     public function tokens()
     {
         return $this->hasMany(Token::class);
+    }
+    public function scopeFilter($query, $filters)
+    {
+        return $query->when($filters['name'] ?? null, function ($query, $name) {
+            $query->where('name', 'like', '%' . $name . '%');
+        })->when($filters['email'] ?? null, function ($query, $email) {
+            $query->where('email',  'like', '%' . $email . '%');
+        })->when($filters['status'] ?? null, function($query,$status){
+            $query->where('status',$status);
+        });
     }
 }

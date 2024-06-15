@@ -19,6 +19,7 @@ use App\Models\Token;
 use App\Notifications\SendResetPasswordNotification;
 use App\Traits\ApiResponser;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
@@ -61,7 +62,8 @@ class AuthController
             'city_id',
             'blood_type_id'
         ));
-
+        Auth::guard('api')->user();
+        $client->api_token = Str::random(60);
         return $this->successResponse([
             'api_token' => $client->api_token,
             'client' => new ClientResource($client),
@@ -70,11 +72,11 @@ class AuthController
 
     public function login(StoreAuthLoginRequest $request)
     {
-        $client = Client::with('city', 'bloodType')
-            ->where([
-                'phone' => $request->phone,
-                'api_token' => $request->api_token,
-            ])->first();
+        dd(Auth::client());
+        $client = Client::where([
+            'phone' => $request->phone,
+            'api_token' => $request->api_token,
+        ])->first();
 
         if ($client && password_verify($request->password, $client->password)) {
             return $this->successResponse([
@@ -105,27 +107,29 @@ class AuthController
 
         return $this->errorResponse('Invalid Phone Number', 401);
     }
-    // }
-    // public function profile(Request $request)
-    // {
-    //     $client = auth()->user();
-    //     if ($request->has('password')) {
-    //         $request->merge(['password' => bcrypt($request->password)]);
-    //     }
-    //     if ($request->has('governorate_id')) {
-    //         $client->cities()->sync($request->governorate_id);
-    //         $request->merge(['city_id' => $request->governorate_id]);
-    //     }
-    //     if ($request->has('blood_type_id')) {
-    //         $bloodType = BloodType::where('name', $request->blood_type)->first();
-    //         $client->bloodType()->sync($bloodType->id);
-    //         $request->merge(['blood_type_id' => $request->blood_type_id,]);
-    //     }
-    //     $client->update($request->all());
-    //     $client->save();
+    public function profile(Request $request)
+    {
+        $user = Auth::guard('api')->user();
 
-    //     return $this->successResponse(new ClientResource($client), 'Profile Updated Successfully');
-    // }
+        if ($request->has('password')) {
+            $request->merge(['password' => bcrypt($request->password)]);
+        }
+        if ($request->has('governorate_id')) {
+            $request->merge(['city_id' => $request->governorate_id]);
+        }
+        if ($request->has('blood_type')) {
+            $bloodType = BloodType::where('name', $request->blood_type)->first();
+            $request->merge(['blood_type_id' => $bloodType->id]);
+        }
+
+        // $client = Auth::guard('api')->user();
+        // $client->city->attach($request->city_id);
+        // dd($client);
+            // $client->update($request->all());
+        // $client->save();
+
+        // return $this->successResponse(new ClientResource($client), 'Profile Updated Successfully');
+    }
 
     public function resetPassword(ClientPasswordResetRequest $request)
     {

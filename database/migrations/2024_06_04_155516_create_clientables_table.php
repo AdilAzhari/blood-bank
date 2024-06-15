@@ -12,11 +12,12 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('clientables', function (Blueprint $table) {
-            $table->id();
             $table->foreignId('client_id')->constrained('clients')->cascadeOnDelete();
-            // $table->morphs('clientable');
-            $table->string('clientable_type', 255);
-            $table->string('clientable_id', 255);
+            $table->morphs('clientable');
+            // $table->string('clientable_type', 255);
+            // $table->unsignedBigInteger('clientable_id');
+
+            $table->primary(['client_id', 'clientable_type', 'clientable_id']);
             $table->timestamps();
         });
     }

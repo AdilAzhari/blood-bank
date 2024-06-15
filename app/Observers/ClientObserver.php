@@ -14,8 +14,7 @@ class ClientObserver
     public function creating(client $client): void
     {
         $client->password = bcrypt($client->password);
-        $client->createToken('auth_token');
-    }
+        $client->api_token = Str::random(60);}
     public function created(client $client): void
     {
     }

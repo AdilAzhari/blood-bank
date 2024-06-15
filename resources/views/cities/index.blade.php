@@ -44,7 +44,7 @@
                                     <a href="{{ route('cities.show', $city) }}"
                                         class="text-blue-600 hover:underline">{{ $city->name }}</a>
                                 </td>
-                                <td class="px-4 py-3">{{ $city->governorate->name ?? 'N/A'}}</td>
+                                <td class="px-4 py-3">{{ $city->governorate->name ?? 'N/A' }}</td>
                                 <td class="px-4 py-3">{{ $city->created_at->diffForHumans() }}</td>
                                 <td class="px-4 py-3 flex space-x-2">
                                     <a href="{{ route('cities.edit', $city->id) }}"

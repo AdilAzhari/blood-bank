@@ -13,7 +13,7 @@ class DonationRequestSeeder extends Seeder
      */
     public function run(): void
     {
-        DonationRequest::factory(10)->create();
+        DonationRequest::factory(40)->create();
         // DonationRequest::factory()->create([
         //     'patient_name' => 'Test Patient',
         //     'patient_age' => 30,

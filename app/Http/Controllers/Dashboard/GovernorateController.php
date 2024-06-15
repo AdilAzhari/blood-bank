@@ -30,7 +30,6 @@ class GovernorateController extends Controller
      */
     public function store(Request $request)
     {
-        //
         $request->validate([
             'name' => 'required|string|max:255|min:3',
         ]);
@@ -41,9 +40,8 @@ class GovernorateController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(Governorate $governorate)
     {
-        $governorate = Governorate::findOrFail($id);
         return view('governorates.show', compact('governorate'));
     }
 

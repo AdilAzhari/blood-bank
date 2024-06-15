@@ -13,6 +13,6 @@ class GovernorateSeeder extends Seeder
      */
     public function run(): void
     {
-        Governorate::factory(10)->create();
+        Governorate::factory(30)->create();
     }
 }

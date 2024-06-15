@@ -22,16 +22,16 @@ Route::get('/user', function (Request $request) {
 })->middleware('auth:sanctum');
 
 // 'always-accept-json'
-
+Route::post('register', [authController::class, 'register']);
 Route::prefix('v1')->middleware(['api'])->group(function () {
 
     Route::controller(authController::class)->group(function () {
-        Route::post('register', 'register');
         Route::post('login', 'login');
         Route::post('password/reset', 'sendResetCode');
         Route::post('password/reset/verify', 'resetPassword');
         Route::post('donationRequest', 'createDonationRequest');
         Route::post('notification/setting', 'notificationSetting');
+        Route::post('user/profile', 'profile');
     });
 
     Route::apiResource('clients', ClientController::class);

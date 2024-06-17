@@ -4,12 +4,15 @@
         <x-alert />
         <div class="flex justify-between items-center mb-4">
             <h1 class="text-2xl font-bold text-gray-800 dark:text-gray-100">Clients</h1>
-            <div class="flex space-x-2">
-                <a href="{{ route('clients.create') }}"
-                    class="inline-flex items-center px-4 py-2 bg-blue-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-blue-500 active:bg-blue-700 focus:outline-none focus:border-blue-700 focus:ring ring-blue-300 disabled:opacity-25 transition ease-in-out duration-150">
-                    Create
-                </a>
-            </div>
+            <a href="{{ route('clients.create') }}"
+                class="inline-flex items-center px-4 py-2 bg-blue-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-blue-500 active:bg-blue-700 focus:outline-none focus:border-blue-700 focus:ring ring-blue-300 disabled:opacity-25 transition ease-in-out duration-150">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5 mr-2 -ml-1" viewBox="0 0 20 20"
+                    fill="currentColor" aria-hidden="true">
+                    <path
+                        d="M8 9a3 3 0 100-6 3 3 0 000 6zM8 11a6 6 0 016 6H2a6 6 0 016-6zM16 7a1 1 0 10-2 0v1h-1a1 1 0 100 2h1v1a1 1 0 102 0v-1h1a1 1 0 100-2h-1V7z" />
+                </svg>
+                Add new Client
+            </a>
         </div>
         <form action="{{ route('clients.index') }}" method="GET"
             class="mb-6 flex flex-col md:flex-row space-y-4 md:space-y-0 md:space-x-4 items-center">
@@ -25,15 +28,6 @@
                     <option value="inactive" @selected(request('status') == 'inactive')>Inactive</option>
                 </select>
             </div>
-            {{-- <div class="md:w-40">
-                <select name="store_id"
-                    class="form-select mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50">
-                    <option value="">Select a store</option>
-                    @foreach ($stores as $store)
-                        <option value="{{ $store->id }}" @selected(request('store_id') == $store->id)>{{ $store->name }}</option>
-                    @endforeach
-                </select>
-            </div> --}}
             <button type="submit"
                 class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">
                 Search
@@ -51,7 +45,7 @@
                             <th scope="col" class="px-4 py-3">Pin Code</th>
                             <th scope="col" class="px-4 py-3">Blood Type</th>
                             <th scope="col" class="px-4 py-3">Birth Date</th>
-                            <th scope="col" class="px-4 py-3">last Donation Date</th>
+                            <th scope="col" class="px-4 py-3">Last Donation Date</th>
                             <th scope="col" class="px-4 py-3">Status</th>
                             <th scope="col" class="px-4 py-3">City</th>
                             <th scope="col" class="px-4 py-3">Governorate</th>
@@ -64,7 +58,6 @@
                             <tr
                                 class="border-b dark:border-gray-700 odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800">
                                 <td class="px-4 py-3">{{ $client->id }}</td>
-
                                 <td class="px-4 py-3">
                                     <a href="{{ route('clients.show', $client) }}"
                                         class="text-blue-600 hover:underline">{{ $client->name }}</a>
@@ -97,7 +90,7 @@
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="10" class="px-4 py-3 text-center">No Client found</td>
+                                <td colspan="13" class="px-4 py-3 text-center">No Client found</td>
                             </tr>
                         @endforelse
                     </tbody>

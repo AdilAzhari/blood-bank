@@ -8,59 +8,27 @@ use App\Http\Requests\UpdateDonationRequestRequest;
 
 class DonationRequestController
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
-    {
-        //
-    }
+    // public function index()
+    // {
+    //     $donations = DonationRequest::all();
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
+    //     if (request()->has('search')) {
+    //         $donations->where('name', 'like', '%' . request()->search . '%')
+    //             ->orWhere('email', 'like', '%' . request()->search . '%');
+    //     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(StoreDonationRequestRequest $request)
-    {
-        //
-    }
+    //     $donations = $donations->paginate(10);
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(DonationRequest $donationRequest)
-    {
-        //
-    }
+    //     return view('donations.index', compact('donations'));
+    // }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(DonationRequest $donationRequest)
+    public function show(DonationRequest $donation)
     {
-        //
+        return view('donations.show', compact('donation'));
     }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(UpdateDonationRequestRequest $request, DonationRequest $donationRequest)
+    public function destroy(DonationRequest $donation)
     {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(DonationRequest $donationRequest)
-    {
-        //
+        $donation->delete();
+        return redirect()->route('donations.index')->with('Danger', 'Donation deleted successfully.');
     }
 }

@@ -48,7 +48,7 @@ class ClientController extends Controller
             'blood_type_id' => 'required|exists:blood_types,id',
             'password' => 'required|string|min:8|confirmed',
             'governorate_id' => 'required|exists:governorates,id',
-            // 'status' => 'in:acti'
+            'status' => 'in:active,inactive'
         ]);
         $client = Client::create($request->only([
             'name',

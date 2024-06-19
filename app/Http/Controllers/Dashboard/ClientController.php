@@ -8,7 +8,9 @@ use App\Models\City;
 use App\Models\Client;
 use App\Models\Governorate;
 use App\Models\Post;
+use App\Models\User;
 use Illuminate\Http\Request;
+use Spatie\Permission\Models\Role;
 
 class ClientController extends Controller
 {
@@ -17,9 +19,35 @@ class ClientController extends Controller
      */
     public function index(request $request)
     {
-        $filters = $request->only(['name','status']);
-        $clients = Client::with('governorates')->filter($filters)->latest()->paginate(10);
-        return view('clients.index', compact('clients'));
+
+        $user = User::with('roles')->where('id', auth()->id())->first();
+        $role = $user->roles()->get()->pluck('name')->flatten()->toArray();
+        $permissions = Role::with('permissions')->where('name', $role)->get()->pluck('permissions')->flatten()->pluck('name')->toArray();
+        // $this->authorize('viewAny', $user);
+        if(in_array('viewAny-client', $permissions)){
+            $clients = Client::with('governorates')->latest()->paginate(10);
+            return view('clients.index', compact('clients'));
+        }
+
+        // foreach ($permissions as $permission) {
+        //     if ($permission == 'viewAny-client') {
+        //         $clients = Client::with('governorates')->latest()->paginate(10);
+        //         return view('clients.index', compact('clients'));
+        //     }
+        // }
+        // dd($user->roles()->get(), $permissions);
+        // foreach ($permissions as $permission) {
+        //     dd($permission->name);
+        //     // if ($key == 'viewAny-client') {
+        //     //     $clients = Client::with('governorates')->latest()->paginate(10);
+        //     //     return view('clients.index', compact('clients'));
+        //     // }
+        // }
+
+
+        // $filters = $request->only(['name', 'status']);
+        // $clients = Client::with('governorates')->filter($filters)->latest()->paginate(10);
+        // return view('clients.index', compact('clients'));
     }
 
     /**
@@ -27,14 +55,11 @@ class ClientController extends Controller
      */
     public function create()
     {
+        $this->authorize('create', Client::class);
         $cities = City::all();
         $bloodTypes = BloodType::all();
         $governorates = Governorate::all();
-        $client = client::create([
-
-        ]);
-        dd($client->client);
-        // return view('clients.create', compact('cities', 'bloodTypes', 'governorates'));
+        return view('clients.create', compact('cities', 'bloodTypes', 'governorates'));
     }
 
     /**
@@ -42,6 +67,8 @@ class ClientController extends Controller
      */
     public function store(Request $request)
     {
+        $this->authorize('create', Client::class);
+
         $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|email|max:255|unique:clients',
@@ -76,6 +103,8 @@ class ClientController extends Controller
      */
     public function show(Client $client)
     {
+        // $this->authorize('view', $client);
+
         return view('clients.show', compact('client'));
     }
 
@@ -84,7 +113,7 @@ class ClientController extends Controller
      */
     public function edit(client $client)
     {
-
+        $this->authorize('update', $client);
         $cities = City::all();
         $bloodTypes = BloodType::all();
         $governorates = Governorate::all();
@@ -96,6 +125,8 @@ class ClientController extends Controller
      */
     public function update(Request $request, client $client)
     {
+        $this->authorize('update', $client);
+
         $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|email|max:255|unique:clients,email,' . $client->id,
@@ -130,6 +161,8 @@ class ClientController extends Controller
      */
     public function destroy(client $client)
     {
+        $this->authorize('delete', $client);
+
         $client->delete();
         return to_route('clients.index')->with('Danger', 'Client deleted successfully');
     }

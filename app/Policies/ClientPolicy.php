@@ -5,23 +5,37 @@ namespace App\Policies;
 use App\Models\Client;
 use App\Models\User;
 use Illuminate\Auth\Access\Response;
+use Spatie\Permission\Models\Role;
 
 class ClientPolicy
 {
     /**
      * Determine whether the user can view any models.
      */
-    public function viewAny(User $user): bool
+    public function viewAny(User $user)
     {
-        //
+        return $user->can('viewAny-client');
+        // $user = User::with('roles')->where('id', auth()->id())->first();
+        // $role = $user->roles->pluck('name')->toArray();
+        // $permissions = Role::with('permissions')->whereIn('name', $role)->get()->pluck('permissions')->flatten()->pluck('name')->toArray();
+        // foreach ($permissions as $permission) {
+        //     if ($permission == 'viewAny-client') {
+        //         return Response::allow();
+        //     }
+        // }
+        // return Response::deny('You are not authorized to view contacts.');
+
     }
 
     /**
      * Determine whether the user can view the model.
      */
-    public function view(User $user, Client $client): bool
+    public function view(User $user, Client $client)
     {
-        //
+        if(in_array($user->role, Role::all()->pluck('name')->toArray())){
+            return Response::allow();
+        }
+        return Response::deny('You are not authorized to view this client.');
     }
 
     /**

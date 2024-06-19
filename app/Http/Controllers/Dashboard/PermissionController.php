@@ -4,26 +4,28 @@ namespace App\Http\Controllers\Dashboard;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 use Spatie\Permission\Models\Permission;
 
 class PermissionController extends Controller
 {
     public function index()
     {
-        $permissions = Permission::all();
-
+        $query = request()->input('search');
+        $permissions = Permission::when($query, function ($queryBuilder, $query) {
+            return $queryBuilder->where('name', 'LIKE', "%{$query}%");
+        })->get();
         return view('permissions.index', compact('permissions'));
     }
 
-    public function create(Request $request)
+    public function store(Request $request)
     {
         $request->validate([
-            'name' => 'required|unique:permissions,name',
+            'name' => 'required|string|max:255|unique:permissions,name',
         ]);
-
         Permission::create($request->all());
 
-        return redirect()->route('permissions.index')->with('success', 'Permission created successfully!');
+        return to_route('permissions.index')->with('Info', 'Permission created successfully!');
     }
 
     public function edit(Permission $permission)
@@ -34,18 +36,18 @@ class PermissionController extends Controller
     public function update(Request $request, Permission $permission)
     {
         $request->validate([
-            'name' => 'required|unique:permissions,name,' . $permission->id,
+            'name' => 'required|string|max:255|' . Rule::unique('permissions', 'name')->ignore($permission->id),
         ]);
 
-        $permission->update($request->all());
+        $permission->update($request->only('name', 'description'));
 
-        return redirect()->route('permissions.index')->with('success', 'Permission updated successfully!');
+        return to_route('permissions.index')->with('success', 'Permission updated successfully!');
     }
 
     public function destroy(Permission $permission)
     {
         $permission->delete();
 
-        return redirect()->route('permissions.index')->with('success', 'Permission deleted successfully!');
+        return to_route('permissions.index')->with('success', 'Permission deleted successfully!');
     }
 }

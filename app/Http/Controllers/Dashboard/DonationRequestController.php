@@ -32,6 +32,6 @@ class DonationRequestController extends Controller
     public function destroy(DonationRequest $donation)
     {
         $donation->delete();
-        return redirect()->route('donations.index')->with('Danger', 'Donation deleted successfully.');
+        return to_route('donations.index')->with('Danger', 'Donation deleted successfully.');
     }
 }

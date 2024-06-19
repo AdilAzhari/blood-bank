@@ -34,10 +34,28 @@
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-300">
                                 {{ $user->email }}</td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-300">
-                                @foreach ($user->roles as $role)
+                                @php
+                                    $counter = 1;
+                                @endphp
+                                @forelse ($user->roles as $role)
+                                    @if ($counter >= 1)
+                                        @if ($counter > 2)
+                                            @php
+                                                echo '...';
+                                                break;
+                                            @endphp
+                                        @else
+                                            @php
+                                                $counter++;
+                                            @endphp
+                                        @endif
+                                    @endif
                                     <span
                                         class="inline-flex items-center px-3 py-0.5 rounded-full text-sm font-medium bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300">{{ $role->name }}</span>
-                                @endforeach
+                                @empty
+                                    <span
+                                        class="inline-flex items-center px-3 py-0.5 rounded-full text-sm font-medium bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300">{{ __('User Has No Role') }}</span>
+                                @endforelse
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-300">
                                 <a href="{{ route('users.edit', $user) }}"

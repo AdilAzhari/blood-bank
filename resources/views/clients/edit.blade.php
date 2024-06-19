@@ -1,50 +1,52 @@
 <x-app-layout>
-    <div class="container mx-auto py-6 px-4 md:px-6">
-        <x-form.breadcrumb :items="['Home', 'Client', 'Edit']" :routes="['/', '/clients', route('clients.edit', $client->id)]" />
-        <x-alert />
-        <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-4">
-            <h1 class="text-xl font-bold text-gray-800 dark:text-gray-100 mb-4">Edit Client</h1>
-            <form action="{{ route('clients.update', $client->id) }}" method="POST" class="space-y-4">
+    <section class="bg-white dark:bg-gray-900">
+        <div class="max-w-2xl px-4 py-80 mx-auto lg:py-16">
+            <h2 class="mb-4 text-xl font-bold text-gray-900 dark:text-white">Edit Client</h2>
+            <form action="{{ route('clients.update', $client->id) }}" method="POST">
                 @csrf
                 @method('PUT')
-
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <div>
-                        <x-form.label for="name" :value="__('Name')" />
-                        <x-form.input id="name" class="block w-full" type="text" name="name" :value="old('name', $client->name)"
-                            required autofocus />
+                <div class="grid gap-4 mb-4 sm:grid-cols-2 sm:gap-6 sm:mb-5">
+                    <div class="sm:col-span-2">
+                        <label for="name"
+                            class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Name</label>
+                        <input type="text" name="name" id="name"
+                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                            value="{{ old('name', $client->name) }}" required>
+                    </div>
+                    <div class="w-full">
+                        <label for="phone"
+                            class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Phone</label>
+                        <input type="text" name="phone" id="phone"
+                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                            value="{{ old('phone', $client->phone) }}" required>
+                    </div>
+                    <div class="w-full">
+                        <label for="email"
+                            class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Email</label>
+                        <input type="text" name="email" id="email"
+                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                            value="{{ old('email', $client->email) }}" required>
                     </div>
                     <div>
-                        <x-form.label for="phone" :value="__('Phone')" />
-                        <x-form.input id="phone" class="block w-full" type="text" name="phone"
-                            :value="old('phone', $client->phone)" required />
-                    </div>
-                </div>
-
-                <div>
-                    <x-form.label for="email" :value="__('Email')" />
-                    <x-form.input id="email" class="block w-full" type="text" name="email"
-                        :value="old('email', $client->email)" required />
-                </div>
-
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <div>
-                        <x-form.label for="d_o_b" :value="__('Date of Birth')" />
-                        <x-form.input id="d_o_b" class="block w-full" type="date" name="d_o_b"
-                            :value="old('d_o_b', $client->d_o_b)" required />
+                        <label for="d_o_b" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Date
+                            of Birth</label>
+                        <input type="date" name="d_o_b" id="d_o_b"
+                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                            value="{{ old('d_o_b', $client->d_o_b) }}" required>
                     </div>
                     <div>
-                        <x-form.label for="last_donation_date" :value="__('Last Donation Date')" />
-                        <x-form.input id="last_donation_date" class="block w-full" type="date" name="last_donation_date"
-                            :value="old('last_donation_date', $client->last_donation_date)" required />
+                        <label for="last_donation_date"
+                            class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Last Donation
+                            Date</label>
+                        <input type="date" name="last_donation_date" id="last_donation_date"
+                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                            value="{{ old('last_donation_date', $client->last_donation_date) }}" required>
                     </div>
-                </div>
-
-                <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
                     <div>
-                        <x-form.label for="city_id" :value="__('City')" />
+                        <label for="city_id"
+                            class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">City</label>
                         <select name="city_id" id="city_id"
-                            class="block w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-600 dark:focus:border-blue-600 dark:focus:ring-blue-300 dark:focus:ring-opacity-50">
+                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
                             <option value="">Select City</option>
                             @foreach ($cities as $city)
                                 <option value="{{ $city->id }}"
@@ -54,21 +56,25 @@
                         </select>
                     </div>
                     <div>
-                        <x-form.label for="governorate_id" :value="__('Governorate')" />
+                        <label for="governorate_id"
+                            class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Governorate</label>
                         <select name="governorate_id" id="governorate_id"
-                            class="block w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-600 dark:focus:border-blue-600 dark:focus:ring-blue-300 dark:focus:ring-opacity-50">
+                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
                             <option value="">Select Governorate</option>
-                            @foreach ($governorates as $governorate)
-                                <option value="{{ $governorate->id }}"
-                                    {{ $client->governorate_id == $governorate->id ? 'selected' : '' }}>
-                                    {{ $governorate->name }}</option>
-                            @endforeach
+                            @if ($client->city_id)
+                                @foreach ($governorates as $governorate)
+                                    <option value="{{ $governorate->id }}"
+                                        {{ $client->city->governorate_id == $governorate->id ? 'selected' : '' }}>
+                                        {{ $governorate->name }}</option>
+                                @endforeach
+                            @endif
                         </select>
                     </div>
                     <div>
-                        <x-form.label for="blood_type_id" :value="__('Blood Type')" />
+                        <label for="blood_type_id"
+                            class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Blood Type</label>
                         <select name="blood_type_id" id="blood_type_id"
-                            class="block w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-600 dark:focus:border-blue-600 dark:focus:ring-blue-300 dark:focus:ring-opacity-50">
+                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
                             <option value="">Select Blood Type</option>
                             @foreach ($bloodTypes as $bloodType)
                                 <option value="{{ $bloodType->id }}"
@@ -77,24 +83,28 @@
                             @endforeach
                         </select>
                     </div>
+                    <div>
+                        <label for="status"
+                            class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Status</label>
+                        <select name="status" id="status"
+                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
+                            <option value="active" {{ $client->status == 'active' ? 'selected' : '' }}>Active</option>
+                            <option value="inactive" {{ $client->status == 'inactive' ? 'selected' : '' }}>Inactive
+                            </option>
+                        </select>
+                    </div>
                 </div>
-
-                <div>
-                    <x-form.label for="status" :value="__('Status')" />
-                    <select name="status" id="status"
-                        class="block w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-600 dark:focus:border-blue-600 dark:focus:ring-blue-300 dark:focus:ring-opacity-50">
-                        <option value="active" {{ $client->status == 'active' ? 'selected' : '' }}>Active</option>
-                        <option value="inactive" {{ $client->status == 'inactive' ? 'selected' : '' }}>Inactive</option>
-                    </select>
-                </div>
-
-                <div class="flex justify-end">
+                <div class="flex items-center space-x-4">
                     <button type="submit"
-                        class="inline-flex items-center px-4 py-2 bg-blue-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-blue-500 active:bg-blue-700 focus:outline-none focus:border-blue-700 focus:ring ring-blue-300 disabled:opacity-25 transition ease-in-out duration-150">
-                        Update
+                        class="text-white bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">
+                        Update Client
                     </button>
+                    <a href="{{ route('clients.index') }}"
+                        class="text-gray-600 hover:text-white border border-gray-600 hover:bg-gray-600 focus:ring-4 focus:outline-none focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:border-gray-500 dark:text-gray-500 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-900">
+                        Cancel
+                    </a>
                 </div>
             </form>
         </div>
-    </div>
+    </section>
 </x-app-layout>

@@ -42,6 +42,7 @@ class PostController extends Controller
 
     public function edit(Post $post)
     {
+        $post->load('category');
         $categories = Category::all();
         return view('posts.edit', compact('post', 'categories'));
     }
@@ -51,7 +52,6 @@ class PostController extends Controller
         //     $query->where('clientables.client_id', $post); // Corrected reference
         // })->get();
         // dd($clients);
-
         return view('posts.show', compact('post'));
     }
 
@@ -70,12 +70,12 @@ class PostController extends Controller
         }
         $post->save();
 
-        return redirect()->route('posts.index')->with('success', 'Post updated successfully.');
+        return to_route('posts.index')->with('success', 'Post updated successfully.');
     }
 
     public function destroy(Post $post)
     {
         $post->delete();
-        return redirect()->route('posts.index')->with('success', 'Post deleted successfully.');
+        return to_route('posts.index')->with('success', 'Post deleted successfully.');
     }
 }

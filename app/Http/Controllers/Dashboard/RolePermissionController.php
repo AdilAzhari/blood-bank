@@ -18,23 +18,6 @@ class RolePermissionController extends Controller
         return view('roles.index', compact('roles', 'permissions'));
     }
 
-    // public function create()
-    // {
-    //     $permissions = Permission::all();
-    //     return view('roles.create', compact('permissions'));
-    // }
-
-    // public function store(Request $request)
-    // {
-    // $request->validate([
-    //     'name' => 'required|unique:roles,name',
-    //     'description' => 'required|string|max:255',
-    //     'permissions' => 'required|array',
-    //     'permissions.*' => 'exists:permissions,id',
-    // ]);
-
-    //
-
     public function addPermissions(Request $request)
     {
         $permissions = [
@@ -81,18 +64,13 @@ class RolePermissionController extends Controller
 
     public function create(Request $request)
     {
-        $role = Role::create(['name' => $request->name]);
+        $role = Role::create(['name' => $request->name, 'description' => $request->description]);
 
         foreach ($request->permission as $permission) {
             $role->givePermissionTo($permission);
         }
 
-        foreach ($request->users as $user) {
-            $user = User::find($user);
-            $user->assignRole($role->name);
-        }
-
-        return redirect('show-roles')->with('Info', 'Role created successfully');
+        return to_route('show-roles')->with('Info', 'Role created successfully');
     }
 
     public function editRole($id)
@@ -101,31 +79,26 @@ class RolePermissionController extends Controller
             ->with('permissions', 'users')
             ->first();
         $permissions = Permission::all();
-        $users = User::select('name', 'id')->get();
 
-        return view('RolesAndPermissions.Edit', compact('role', 'permissions', 'users'));
+        return view('RolesAndPermissions.Edit', compact('role', 'permissions'));
     }
 
     public function updateRole(Request $request, Role $role)
     {
         $role->name = $request->name;
-        $role->update();
+        $role->description = $request->description;
+        $role->save();
 
         $role->syncPermissions($request->permission);
 
         DB::table('model_has_roles')->where('role_id', $request->id)->delete();
 
-        foreach ($request->users as $user) {
-            $user = User::find($user);
-            $user->assignRole($role->name);
-        }
-
-        return redirect('show-roles')->with('Info', 'Role updated successfully');
+        return to_route('show-roles')->with('Info', 'Role updated successfully');
     }
 
     public function delete(Role $role)
     {
         $role->delete();
-        return redirect('show-roles')->with('Danger', 'Role deleted successfully');
+        return to_route('show-roles')->with('Danger', 'Role deleted successfully');
     }
 }

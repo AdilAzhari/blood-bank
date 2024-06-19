@@ -10,7 +10,8 @@
             <div class="mt-6">
                 <h2 class="text-lg font-semibold text-gray-800 dark:text-gray-100">Cities:</h2>
                 @forelse ($governorate->cities as $city)
-                    <p class="mt-2 text-gray-600 dark:text-gray-400">{{ $city->name }} : {{ $city->governorate }}</p>
+                    <p class="mt-2 text-gray-600 dark:text-gray-400">{{ $city->name }} : {{ $city->governorate->name }}
+                    </p>
                 @empty
                     <p class="mt-2 text-gray-600 dark:text-gray-400">No cities found for this governorate.</p>
                 @endforelse

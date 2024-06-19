@@ -56,6 +56,3 @@ Route::middleware(['auth'])->group(function () {
     // Route::put('/admin/change-password', [AdminController::class, 'changePassword'])->name('admin.change-password');
     Route::resource('users', UserController::class);
 });
-Route::get('/sidebar-test', function () {
-    return view('layouts.sidbar');
-});

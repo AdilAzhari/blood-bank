@@ -49,11 +49,11 @@
                                         class="text-blue-600 hover:underline">{{ $Category->posts->count() }}</a>
                                 <td class="px-4 py-3">{{ $Category->created_at->diffForHumans() }}</td>
                                 <td class="px-4 py-3 flex space-x-2">
-                                    <a href="{{ route('categories.edit', $Category->id) }}"
+                                    <a href="{{ route('categories.edit', $Category) }}"
                                         class="inline-flex items-center px-2 py-1 bg-yellow-500 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-yellow-400 active:bg-yellow-600 focus:outline-none focus:border-yellow-600 focus:ring ring-yellow-300 disabled:opacity-25 transition ease-in-out duration-150">
                                         Edit
                                     </a>
-                                    <form action="{{ route('categories.destroy', $Category->id) }}" method="POST"
+                                    <form action="{{ route('categories.destroy', $Category) }}" method="POST"
                                         onsubmit="return confirm('Are you sure?');" class="inline-block">
                                         @csrf
                                         @method('DELETE')

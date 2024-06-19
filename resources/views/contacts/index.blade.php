@@ -29,7 +29,7 @@
                                 <td class="px-4 py-3">{{ $contact->id }}</td>
                                 <td class="px-4 py-3">{{ $contact->name }}</td>
                                 <td class="px-4 py-3">{{ $contact->email }}</td>
-                                <td class="px-4 py-3">{{ $contact->created_at->toFormattedDateString() }}</td>
+                                <td class="px-4 py-3">{{ $contact->created_at->diffForHumans() }}</td>
                                 <td class="px-4 py-3 flex space-x-2">
                                     <form action="{{ route('contacts.destroy', $contact->id) }}" method="POST" onsubmit="return confirm('Are you sure?');" class="inline-block">
                                         @csrf

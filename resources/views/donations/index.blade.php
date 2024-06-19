@@ -26,9 +26,9 @@
                             <th scope="col" class="px-4 py-3">Amount Bags Number</th>
                             <th scope="col" class="px-4 py-3">Hospital Address</th>
                             <th scope="col" class="px-4 py-3">Details</th>
-                            <th scope="col" class="px-4 py-3">City ID</th>
-                            <th scope="col" class="px-4 py-3">Client ID</th>
-                            <th scope="col" class="px-4 py-3">Blood Type ID</th>
+                            <th scope="col" class="px-4 py-3">Cities</th>
+                            <th scope="col" class="px-4 py-3">Clients</th>
+                            <th scope="col" class="px-4 py-3">Blood Types</th>
                             <th scope="col" class="px-4 py-3">Longitude</th>
                             <th scope="col" class="px-4 py-3">Latitude</th>
                             <th scope="col" class="px-4 py-3">Created At</th>
@@ -50,12 +50,12 @@
                                 <td class="px-4 py-3">{{ $donation->bags_number }}</td>
                                 <td class="px-4 py-3">{{ $donation->hospital_address }}</td>
                                 <td class="px-4 py-3">{{ $donation->hospital_name }}</td>
-                                <td class="px-4 py-3">{{ $donation->city_id }}</td>
-                                <td class="px-4 py-3">{{ $donation->client_id }}</td>
-                                <td class="px-4 py-3">{{ $donation->blood_type_id }}</td>
+                                <td class="px-4 py-3">{{ $donation->city->name }}</td>
+                                <td class="px-4 py-3">{{ $donation->client->name }}</td>
+                                <td class="px-4 py-3">{{ $donation->bloodtype->name }}</td>
                                 <td class="px-4 py-3">{{ $donation->longitude }}</td>
                                 <td class="px-4 py-3">{{ $donation->latitude }}</td>
-                                <td class="px-4 py-3">{{ $donation->created_at->toFormattedDateString() }}</td>
+                                <td class="px-4 py-3">{{ $donation->created_at->diffForHumans() }}</td>
                                 <td class="px-4 py-3 flex space-x-2">
                                     <a href="{{ route('donations.show', $donation->id) }}"
                                         class="inline-flex items-center px-2 py-1 bg-blue-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-blue-500 active:bg-blue-700 focus:outline-none focus:border-blue-700 focus:ring ring-blue-300 disabled:opacity-25 transition ease-in-out duration-150">

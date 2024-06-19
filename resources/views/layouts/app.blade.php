@@ -15,6 +15,7 @@
     <!-- Scripts -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
+    <script src="{{ asset('js/app.js') }}" defer></script>
     @livewireStyles
 </head>
 
@@ -22,15 +23,13 @@
 
     <div class="min-h-screen bg-gray-100 dark:bg-gray-900">
         <livewire:layout.navigation />
-
         <x-sidebar />
 
-        <div class="p-0 sm:ml-64">
-            {{ $slot }}
-        </div>
+        {{ $slot }}
     </div>
-    @livewireScripts
+    <script src="/js/app.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/flowbite.min.js"></script>
+    @livewireScripts
 </body>
 
 </html>

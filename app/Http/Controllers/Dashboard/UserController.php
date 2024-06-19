@@ -38,7 +38,7 @@ class UserController extends Controller
 
         $user->roles()->sync($request->roles);
 
-        return redirect()->route('users.index')->with('success', 'User created successfully.');
+        return to_route('users.index')->with('success', 'User created successfully.');
     }
 
     public function edit(User $user)
@@ -66,7 +66,7 @@ class UserController extends Controller
 
         $user->roles()->sync($request->roles);
 
-        return redirect()->route('users.index')->with('Info', 'User updated successfully.');
+        return to_route('users.index')->with('Info', 'User updated successfully.');
     }
 
     public function destroy(User $user)

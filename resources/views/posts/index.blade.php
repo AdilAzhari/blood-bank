@@ -1,4 +1,3 @@
-<!-- resources/views/posts/index.blade.php -->
 <x-app-layout>
     <div class="container mx-auto py-8 px-4 md:px-8">
         <x-form.breadcrumb :items="['Home', 'Posts']" :routes="['/', '/posts']" />
@@ -32,13 +31,13 @@
                             <td class="px-4 py-3">{{ $counter++ }}</td>
                             <td class="px-4 py-3">
                                 <a href="{{ route('posts.show', $post) }}" class="text-blue-600 hover:underline">{{ $post->title }}</a>
-                                <img src="{{ $post->image }}" alt="{{ $post->title }}" class="w-10 h-10 rounded-full">
+                                <img src="{{ asset('storage/$post->image') }}" alt="{{ $post->title }}" class="w-10 h-10 rounded-full">
                             </td>
                             <td class="px-4 py-3">{{ Str::limit($post->content, 50) }}</td>
                             <td class="px-4 py-3">{{ $post->category->name ?? 'N/A' }}</td>
                             <td class="px-4 py-3">{{ $post->created_at->diffForHumans() }}</td>
                             <td class="px-4 py-3 flex space-x-2">
-                                <a href="{{ route('posts.edit', $post->id) }}"
+                                <a href="{{ route('posts.edit', $post) }}"
                                     class="inline-flex items-center px-2 py-1 bg-yellow-500 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-yellow-400 active:bg-yellow-600 focus:outline-none focus:border-yellow-600 focus:ring ring-yellow-300 disabled:opacity-25 transition ease-in-out duration-150">
                                     Edit
                                 </a>

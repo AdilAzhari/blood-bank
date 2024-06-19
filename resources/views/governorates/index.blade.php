@@ -18,6 +18,7 @@
                         <tr>
                             <th scope="col" class="px-4 py-3">ID</th>
                             <th scope="col" class="px-4 py-3">Name</th>
+                            <th scope="col" class="px-4 py-3">Number Of Cities in the Governorate</th>
                             <th scope="col" class="px-4 py-3">Created At</th>
                             <th scope="col" class="px-4 py-3">Actions</th>
                         </tr>
@@ -29,7 +30,12 @@
                                 <td class="px-4 py-3">{{ $counter++ }}</td>
                                 <td class="px-4 py-3">
                                     <a href="{{ route('governorates.show', $governorate) }}"
-                                        class="text-blue-600 hover:underline">{{ $governorate->name }}</a>
+                                        class="text-blue-600 hover:underline">{{ $governorate->name }}
+                                    </a>
+                                </td>
+                                <td class="px-4 py-3">
+                                    <span
+                                        class="text-gray-500">{{ $governorate->cities->count() > 0 ? $governorate->cities->count() : 'No city has been alocated' }}</span>
                                 </td>
                                 <td class="px-4 py-3">{{ $governorate->created_at->diffForHumans() }}</td>
                                 <td class="
@@ -56,7 +62,7 @@
                         @endforelse
                     </tbody>
                 </table>
-
             </div>
+            {{ $governorates->links() }}
     </x-app-layout>
     <!-- Do what you can, with what you have, where you are. - Theodore Roosevelt -->

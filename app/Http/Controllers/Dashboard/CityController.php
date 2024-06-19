@@ -16,11 +16,6 @@ class CityController extends Controller
     public function index()
     {
         $cities = City::with('governorate')->paginate();
-        // $clients = Client::with('city')->count();
-        // dd($clients);
-        // foreach ($clients as $client) {
-        //     dd($client->city);
-        // }
         return view('cities.index', compact('cities'));
     }
 
@@ -43,24 +38,22 @@ class CityController extends Controller
             'governorate_id' => 'required|exists:governorates,id',
         ]);
         $city = City::create($request->only('name', 'governorate_id'));
-        return redirect()->route('cities.index')->with('success', 'City created successfully');
+        return to_route('cities.index')->with('success', 'City created successfully');
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(city $city)
     {
-        $city = City::findOrFail($id);
         return view('cities.show', compact('city'));
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(city $city)
     {
-        $city = City::findOrFail($id);
         $governorates = Governorate::all();
         return view('cities.edit', compact('city', 'governorates'));
     }
@@ -68,24 +61,32 @@ class CityController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, city $city)
     {
         $request->validate([
             'name' => 'required|string|max:255|min:3',
             'governorate_id' => 'required|exists:governorates,id',
         ]);
-        $city = City::findOrFail($id);
         $city->update($request->only('name', 'governorate_id'));
-        return redirect()->route('cities.index')->with('success', 'City updated successfully');
+        return to_route('cities.index')->with('success', 'City updated successfully');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(City $city)
     {
-        $city = City::findOrFail($id);
+        // $city->clients()->each(function ($client) {
+        //     $client->delete();
+        // });
+        // $city->clients()->update(['city_id' => null]);
+        // print($city->clients()->to);
+        // foreach ($city->clients as $client) {
+        //     $client->update(['city_id' => null]);
+        // }
+        // governorate::where('city_id', $city->id)->update(['city_id' => null]);
         $city->delete();
-        return redirect()->route('cities.index')->with('Danger', 'City deleted successfully');
+
+        return to_route('cities.index')->with('Danger', 'City deleted successfully');
     }
 }

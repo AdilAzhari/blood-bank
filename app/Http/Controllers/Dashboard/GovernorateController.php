@@ -13,7 +13,7 @@ class GovernorateController extends Controller
      */
     public function index()
     {
-        $governorates = Governorate::paginate();
+        $governorates = Governorate::paginate(10);
         return view('governorates.index', compact('governorates'));
     }
 
@@ -34,7 +34,7 @@ class GovernorateController extends Controller
             'name' => 'required|string|max:255|min:3',
         ]);
         $governorate = Governorate::create($request->only('name'));
-        return redirect()->route('governorates.index')->with('success', 'Governorate created successfully');
+        return to_route('governorates.index')->with('success', 'Governorate created successfully');
     }
 
     /**
@@ -65,7 +65,7 @@ class GovernorateController extends Controller
         $governorate = Governorate::findOrFail($id);
         $governorate->update($request->only('name'));
 
-        return redirect()->route('governorates.index')->with('info', 'Governorate updated successfully');
+        return to_route('governorates.index')->with('info', 'Governorate updated successfully');
     }
 
     /**
@@ -75,6 +75,6 @@ class GovernorateController extends Controller
     {
         $governorate = Governorate::findOrFail($id);
         $governorate->delete();
-        return redirect()->route('governorates.index')->with('Danger', 'Governorate deleted successfully');
+        return to_route('governorates.index')->with('Danger', 'Governorate deleted successfully');
     }
 }

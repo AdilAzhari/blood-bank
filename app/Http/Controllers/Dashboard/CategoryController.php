@@ -34,7 +34,7 @@ class CategoryController extends Controller
             'name' => 'required|string|max:255|min:3',
         ]);
         $category = Category::create($request->only('name'));
-        return redirect()->route('categories.index')->with('success', 'Category created successfully');
+        return to_route('categories.index')->with('success', 'Category created successfully');
     }
 
     /**
@@ -58,23 +58,21 @@ class CategoryController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, Category $category)
     {
-        $category = Category::findOrFail($id);
         $request->validate([
             'name' => 'required|string|max:255|min:3',
         ]);
         $category->update($request->only('name'));
-        return redirect()->route('categories.index')->with('success', 'Category updated successfully');
+        return to_route('categories.index')->with('success', 'Category updated successfully');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Category $category)
     {
-        $category = Category::findOrFail($id);
         $category->delete();
-        return redirect()->route('categories.index')->with('Danger', 'Category deleted successfully');
+        return to_route('categories.index')->with('Danger', 'Category deleted successfully');
     }
 }

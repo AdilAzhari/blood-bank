@@ -18,8 +18,8 @@ class Post extends Model
     {
         return $this->belongsTo(Category::class);
     }
-    public function clients()
+    public function client()
     {
-        return $this->morphedByMany(Client::class, 'clientable');
+        return $this->morphTo(Client::class, 'clientable');
     }
 }

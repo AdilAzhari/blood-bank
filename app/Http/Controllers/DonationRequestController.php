@@ -8,19 +8,19 @@ use App\Http\Requests\UpdateDonationRequestRequest;
 
 class DonationRequestController
 {
-    // public function index()
-    // {
-    //     $donations = DonationRequest::all();
+    public function index()
+    {
+        $donations = DonationRequest::all();
 
-    //     if (request()->has('search')) {
-    //         $donations->where('name', 'like', '%' . request()->search . '%')
-    //             ->orWhere('email', 'like', '%' . request()->search . '%');
-    //     }
+        if (request()->has('search')) {
+            $donations->where('name', 'like', '%' . request()->search . '%')
+                ->orWhere('email', 'like', '%' . request()->search . '%');
+        }
 
-    //     $donations = $donations->paginate(10);
+        $donations = $donations->paginate(10);
 
-    //     return view('donations.index', compact('donations'));
-    // }
+        return view('donations.index', compact('donations'));
+    }
 
     public function show(DonationRequest $donation)
     {
@@ -29,6 +29,6 @@ class DonationRequestController
     public function destroy(DonationRequest $donation)
     {
         $donation->delete();
-        return redirect()->route('donations.index')->with('Danger', 'Donation deleted successfully.');
+        return to_route('donations.index')->with('Danger', 'Donation deleted successfully.');
     }
 }

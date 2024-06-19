@@ -17,7 +17,7 @@ class ClientController extends Controller
      */
     public function index(request $request)
     {
-        $filters = $request->only(['name','email','status']);
+        $filters = $request->only(['name','status']);
         $clients = Client::with('governorates')->filter($filters)->latest()->paginate(10);
         return view('clients.index', compact('clients'));
     }
@@ -30,7 +30,11 @@ class ClientController extends Controller
         $cities = City::all();
         $bloodTypes = BloodType::all();
         $governorates = Governorate::all();
-        return view('clients.create', compact('cities', 'bloodTypes', 'governorates'));
+        $client = client::create([
+
+        ]);
+        dd($client->client);
+        // return view('clients.create', compact('cities', 'bloodTypes', 'governorates'));
     }
 
     /**
@@ -64,7 +68,7 @@ class ClientController extends Controller
 
         $client->governorates()->attach($request->governorate_id);
 
-        return redirect()->route('clients.index')->with('success', 'Client created successfully');
+        return to_route('clients.index')->with('success', 'Client created successfully');
     }
 
     /**
@@ -118,7 +122,7 @@ class ClientController extends Controller
 
         $client->governorates()->sync($request->governorate_id);
 
-        return redirect()->route('clients.index')->with('info', 'Client updated successfully');
+        return to_route('clients.index')->with('info', 'Client updated successfully');
     }
 
     /**
@@ -127,6 +131,6 @@ class ClientController extends Controller
     public function destroy(client $client)
     {
         $client->delete();
-        return redirect()->route('clients.index')->with('Danger', 'Client deleted successfully');
+        return to_route('clients.index')->with('Danger', 'Client deleted successfully');
     }
 }

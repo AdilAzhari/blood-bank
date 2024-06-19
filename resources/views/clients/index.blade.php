@@ -73,11 +73,11 @@
                                 <td class="px-4 py-3">{{ $client->governorates->pluck('name')->first() ?? 'N/A' }}</td>
                                 <td class="px-4 py-3">{{ $client->created_at->diffForHumans() }}</td>
                                 <td class="px-4 py-3 flex space-x-2">
-                                    <a href="{{ route('clients.edit', $client->id) }}"
+                                    <a href="{{ route('clients.edit', $client) }}"
                                         class="inline-flex items-center px-2 py-1 bg-yellow-500 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-yellow-400 active:bg-yellow-600 focus:outline-none focus:border-yellow-600 focus:ring ring-yellow-300 disabled:opacity-25 transition ease-in-out duration-150">
                                         Edit
                                     </a>
-                                    <form action="{{ route('clients.destroy', $client->id) }}" method="POST"
+                                    <form action="{{ route('clients.destroy', $client) }}" method="POST"
                                         onsubmit="return confirm('Are you sure?');" class="inline-block">
                                         @csrf
                                         @method('DELETE')

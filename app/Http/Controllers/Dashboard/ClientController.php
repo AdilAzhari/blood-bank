@@ -10,6 +10,7 @@ use App\Models\Governorate;
 use App\Models\Post;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
 
 class ClientController extends Controller
@@ -20,34 +21,18 @@ class ClientController extends Controller
     public function index(request $request)
     {
 
-        $user = User::with('roles')->where('id', auth()->id())->first();
-        $role = $user->roles()->get()->pluck('name')->flatten()->toArray();
-        $permissions = Role::with('permissions')->where('name', $role)->get()->pluck('permissions')->flatten()->pluck('name')->toArray();
-        // $this->authorize('viewAny', $user);
-        if(in_array('viewAny-client', $permissions)){
-            $clients = Client::with('governorates')->latest()->paginate(10);
+        // $user = User::with('roles')->where('id', auth()->id())->first();
+        // $role = $user->roles()->get()->pluck('name')->flatten()->toArray();
+        // $roles = role::with('users')->get();
+        // $permissions = Permission::with('roles')->whereIn('name', $role)->get()->pluck('roles')->flatten()->pluck('name')->toArray();
+        // dd($permissions);
+        // if (in_array('viewAny-client', $permissions)) {
+            $filters = $request->only(['name', 'status']);
+            $clients = Client::with('governorates')->filter($filters)->latest()->paginate(10);
+
             return view('clients.index', compact('clients'));
-        }
-
-        // foreach ($permissions as $permission) {
-        //     if ($permission == 'viewAny-client') {
-        //         $clients = Client::with('governorates')->latest()->paginate(10);
-        //         return view('clients.index', compact('clients'));
-        //     }
         // }
-        // dd($user->roles()->get(), $permissions);
-        // foreach ($permissions as $permission) {
-        //     dd($permission->name);
-        //     // if ($key == 'viewAny-client') {
-        //     //     $clients = Client::with('governorates')->latest()->paginate(10);
-        //     //     return view('clients.index', compact('clients'));
-        //     // }
-        // }
-
-
-        // $filters = $request->only(['name', 'status']);
-        // $clients = Client::with('governorates')->filter($filters)->latest()->paginate(10);
-        // return view('clients.index', compact('clients'));
+        // abort(404);
     }
 
     /**
@@ -55,7 +40,7 @@ class ClientController extends Controller
      */
     public function create()
     {
-        $this->authorize('create', Client::class);
+        // $this->authorize('create', Client::class);
         $cities = City::all();
         $bloodTypes = BloodType::all();
         $governorates = Governorate::all();
@@ -67,7 +52,7 @@ class ClientController extends Controller
      */
     public function store(Request $request)
     {
-        $this->authorize('create', Client::class);
+        // $this->authorize('create', Client::class);
 
         $request->validate([
             'name' => 'required|string|max:255',

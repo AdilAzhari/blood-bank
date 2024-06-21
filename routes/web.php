@@ -28,14 +28,14 @@ Route::view('profile', 'profile')
 
 require __DIR__ . '/auth.php';
 
-Route::middleware(['auth','check-permission'])->group(function () {
-    Route::Resource('posts', PostController::class);
-    Route::Resource('cities', CityController::class);
+Route::middleware(['auth','check-permission','role:super admin'])->group(function () {
+    Route::Resource('posts', PostController::class)->middleware('permission:posts');
+    Route::Resource('cities', CityController::class)->middleware('permission:cities');
     Route::Resource('blood_types', BloodTypeController::class);
     Route::Resource('donations', DonationRequestController::class)->only(['index', 'show', 'destroy']);
     Route::Resource('governorates', GovernorateController::class);
     Route::Resource('categories', CategoryController::class);
-    Route::Resource('clients', ClientController::class);
+    Route::Resource('clients', ClientController::class)->middleware('');
     Route::resource('contacts', ContactsController::class)->only(['index', 'destroy']);
     Route::put('settings', [SettingController::class, 'update'])->name('settings.update');
     Route::get('settings', [SettingController::class, 'index'])->name('settings.index');

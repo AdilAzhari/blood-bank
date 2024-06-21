@@ -11,6 +11,8 @@ class PermissionController extends Controller
 {
     public function index()
     {
+        // $this->authorize('viewAny', Permission::class);
+
         $query = request()->input('search');
         $permissions = Permission::when($query, function ($queryBuilder, $query) {
             return $queryBuilder->where('name', 'LIKE', "%{$query}%");
@@ -20,6 +22,8 @@ class PermissionController extends Controller
 
     public function store(Request $request)
     {
+        // $this->authorize('create', Permission::class);
+
         $request->validate([
             'name' => 'required|string|max:255|unique:permissions,name',
         ]);
@@ -30,11 +34,15 @@ class PermissionController extends Controller
 
     public function edit(Permission $permission)
     {
+        // $this->authorize('update', $permission);
+
         return view('permissions.edit', compact('permission'));
     }
 
     public function update(Request $request, Permission $permission)
     {
+        // $this->authorize('update', $permission);
+
         $request->validate([
             'name' => 'required|string|max:255|' . Rule::unique('permissions', 'name')->ignore($permission->id),
         ]);
@@ -46,6 +54,8 @@ class PermissionController extends Controller
 
     public function destroy(Permission $permission)
     {
+        $this->authorize('delete', $permission);
+
         $permission->delete();
 
         return to_route('permissions.index')->with('success', 'Permission deleted successfully!');

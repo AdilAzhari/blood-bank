@@ -56,3 +56,37 @@
         </div>
     </div>
 </x-app-layout>
+{{-- <x-app-layout>
+    <div class="container mx-auto py-8 px-4 md:px-8">
+        <x-alert />
+        <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
+            <h1 class="text-2xl font-bold text-gray-800 dark:text-gray-100 mb-6">{{ __('Permissions') }}</h1>
+
+            @can('create', Spatie\Permission\Models\Permission::class)
+                <a href="{{ route('permissions.create') }}" class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 mb-4 inline-block">Add Permission</a>
+            @endcan
+
+            <div class="flex flex-wrap -mx-2">
+                @foreach ($permissions as $permission)
+                    <div class="w-full sm:w-1/2 md:w-1/3 px-2 mb-4">
+                        <div class="bg-white dark:bg-gray-700 rounded shadow p-4 flex items-center justify-between">
+                            <span class="inline-flex items-center px-3 py-0.5 rounded-full text-sm font-medium bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300">{{ $permission->name }}</span>
+                            <div>
+                                @can('update', $permission)
+                                    <a href="{{ route('permissions.edit', $permission->id) }}" class="text-indigo-600 hover:text-indigo-900 mr-2">Edit</a>
+                                @endcan
+                                @can('delete', $permission)
+                                    <form class="inline" method="POST" action="{{ route('permissions.destroy', $permission->id) }}">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="text-red-600 hover:text-red-900 focus:outline-none">Delete</button>
+                                    </form>
+                                @endcan
+                            </div>
+                        </div>
+                    </div>
+                @endforeach
+            </div>
+        </div>
+    </div>
+</x-app-layout> --}}

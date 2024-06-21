@@ -16,13 +16,13 @@ class CheckPermission
      */
     public function handle(Request $request, Closure $next)
     {
-        // $route = $request->route()->getName();
+        $route = $request->route()->getName();
 
-        // $permissions = Permission::where('name', $route)->get();
+        $permissions = Permission::whereRaw("FIND_IN_SET('$route', `routes`)")->get();
 
-        // if (!$permissions) {
-        //     return response()->view('errors.403');
-        // }
+        if (!$permissions) {
+            return response()->view('errors.403');
+        }
         return $next($request);
         // return $permissions;
         // dd($route, $permissions);

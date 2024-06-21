@@ -13,6 +13,8 @@ class RoleController extends Controller
 {
     public function index()
     {
+        // $this->authorize('viewAny', Role::class);
+
         $roles = Role::with('permissions')->get();
         $permissions = Permission::all();
         return view('roles.index', compact('roles', 'permissions'));

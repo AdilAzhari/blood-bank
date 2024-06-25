@@ -49,15 +49,15 @@ class PermissionController extends Controller
 
         $permission->update($request->only('name', 'description'));
 
-        return to_route('permissions.index')->with('success', 'Permission updated successfully!');
+        return to_route('permissions.index')->with('Info', 'Permission updated successfully!');
     }
 
     public function destroy(Permission $permission)
     {
-        $this->authorize('delete', $permission);
+        // $this->authorize('delete', $permission);
 
         $permission->delete();
 
-        return to_route('permissions.index')->with('success', 'Permission deleted successfully!');
+        return to_route('permissions.index')->with('Danger', 'Permission deleted successfully!');
     }
 }

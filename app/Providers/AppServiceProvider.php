@@ -13,6 +13,7 @@ use App\Policies\PostPolicy;
 use App\Policies\RolePolicy;
 use App\Policies\SettingPolicy;
 use App\Policies\UserPolicy;
+use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\ServiceProvider;
 
@@ -122,7 +123,7 @@ class AppServiceProvider extends ServiceProvider
         Gate::define('viewAny-client', [ClientPolicy::class, 'viewAny']);
 
 
-
-
+        // Paginator::defaultView('view.front.custom-pagination');
+        Paginator::useBootstrap();
     }
 }

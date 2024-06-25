@@ -34,12 +34,12 @@ Route::prefix('v1')->middleware(['api'])->group(function () {
         Route::post('user/profile', 'profile');
     });
 
-    Route::apiResource('clients', ClientController::class);
+    // Route::apiResource('clients', ClientController::class);
     Route::controller(NotificationController::class)->group(function () {
         Route::get('/notifications', 'index');
         // Route::post('/orders', 'store');
     });
 
-    Route::get('main', [MainController::class, 'index']);
-    Route::get('cities', [MainController::class, 'cities']);
+    // Route::get('main', [MainController::class, 'index']);
+    // Route::get('cities', [MainController::class, 'cities']);
 });

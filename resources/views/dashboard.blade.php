@@ -72,7 +72,7 @@
                             <p class="mt-2 text-gray-600 dark:text-gray-400">Total: {{ $donationCount }}</p>
                         </div>
                         <div class="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg shadow-md">
-                            <a href="{{ route('show-roles') }}" class="text-lg font-semibold text-gray-800 dark:text-gray-100">
+                            <a href="{{ route('roles.show') }}" class="text-lg font-semibold text-gray-800 dark:text-gray-100">
                                 Roles And Permissions
                             </a>
                             <p class="mt-1 text-gray-600 dark:text-gray-400">Manage your settings.</p>

@@ -40,4 +40,13 @@ class DonationRequest extends Model
     {
         return $this->hasOne(Notification::class);
     }
+
+    public function scopeFilter($query, $filters)
+    {
+        return $query->when($filters['city'] ?? null, function ($query, $city) {
+            $query->where('city', $city);
+        })->when($filters['BloodType'] ?? null, function ($query, $BloodType) {
+            $query->where('BloodType', $BloodType);
+        });
+    }
 }

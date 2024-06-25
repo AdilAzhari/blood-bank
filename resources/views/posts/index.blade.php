@@ -31,7 +31,7 @@
                             <td class="px-4 py-3">{{ $counter++ }}</td>
                             <td class="px-4 py-3">
                                 <a href="{{ route('posts.show', $post) }}" class="text-blue-600 hover:underline">{{ $post->title }}</a>
-                                <img src="{{ asset('storage/$post->image') }}" alt="{{ $post->title }}" class="w-10 h-10 rounded-full">
+                                <img src="{{ asset('storage/'.$post->image) }}" alt="{{ $post->title }}" class="w-10 h-10 rounded-full">
                             </td>
                             <td class="px-4 py-3">{{ Str::limit($post->content, 50) }}</td>
                             <td class="px-4 py-3">{{ $post->category->name ?? 'N/A' }}</td>

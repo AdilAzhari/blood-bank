@@ -16,33 +16,35 @@ class RoleController extends Controller
         // $this->authorize('viewAny', Role::class);
 
         $roles = Role::with('permissions')->get();
-        $permissions = Permission::all();
-        return view('roles.index', compact('roles', 'permissions'));
+        return view('roles.index', compact('roles'));
     }
 
-    public function show()
+    public function show(Role $role)
     {
-        $roles = Role::all();
-        return view('Roles.Index', compact('roles'));
+        // $this->authorize('view', $role);
+
+        return view('roles.show', compact('role'));
     }
 
     public function create()
     {
         $permissions = Permission::all();
-        $users = User::select('name', 'id')->get();
-        return view('Roles.create', compact('permissions', 'users'));
+        return view('Roles.create', compact('permissions'));
     }
 
 
     public function store(Request $request)
     {
-        $request->validate([]);
+        $request->validate([
+            'name' => 'required|string|max:255|unique:roles',
+            'permissions' => 'required|array',
+        ]);
 
-        $role = Role::create(['name' => $request->name, 'description' => $request->description]);
-
-        foreach ($request->permission as $permission) {
-            $role->givePermissionTo($permission);
-        }
+        $role = Role::create($request->only('name', 'description'));
+        $role->syncPermissions($request->permissions);
+        // foreach ($request->permission as $permission) {
+        //     $role->givePermissionTo($permission);
+        // }
 
         return to_route('Roles.index')->with('Info', 'Role created successfully');
     }

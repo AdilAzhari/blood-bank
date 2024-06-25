@@ -19,29 +19,19 @@
                     <label for="description" class="block text-sm font-medium text-gray-700 dark:text-gray-300">{{ __('Description') }}</label>
                     <textarea name="description" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white">{{ $role->description }}</textarea>
                 </div>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div>
-                        <h2 class="text-xl font-semibold text-gray-800 dark:text-gray-100 mb-4">{{ __('Permissions') }}</h2>
-                        <div class="overflow-x-auto">
-                            <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
-                                <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-                                    <tr>
-                                        <th scope="col" class="px-4 py-3">{{ __('Name') }}</th>
-                                        <th scope="col" class="px-4 py-3">{{ __('Permission') }}</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach ($permissions as $permission)
-                                        <tr class="border-b dark:border-gray-700 odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800">
-                                            <td class="px-4 py-3">{{ $permission->name }}</td>
-                                            <td class="px-4 py-3">
-                                                <input type="checkbox" value="{{ $permission->name }}" name="permission[]" id="permission_{{ $permission->id }}" @if ($role->permissions->contains('id', $permission->id)) checked @endif class="rounded border-gray-300 text-indigo-600 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 dark:bg-gray-700 dark:border-gray-600 dark:text-gray-300 dark:focus:ring-indigo-600" />
-                                            </td>
-                                        </tr>
-                                    @endforeach
-                                </tbody>
-                            </table>
-                        </div>
+                <div class="mb-4">
+                    <h2 class="text-xl font-semibold text-gray-800 dark:text-gray-100 mb-4">{{ __('Permissions') }}</h2>
+                    <div class="mb-2">
+                        <input type="checkbox" id="check_all" class="mr-2">
+                        <label for="check_all" class="text-sm font-medium text-gray-700 dark:text-gray-300">{{ __('Check All') }}</label>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        @foreach ($permissions as $permission)
+                            <div class="flex items-center">
+                                <input type="checkbox" value="{{ $permission->name }}" name="permission[]" id="permission_{{ $permission->id }}" @if ($role->permissions->contains('id', $permission->id)) checked @endif class="rounded border-gray-300 text-indigo-600 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 dark:bg-gray-700 dark:border-gray-600 dark:text-gray-300 dark:focus:ring-indigo-600" />
+                                <label for="permission_{{ $permission->id }}" class="ml-2 text-sm font-medium text-gray-700 dark:text-gray-300">{{ $permission->name }}</label>
+                            </div>
+                        @endforeach
                     </div>
                 </div>
                 <div class="mt-6 flex justify-end">
@@ -51,3 +41,10 @@
         </div>
     </div>
 </x-app-layout>
+
+<script>
+    document.getElementById('check_all').addEventListener('click', function() {
+        let checkboxes = document.querySelectorAll('input[name="permission[]"]');
+        checkboxes.forEach(checkbox => checkbox.checked = this.checked);
+    });
+</script>

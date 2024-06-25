@@ -27,12 +27,12 @@ class ClientController extends Controller
         // $permissions = Permission::with('roles')->whereIn('name', $role)->get()->pluck('roles')->flatten()->pluck('name')->toArray();
         // dd($permissions);
         // if (in_array('viewAny-client', $permissions)) {
+            $this->authorize('viewAny', Client::class);
             $filters = $request->only(['name', 'status']);
             $clients = Client::with('governorates')->filter($filters)->latest()->paginate(10);
 
             return view('clients.index', compact('clients'));
         // }
-        // abort(404);
     }
 
     /**
@@ -98,7 +98,7 @@ class ClientController extends Controller
      */
     public function edit(client $client)
     {
-        $this->authorize('update', $client);
+        // $this->authorize('update', $client);
         $cities = City::all();
         $bloodTypes = BloodType::all();
         $governorates = Governorate::all();
@@ -110,7 +110,7 @@ class ClientController extends Controller
      */
     public function update(Request $request, client $client)
     {
-        $this->authorize('update', $client);
+        // $this->authorize('update', $client);
 
         $request->validate([
             'name' => 'required|string|max:255',
@@ -146,7 +146,7 @@ class ClientController extends Controller
      */
     public function destroy(client $client)
     {
-        $this->authorize('delete', $client);
+        // $this->authorize('delete', $client);
 
         $client->delete();
         return to_route('clients.index')->with('Danger', 'Client deleted successfully');

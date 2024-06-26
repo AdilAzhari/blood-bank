@@ -40,7 +40,8 @@
             <a class="navbar-brand" href="{{ route('home') }}">
                 <img src="{{ asset('front/imgs/logo-ltr.png') }}" class="d-inline-block align-top" alt="">
             </a>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
@@ -65,22 +66,16 @@
                     </li>
                 </ul>
                 <div class="accounts">
-                    @if(Auth::guard('client')->check())
-                        <span>Welcome, {{ Auth::guard('client')->user()->name }}</span>
-                        <form action="{{ route('logout') }}" method="post" class="logout">
+                    @if (Auth::guard('client')->check())
+                        <a href="{{ route('profile.show') }}">{{ Auth::guard('client')->user()->name }}'s Profile</a>
+                        <a href="{{ route('front.logout') }}"
+                            onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Logout</a>
+                        <form id="logout-form" action="{{ route('front.logout') }}" method="POST" style="display: none;">
                             @csrf
-                            <button type="submit">logout</button>
                         </form>
-                        {{-- <a href="{{ route('logout') }}" class="logout"
-                           onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-                           Logout
-                        </a> --}}
-                        {{-- <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-                            @csrf
-                        </form> --}}
                     @else
-                        <a href="{{ route('login') }}" class="signin">sign in</a>
-                        <a href="{{ route('register') }}" class="create">create new account</a>
+                        <a href="{{ route('front.login') }}">Sign in</a>
+                        <a href="{{ route('front.register') }}">Create new account</a>
                     @endif
                 </div>
             </div>

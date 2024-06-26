@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Front\HomeController;
+use App\Http\Controllers\Front\ProfileController;
 use Illuminate\Support\Facades\Route;
 
 Route::controller(HomeController::class)->group(function () {
@@ -14,4 +15,9 @@ Route::controller(HomeController::class)->group(function () {
 
     Route::get('/', 'index')->name('home');
     Route::get('/about', 'about')->name('about');
+});
+
+Route::controller(ProfileController::class)->group(function () {
+    Route::get('/profile', 'show')->name('profile.show');
+    Route::post('/favorite/{article}', 'toggle')->name('favorite.toggle');
 });

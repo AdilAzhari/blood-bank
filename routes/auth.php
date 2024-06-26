@@ -9,7 +9,7 @@ Route::middleware('guest')->group(function () {
 
     Route::view('login', 'front.login');
 
-    Route::controller(loginController::class)->group(function () {
+    Route::controller(loginController::class)->name('front.')->group(function () {
         Route::post('register', 'register')->name('register.store');
         Route::get('register', 'showRegistrationForm')->name('register');
         Route::post('login', 'login')->name('login');
@@ -20,11 +20,11 @@ Route::middleware('guest')->group(function () {
         Route::post('password/reset', 'reset')->name('password.update');
     });
 
-    // Volt::route('forgot-password', 'pages.auth.forgot-password')
-    //     ->name('password.request');
+    Volt::route('forgot-password', 'pages.auth.forgot-password')
+        ->name('password.request');
 
-    // Volt::route('reset-password/{token}', 'pages.auth.reset-password')
-    //     ->name('password.reset');
+    Volt::route('reset-password/{token}', 'pages.auth.reset-password')
+        ->name('password.reset');
 });
 
 Route::middleware('auth')->group(function () {

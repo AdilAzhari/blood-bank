@@ -64,7 +64,7 @@ class HomeController extends Controller
         $cities = City::all();
         $articles = Post::take(9)->get();
 
-        return view('front.home', compact('articles', 'donationRequests', 'bloodTypes', 'cities'));
+        return view('front.donationRequest', compact('articles', 'donationRequests', 'bloodTypes', 'cities'));
     }
 
 

@@ -1,77 +1,116 @@
-@extends('layouts.app')
+<x-front.master bodyClass="create">
+    <div class="form">
+        <div class="container">
+            <x-breadcrumb :items="['Home', 'Sign in']" :routes="['/', '']" />
+            <x-alert/>
+            <div class="account-form">
+                <form method="POST" action="{{ route('register.store') }}">
+                    @csrf
+                    <input type="text" class="form-control" id="name" aria-describedby="nameHelp" placeholder="Name"
+                        name="name" value="{{ old('name') }}">
+                    @error('name')
+                        <span class="invalid-feedback" role="alert">
+                            <strong>{{ $message }}</strong>
+                        </span>
+                    @enderror
 
-@section('content')
-<div class="container">
-    <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="card">
-                <div class="card-header">{{ __('Register') }}</div>
+                    <input type="email" class="form-control" id="email" aria-describedby="emailHelp"
+                        placeholder="E-mail" name="email" value="{{ old('email') }}">
+                    @error('email')
+                        <span class="invalid-feedback" role="alert">
+                            <strong>{{ $message }}</strong>
+                        </span>
+                    @enderror
 
-                <div class="card-body">
-                    <form method="POST" action="{{ route('register') }}">
-                        @csrf
+                    <input placeholder="Birth date" class="form-control" type="date" onfocus="(this.type='date')"
+                        id="d_o_b" value="{{ old('d_o_b') }}" name="d_o_b">
+                    @error('d_o_b')
+                        <span class="invalid-feedback" role="alert">
+                            <strong>{{ $message }}</strong>
+                        </span>
+                    @enderror
 
-                        <div class="row mb-3">
-                            <label for="name" class="col-md-4 col-form-label text-md-end">{{ __('Name') }}</label>
+                    <select class="form-control" name="blood_type_id">
+                        <option selected disabled>Blood Type</option>
+                        @foreach ($bloodTypes as $bloodType)
+                            <option value="{{ $bloodType->id }}"
+                                {{ old('blood_type_id') == $bloodType->id ? 'selected' : '' }}>{{ $bloodType->name }}
+                            </option>
+                        @endforeach
+                    </select>
 
-                            <div class="col-md-6">
-                                <input id="name" type="text" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ old('name') }}" required autocomplete="name" autofocus>
+                    @error('blood_type_id')
+                        <span class="invalid-feedback" role="alert">
+                            <strong>{{ $message }}</strong>
+                        </span>
+                    @enderror
 
-                                @error('name')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                @enderror
-                            </div>
-                        </div>
+                    <select class="form-control" name="governorate_id">
+                        <option selected disabled>Governorate</option>
+                        @foreach ($governorates as $governorate)
+                            <option value="{{ $governorate->id }}"
+                                {{ old('governorate_id') == $governorate->id ? 'selected' : '' }}>
+                                {{ $governorate->name ?? 'N/A' }}</option>
+                        @endforeach
+                    </select>
 
-                        <div class="row mb-3">
-                            <label for="email" class="col-md-4 col-form-label text-md-end">{{ __('Email Address') }}</label>
+                    @error('governorate_id')
+                        <span class="invalid-feedback" role="alert">
+                            <strong>{{ $message }}</strong>
+                        </span>
+                    @enderror
 
-                            <div class="col-md-6">
-                                <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email">
+                    <select class="form-control" name="city_id">
+                        <option selected disabled>City</option>
+                        @foreach ($cities as $city)
+                            <option value="{{ $city->id }}" {{ old('city_id') == $city->id ? 'selected' : '' }}>
+                                {{ $city->name ?? 'N/A' }}</option>
+                        @endforeach
+                    </select>
 
-                                @error('email')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                @enderror
-                            </div>
-                        </div>
+                    @error('city_id')
+                        <span class="invalid-feedback" role="alert">
+                            <strong>{{ $message }}</strong>
+                        </span>
+                    @enderror
 
-                        <div class="row mb-3">
-                            <label for="password" class="col-md-4 col-form-label text-md-end">{{ __('Password') }}</label>
+                    <input type="text" class="form-control" id="telephone" aria-describedby="telephoneHelp"
+                        placeholder="Telephone number" name="phone" value="{{ old('phone') }}">
+                    @error('phone')
+                        <span class="invalid-feedback" role="alert">
+                            <strong>{{ $message }}</strong>
+                        </span>
+                    @enderror
 
-                            <div class="col-md-6">
-                                <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="new-password">
+                    <input placeholder="Last date for donation" class="form-control" type="date"
+                        onfocus="(this.type='date')" id="last_donation_date" name="last_donation_date"
+                        value="{{ old('last_donation_date') }}">
+                    @error('last_donation_date')
+                        <span class="invalid-feedback" role="alert">
+                            <strong>{{ $message }}</strong>
+                        </span>
+                    @enderror
 
-                                @error('password')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                @enderror
-                            </div>
-                        </div>
+                    <input type="password" class="form-control" id="password" placeholder="Password" name="password">
+                    @error('password')
+                        <span class="invalid-feedback" role="alert">
+                            <strong>{{ $message }}</strong>
+                        </span>
+                    @enderror
 
-                        <div class="row mb-3">
-                            <label for="password-confirm" class="col-md-4 col-form-label text-md-end">{{ __('Confirm Password') }}</label>
+                    <input type="password" class="form-control" id="password_confirmation"
+                        placeholder="Confirm Password" name="password_confirmation">
+                    @error('password_confirmation')
+                        <span class="invalid-feedback" role="alert">
+                            <strong>{{ $message }}</strong>
+                        </span>
+                    @enderror
 
-                            <div class="col-md-6">
-                                <input id="password-confirm" type="password" class="form-control" name="password_confirmation" required autocomplete="new-password">
-                            </div>
-                        </div>
-
-                        <div class="row mb-0">
-                            <div class="col-md-6 offset-md-4">
-                                <button type="submit" class="btn btn-primary">
-                                    {{ __('Register') }}
-                                </button>
-                            </div>
-                        </div>
-                    </form>
-                </div>
+                    <div class="create-btn">
+                        <input type="submit" value="Create">
+                    </div>
+                </form>
             </div>
         </div>
     </div>
-</div>
-@endsection
+</x-front.master>

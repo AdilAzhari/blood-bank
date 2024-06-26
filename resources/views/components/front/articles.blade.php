@@ -12,7 +12,7 @@
                         <div class="card">
                             <div class="photo">
                                 <img src="{{ asset('front/imgs/p2.jpg') }}" class="card-img-top" alt="...">
-                                <a href="article-details-ltr.html" class="click">more</a>
+                                <a href="{{ route('article-details',$article) }}" class="click">more</a>
                             </div>
                             <a href="#" class="favourite">
                                 <i class="far fa-heart"></i>

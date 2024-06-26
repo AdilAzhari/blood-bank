@@ -9,6 +9,9 @@ Route::controller(HomeController::class)->group(function () {
     Route::get('/donation-request', 'donationRequest')->name('donation-request');
     Route::get('/donation-request-details/{donationRequest}', 'insideRequest')->name('inside.request');
     Route::get('/article', 'article')->name('articles');
+    Route::get('/article/{post}', 'showArticle')->name('article-details');
+    Route::post('/favorite/{post}','toggle')->name('favorite.toggle');
+
     Route::get('/', 'index')->name('home');
     Route::get('/about', 'about')->name('about');
 });

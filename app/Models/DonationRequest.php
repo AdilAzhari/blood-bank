@@ -43,10 +43,10 @@ class DonationRequest extends Model
 
     public function scopeFilter($query, $filters)
     {
-        return $query->when($filters['city'] ?? null, function ($query, $city) {
-            $query->where('city', $city);
-        })->when($filters['BloodType'] ?? null, function ($query, $BloodType) {
-            $query->where('BloodType', $BloodType);
+        return $query->when($filters['city_id'] ?? null, function ($query, $city_id) {
+            $query->where('city', $city_id);
+        })->when($filters['blood_type_id'] ?? null, function ($query, $blood_type_id) {
+            $query->where('BloodType', $blood_type_id);
         });
     }
 }

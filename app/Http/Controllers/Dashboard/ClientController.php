@@ -21,18 +21,11 @@ class ClientController extends Controller
     public function index(request $request)
     {
 
-        // $user = User::with('roles')->where('id', auth()->id())->first();
-        // $role = $user->roles()->get()->pluck('name')->flatten()->toArray();
-        // $roles = role::with('users')->get();
-        // $permissions = Permission::with('roles')->whereIn('name', $role)->get()->pluck('roles')->flatten()->pluck('name')->toArray();
-        // dd($permissions);
-        // if (in_array('viewAny-client', $permissions)) {
-            $this->authorize('viewAny', Client::class);
-            $filters = $request->only(['name', 'status']);
-            $clients = Client::with('governorates')->filter($filters)->latest()->paginate(10);
+        // $this->authorize('viewAny', Client::class);
+        $filters = $request->only(['name', 'status']);
+        $clients = Client::with('governorates')->filter($filters)->latest()->paginate(10);
 
-            return view('clients.index', compact('clients'));
-        // }
+        return view('clients.index', compact('clients'));
     }
 
     /**

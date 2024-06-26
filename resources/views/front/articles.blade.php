@@ -8,7 +8,7 @@
             </div>
             <div class="article-title col-12">
                 <div class="h-text col-6">
-                    <h4>{{ $article->title }}</h4>
+                    <h4>{{ $Article->title }}</h4>
                 </div>
                 <div class="icon col-6">
                     <button type="button"><i class="far fa-heart"></i></button>
@@ -18,7 +18,7 @@
             <!--text-->
             <div class="text">
                 <p>
-                    {{ $article->content }}
+                    {{ $Article->content }}
                 </p>
             </div>
 
@@ -34,40 +34,44 @@
                         <!-- Set up your HTML -->
                         <div class="owl-carousel articles-carousel">
                             @foreach ($articles as $article)
-                                <div class="card">
+                                {{-- <div class="card">
                                     <div class="photo">
                                         <img src="{{ asset('front/imgs/p2.jpg') }}" class="card-img-top" alt="...">
-                                        <a href="{{ route('inside.article', $article) }}" class="click">more</a>
+                                        <a href="{{ route('article-details', $article) }}" class="click">more</a>
                                     </div>
                                     <a href="#" class="favourite">
                                         <i class="far fa-heart"></i>
                                     </a>
 
                                     <div class="card-body">
-                                        <h5 class="card-title">{{ $article->title }}</h5>
+                                        <h5 class="card-title">{{ $article->title ?? 'N/A' }}</h5>
                                         <p class="card-text">
-                                            {{ $article->content }}
+                                             {{ $article->content }}
                                         </p>
                                     </div>
+                                </div> --}}
+                                <div class="card">
+                                    <div class="photo">
+                                        <img src="{{ asset('front/imgs/p2.jpg') }}" class="card-img-top" alt="...">
+                                        <a href="{{ route('article-details', $article) }}" class="click">more</a>
+                                    </div>
+                                    <form method="POST" action="{{ route('favorite.toggle', $article) }}" class="favourite-form">
+                                        @csrf
+                                        <button type="submit" class="favourite">
+                                            @if(Auth::guard('client')->check() && Auth::guard('client')->user()->favorites->contains($article->id))
+                                                <i class="fas fa-heart"></i>
+                                            @else
+                                                <i class="far fa-heart"></i>
+                                            @endif
+                                        </button>
+                                    </form>
+                                    <div class="card-body">
+                                        <h5 class="card-title">{{ $article->title }}</h5>
+                                        <p class="card-text">{{ Str::limit($article->content, 50) }}</p>
+                                    </div>
                                 </div>
-                            @endforeach
-                            {{-- <div class="card">
-                                <div class="photo">
-                                    <img src="imgs/p2.jpg" class="card-img-top" alt="...">
-                                    <a href="article-details.html" class="click">more</a>
-                                </div>
-                                <a href="#" class="favourite">
-                                    <i class="far fa-heart"></i>
-                                </a>
 
-                                <div class="card-body">
-                                    <h5 class="card-title">Method of disease prevention</h5>
-                                    <p class="card-text">
-                                        This text is an example of text that can be replaced in the same space. This
-                                        text was generated.
-                                    </p>
-                                </div>
-                            </div> --}}
+                            @endforeach
 
                         </div>
                     </div>

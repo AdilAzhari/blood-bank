@@ -16,7 +16,7 @@ use App\Http\Controllers\Dashboard\UserController;
 use App\Http\Controllers\Front\HomeController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/',[HomeController::class,'index'])->name('home');
+Route::get('/', [HomeController::class, 'index'])->name('home');
 
 Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
@@ -27,7 +27,8 @@ Route::view('profile', 'profile')
 require __DIR__ . '/auth.php';
 require __DIR__ . '/front.php';
 
-Route::middleware(['auth','check-permission'])->group(function () {
+Route::middleware([ 'auth','check-permission'])->group(function () {
+
     Route::Resource('posts', PostController::class);
     Route::Resource('cities', CityController::class);
     Route::Resource('blood_types', BloodTypeController::class);
@@ -43,4 +44,3 @@ Route::middleware(['auth','check-permission'])->group(function () {
     Route::resource('roles', RoleController::class);
     Route::resource('users', UserController::class);
 });
-

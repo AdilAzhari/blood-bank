@@ -46,11 +46,11 @@
                             <p class="mt-2 text-gray-600 dark:text-gray-400">Total: {{ $contactCount }}</p>
                         </div>
                         <div class="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg shadow-md">
-                            <a href="{{ route('donations.index') }}" class="text-lg font-semibold text-gray-800 dark:text-gray-100">
-                                Donations
+                            <a href="{{ route('users.index') }}" class="text-lg font-semibold text-gray-800 dark:text-gray-100">
+                                Users
                             </a>
-                            <p class="mt-1 text-gray-600 dark:text-gray-400">Manage your donations.</p>
-                            <p class="mt-2 text-gray-600 dark:text-gray-400">Total: {{ $donationCount }}</p>
+                            <p class="mt-1 text-gray-600 dark:text-gray-400">Manage your Users.</p>
+                            <p class="mt-2 text-gray-600 dark:text-gray-400">Total: {{ $usersCount }}</p>
                         </div>
                         <div class="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg shadow-md">
                             <a href="{{ route('blood_types.index') }}" class="text-lg font-semibold text-gray-800 dark:text-gray-100">
@@ -72,7 +72,7 @@
                             <p class="mt-2 text-gray-600 dark:text-gray-400">Total: {{ $donationCount }}</p>
                         </div>
                         <div class="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg shadow-md">
-                            <a href="{{ route('roles.show') }}" class="text-lg font-semibold text-gray-800 dark:text-gray-100">
+                            <a href="{{ route('roles.index') }}" class="text-lg font-semibold text-gray-800 dark:text-gray-100">
                                 Roles And Permissions
                             </a>
                             <p class="mt-1 text-gray-600 dark:text-gray-400">Manage your settings.</p>
@@ -84,7 +84,6 @@
                                 Settings
                             </a>
                             <p class="mt-1 text-gray-600 dark:text-gray-400">Manage your settings.</p>
-                            <p class="mt-2 text-gray-600 dark:text-gray-400">Total: {{ $settingsCount }}</p>
                         </div>
                     </div>
                 </div>

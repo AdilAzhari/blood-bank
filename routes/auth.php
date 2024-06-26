@@ -6,18 +6,25 @@ use Illuminate\Support\Facades\Route;
 use Livewire\Volt\Volt;
 
 Route::middleware('guest')->group(function () {
-    Volt::route('register', 'pages.auth.register')
-        ->name('register');
 
-    Route::view('login', 'auth.login');
-    // ('login', 'pages.auth.login')        ->name('login');
-    Route::post('login', [LoginController::class, 'login'])->name('login');
+    Route::view('login', 'front.login');
 
-    Volt::route('forgot-password', 'pages.auth.forgot-password')
-        ->name('password.request');
+    Route::controller(loginController::class)->group(function () {
+        Route::post('register', 'register')->name('register.store');
+        Route::get('register', 'showRegistrationForm')->name('register');
+        Route::post('login', 'login')->name('login');
+        Route::post('logout', 'authLogout')->name('logout');
+        Route::get('password/reset', 'showLinkRequestForm')->name('password.request');
+        Route::post('password/email', 'sendResetLinkEmail')->name('password.email');
+        Route::get('password/reset/{token}', 'showResetForm')->name('password.reset');
+        Route::post('password/reset', 'reset')->name('password.update');
+    });
 
-    Volt::route('reset-password/{token}', 'pages.auth.reset-password')
-        ->name('password.reset');
+    // Volt::route('forgot-password', 'pages.auth.forgot-password')
+    //     ->name('password.request');
+
+    // Volt::route('reset-password/{token}', 'pages.auth.reset-password')
+    //     ->name('password.reset');
 });
 
 Route::middleware('auth')->group(function () {

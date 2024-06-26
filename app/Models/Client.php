@@ -67,4 +67,8 @@ class Client extends Authenticatable
             $query->where('status', $status);
         });
     }
+    public function favorites()
+    {
+        return $this->belongsToMany(Post::class, 'favorites');
+    }
 }

@@ -22,4 +22,8 @@ class Post extends Model
     {
         return $this->morphTo(Client::class, 'clientable');
     }
+    public function favoritedBy()
+    {
+        return $this->belongsToMany(Client::class, 'favorites');
+    }
 }

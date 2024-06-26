@@ -37,7 +37,7 @@
 <div class="nav-bar">
     <nav class="navbar navbar-expand-lg navbar-light">
         <div class="container">
-            <a class="navbar-brand" href="#">
+            <a class="navbar-brand" href="{{ route('home') }}">
                 <img src="{{ asset('front/imgs/logo-ltr.png') }}" class="d-inline-block align-top" alt="">
             </a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -46,10 +46,10 @@
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav">
                     <li class="nav-item active">
-                        <a class="nav-link" href="index-ltr.html">home <span class="sr-only">(current)</span></a>
+                        <a class="nav-link" href="{{ route('home') }}">home <span class="sr-only">(current)</span></a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">about us</a>
+                        <a class="nav-link" href="{{ route('about') }}">about us</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="{{ route('articles') }}">articles</a>
@@ -65,8 +65,23 @@
                     </li>
                 </ul>
                 <div class="accounts">
-                    <a href="signin-account-rtl.html" class="signin">sign in</a>
-                    <a href="create-account-ltr.html" class="create">create new account</a>
+                    @if(Auth::guard('client')->check())
+                        <span>Welcome, {{ Auth::guard('client')->user()->name }}</span>
+                        <form action="{{ route('logout') }}" method="post" class="logout">
+                            @csrf
+                            <button type="submit">logout</button>
+                        </form>
+                        {{-- <a href="{{ route('logout') }}" class="logout"
+                           onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                           Logout
+                        </a> --}}
+                        {{-- <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                            @csrf
+                        </form> --}}
+                    @else
+                        <a href="{{ route('login') }}" class="signin">sign in</a>
+                        <a href="{{ route('register') }}" class="create">create new account</a>
+                    @endif
                 </div>
             </div>
         </div>

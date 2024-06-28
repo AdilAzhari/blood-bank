@@ -23,7 +23,7 @@ Route::get('/user', function (Request $request) {
 
 // 'always-accept-json'
 Route::post('register', [authController::class, 'register']);
-Route::prefix('v1')->middleware(['api'])->group(function () {
+Route::prefix('v1/')->middleware(['api'])->group(function () {
 
     Route::controller(authController::class)->group(function () {
         Route::post('login', 'login');
@@ -40,6 +40,4 @@ Route::prefix('v1')->middleware(['api'])->group(function () {
         // Route::post('/orders', 'store');
     });
 
-    // Route::get('main', [MainController::class, 'index']);
-    // Route::get('cities', [MainController::class, 'cities']);
 });

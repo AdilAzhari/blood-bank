@@ -61,7 +61,7 @@
                 <div class="col-md-6">
                     <h3>Favorite Articles</h3>
                     <div class="favorites row">
-                        @foreach ($favorites as $favorite)
+                        @forelse ($favorites as $favorite)
                             <div class="col-md-6 mb-4">
                                 <div class="card h-100 shadow-sm">
                                     <div class="card-body">
@@ -83,7 +83,14 @@
                                     </div>
                                 </div>
                             </div>
-                        @endforeach
+
+                        @empty
+                            <div class="col-12">
+                                <div class="alert alert-info">No favorite articles yet.</div>
+                            </div>
+
+                        @endforelse
+
                     </div>
                 </div>
             </div>

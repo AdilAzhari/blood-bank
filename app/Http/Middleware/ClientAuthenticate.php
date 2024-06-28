@@ -17,7 +17,7 @@ class ClientAuthenticate
     public function handle(Request $request, Closure $next,$guard = 'client'): Response
     {
         if (!Auth::guard($guard)->check()) {
-            return redirect()->route('front.login');
+            return redirect()->route('Sign-in');
         }
         return $next($request);
     }

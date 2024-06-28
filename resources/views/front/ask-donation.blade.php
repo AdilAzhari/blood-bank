@@ -1,6 +1,12 @@
 <x-front.master bodyClass="ask-donation">
     <div class="container mt-5">
         <h2>Ask for Donation</h2>
+        <x-alert/>
+        @session('success')
+            <div class="alert alert-success">
+                {{ session('success') }}
+            </div>
+        @endsession
         <form method="POST" action="{{ route('donation-request.store') }}">
             @csrf
             <div class="form-group">
@@ -107,6 +113,20 @@
                     @endforeach
                 </select>
                 @error('city_id')
+                    <span class="invalid-feedback" role="alert">
+                        <strong>{{ $message }}</strong>
+                    </span>
+                @enderror
+            </div>
+            <div class="form-group">
+                <label for="client_id">Governorate</label>
+                <select class="form-control @error('governorate_id') is-invalid @enderror" id="governorate_id" name="governorate_id" required>
+                    <option selected disabled>Choose governorate</option>
+                    @foreach ($governorates as $governorate)
+                        <option value="{{ $governorate->id }}" {{ old('governorate_id') == $governorate->id ? 'selected' : '' }}>{{ $governorate->name }}</option>
+                    @endforeach
+                </select>
+                @error('client_id')
                     <span class="invalid-feedback" role="alert">
                         <strong>{{ $message }}</strong>
                     </span>

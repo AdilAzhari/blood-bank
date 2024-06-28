@@ -55,7 +55,7 @@
             @else
                 <div class="col-md-4">
                     <div class="accounts">
-                        <a href="{{ route('front.login') }}" class="signin">Sign in</a>
+                        <a href="{{ route('front.Sign-in.login') }}" class="signin">Sign in</a>
                         <a href="{{ route('front.register') }}" class="create-new">create new account</a>
                     </div>
                 </div>
@@ -96,7 +96,7 @@
                         <a class="nav-link" href="{{ route('contact-us') }}">contact us</a>
                     </li>
                 </ul>
-                @if (Route::currentRouteName() == 'donation-request')
+                @if (Route::currentRouteName() == 'donation-request' && Auth::guard('client')->check())
                     <a href="{{ route('donation-request.create') }}" class="donate">
                         <img src="{{ asset('front/imgs/transfusion.svg') }}">
                         <p>Ask donation</p>

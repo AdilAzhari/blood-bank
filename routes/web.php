@@ -16,16 +16,14 @@ use App\Http\Controllers\Dashboard\UserController;
 use App\Http\Controllers\Front\HomeController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', [HomeController::class, 'index'])->name('home');
-
 Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
 Route::view('profile', 'profile')
     ->middleware(['auth'])
-    ->name('profile');
+    ->name('dashboard.Profile');
 
-require __DIR__ . '/auth.php';
-require __DIR__ . '/front.php';
+require __DIR__.'/auth.php';
+require __DIR__.'/front.php';
 
 Route::middleware([ 'auth','check-permission'])->group(function () {
 

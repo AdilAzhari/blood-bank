@@ -11,9 +11,14 @@ class ProfileController extends Controller
     public function show()
     {
         $user = Auth::guard('client')->user();
+
+        if(!$user) {
+            return redirect()->route('front.login');
+        }
+
         $favorites = $user->favorites()->paginate(10); // Adjust pagination as needed
 
-        return view('front.Profile', compact('favorites'));
+        return view('front.Profile', compact('user', 'favorites'));
     }
 
     public function update(Request $request)

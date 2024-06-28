@@ -7,6 +7,7 @@ use App\Models\BloodType;
 use App\Models\City;
 use App\Models\Client;
 use App\Models\DonationRequest;
+use App\Models\Governorate;
 use App\Notifications\DonationRequestNotification;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -18,7 +19,8 @@ class DonationRequestController extends Controller
     {
         $bloodTypes = BloodType::all();
         $cities = City::all();
-        return view('front.ask-donation', compact('bloodTypes', 'cities'));
+        $governorates = Governorate::all();
+        return view('front.ask-donation', compact('bloodTypes', 'cities', 'governorates'));
     }
 
     public function store(Request $request)

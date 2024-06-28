@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Front;
 use App\Http\Controllers\Controller;
 use App\Models\BloodType;
 use App\Models\City;
-use App\Models\Client;
 use App\Models\DonationRequest;
 use App\Models\Post;
 use App\Models\Setting;
@@ -21,8 +20,9 @@ class HomeController extends Controller
         $bloodTypes = BloodType::all();
         $cities = City::all();
         $articles = Post::take(9)->get();
-        $donationRequests = DonationRequest::take(8)->get();
-        return view('front.home', compact('articles', 'donationRequests', 'bloodTypes', 'cities'));
+        $donationRequests = DonationRequest::take(8)->latest()->get();
+        $Setting = Setting::first();
+        return view('front.home', compact('articles', 'donationRequests', 'bloodTypes', 'cities', 'Setting'));
     }
 
     public function about()
@@ -90,17 +90,5 @@ class HomeController extends Controller
     {
         $donationRequest = DonationRequest::find($id);
         return view('front.donation-request-details', compact('donationRequest'));
-    }
-
-    public function toggle(Post $post)
-    {
-        $user = Auth::guard('client')->user();
-        if ($user->favorites()->where('post_id', $post->id)->exists()) {
-            $user->favorites()->detach($post->id);
-        } else {
-            $user->favorites()->attach($post->id);
-        }
-
-        return redirect()->back();
     }
 }

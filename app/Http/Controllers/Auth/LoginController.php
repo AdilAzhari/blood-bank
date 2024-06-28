@@ -28,26 +28,6 @@ class LoginController extends Controller
     |
     */
 
-    // use AuthenticatesUsers;
-
-    /**
-     * Where to redirect users after login.
-     *
-     * @var string
-     */
-    // protected $redirectTo = '/dashboard';
-
-    /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
-    public function __construct()
-    {
-        $this->middleware('guest:client')->except('logout');
-        $this->middleware('auth:client')->only('logout');
-    }
-
     public function login(LoginRequest $request)
     {
         $credentials = $request->only('phone', 'password');
@@ -58,7 +38,7 @@ class LoginController extends Controller
         }
 
         return redirect()->back()->withErrors([
-            'phone' => __('auth.failed'),
+            'phone' => 'The provided credentials do not match our records.',
         ])->withInput($request->only('phone', 'remember'));
     }
     public function showRegistrationForm()
@@ -66,17 +46,17 @@ class LoginController extends Controller
         $governorates = Governorate::all();
         $cities = City::all();
         $bloodTypes = BloodType::all();
-        return view('auth.register', compact('governorates', 'cities', 'bloodTypes'));
+        return view('front.register', compact('governorates', 'cities', 'bloodTypes'));
     }
 
     public function register(Request $request)
     {
         $request->validate([
             'name' => 'required|string|max:255',
-            'email' => 'required|email|max:255|unique:clients',
+            'email' => 'required|email|max:255|unique:clients,email',
             'd_o_b' => 'required|date',
-            'phone' => 'required|string|max:255',
-            'last_donation_date' => 'required|date',
+            'phone' => 'required|string|min:10|max:14|unique:clients,phone',
+            'last_donation_date' => 'required|date|before:today',
             'city_id' => 'required|exists:cities,id',
             'blood_type_id' => 'required|exists:blood_types,id',
             'password' => 'required|string|min:8|confirmed',
@@ -106,14 +86,14 @@ class LoginController extends Controller
         return to_route('home');
     }
 
-    // public function authLogout(Request $request)
-    // {
-        // Auth::guard('client')->logout();
+    public function authLogout(Request $request)
+    {
+        Auth::guard('client')->logout();
 
-        // $request->session()->invalidate();
+        $request->session()->invalidate();
 
-        // $request->session()->regenerateToken();
-        // dd('here');
-        // return redirect()->route('home');
-    // }
+        $request->session()->regenerateToken();
+
+        return redirect()->route('home');
+    }
 }

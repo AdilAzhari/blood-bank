@@ -7,13 +7,15 @@ use Livewire\Volt\Volt;
 
 Route::middleware('guest')->group(function () {
 
-    Route::view('login', 'front.login');
+    Route::view('login', 'front.login')->name('front.login.page');
 
     Route::controller(loginController::class)->name('front.')->group(function () {
         Route::post('register', 'register')->name('register.store');
         Route::get('register', 'showRegistrationForm')->name('register');
+
         Route::post('login', 'login')->name('login');
-        Route::post('logout', 'authLogout')->name('logout');
+        Route::post('front/logout', 'authLogout')->name('logout');
+
         Route::get('password/reset', 'showLinkRequestForm')->name('password.request');
         Route::post('password/email', 'sendResetLinkEmail')->name('password.email');
         Route::get('password/reset/{token}', 'showResetForm')->name('password.reset');

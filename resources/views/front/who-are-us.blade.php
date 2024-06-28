@@ -3,12 +3,7 @@
     <div class="about-us">
         <div class="container">
             <div class="path">
-                <nav aria-label="breadcrumb">
-                    <ol class="breadcrumb">
-                        <li class="breadcrumb-item"><a href="index-ltr.html">Home</a></li>
-                        <li class="breadcrumb-item active" aria-current="page">Who are us</li>
-                    </ol>
-                </nav>
+                <x-breadcrumb :items="['Home', 'Who are us']" :routes="['/', '/who-are-us']" />
             </div>
             <div class="details">
                 <div class="logo">

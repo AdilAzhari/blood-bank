@@ -3,8 +3,7 @@
     <!--ask-donation-->
     <div class="ask-donation">
         <div class="container">
-            <x-breadcrumb :items="['Home', 'Donation requset', 'Donation requset: ' . $donationRequest->patient_name]" :routes="['/', 'donation-request', '']" />
-
+            <x-breadcrumb :items="['Home', 'Donation Requset', 'Donation Requset: ' . $donationRequest->patient_name]" :routes="['/', '/donation-request', '/donation-request']" />
             <div class="details">
                 <div class="person">
                     <div class="row">

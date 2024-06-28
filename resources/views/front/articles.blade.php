@@ -34,31 +34,17 @@
                         <!-- Set up your HTML -->
                         <div class="owl-carousel articles-carousel">
                             @foreach ($articles as $article)
-                                {{-- <div class="card">
-                                    <div class="photo">
-                                        <img src="{{ asset('front/imgs/p2.jpg') }}" class="card-img-top" alt="...">
-                                        <a href="{{ route('article-details', $article) }}" class="click">more</a>
-                                    </div>
-                                    <a href="#" class="favourite">
-                                        <i class="far fa-heart"></i>
-                                    </a>
-
-                                    <div class="card-body">
-                                        <h5 class="card-title">{{ $article->title ?? 'N/A' }}</h5>
-                                        <p class="card-text">
-                                             {{ $article->content }}
-                                        </p>
-                                    </div>
-                                </div> --}}
                                 <div class="card">
                                     <div class="photo">
                                         <img src="{{ asset('front/imgs/p2.jpg') }}" class="card-img-top" alt="...">
                                         <a href="{{ route('article-details', $article) }}" class="click">more</a>
                                     </div>
-                                    <form method="POST" action="{{ route('favorite.toggle', $article) }}" class="favourite-form">
+                                    <form method="POST" action="{{ route('favorite.toggle', $article) }}"
+                                        class="favourite-form">
                                         @csrf
                                         <button type="submit" class="favourite">
-                                            @if(Auth::guard('client')->check() && Auth::guard('client')->user()->favorites->contains($article->id))
+                                            @if (Auth::guard('client')->check() &&
+                                                    Auth::guard('client')->user()->favorites->contains($article->id))
                                                 <i class="fas fa-heart"></i>
                                             @else
                                                 <i class="far fa-heart"></i>
@@ -70,7 +56,6 @@
                                         <p class="card-text">{{ Str::limit($article->content, 50) }}</p>
                                     </div>
                                 </div>
-
                             @endforeach
 
                         </div>
@@ -79,4 +64,5 @@
             </div>
         </div>
     </div>
+    <!--inside-article-->
 </x-front.master>

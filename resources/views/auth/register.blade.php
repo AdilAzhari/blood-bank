@@ -2,7 +2,7 @@
     <div class="form">
         <div class="container">
             <x-breadcrumb :items="['Home', 'Sign in']" :routes="['/', '']" />
-            <x-alert/>
+            {{-- <x-alert/> --}}
             <div class="account-form">
                 <form method="POST" action="{{ route('register.store') }}">
                     @csrf

@@ -51,7 +51,7 @@
                             <li><span>Hospital:</span> {{ $request->hospital_name }}</li>
                             <li><span>City:</span> {{ $request->city->name }}</li>
                         </ul>
-                        <a href="inside-request-ltr.html">Details</a>
+                        <a href="{{ route('inside.request',$request) }}">Details</a>
                     </div>
                 @endforeach
             </div>

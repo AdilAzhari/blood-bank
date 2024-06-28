@@ -1,5 +1,4 @@
 <x-front.master bodyClass="contact-us">
-    {{-- <x-front.contact /> --}}
 
     <div class="contact-now">
 

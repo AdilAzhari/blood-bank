@@ -22,6 +22,7 @@ return Application::configure(basePath: dirname(__DIR__))
             'role_or_permission' => \Spatie\Permission\Middleware\RoleOrPermissionMiddleware::class,
             'always-accept-json' => AlwaysAcceptJson::class,
             'check-permission' => \App\Http\Middleware\CheckPermission::class,
+            'auth:client' => \App\Http\Middleware\ClientAuthenticate::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Requests\StoreGovernorateRequest;
+use App\Http\Requests\UpdateGovernorateRequest;
 use App\Http\Resources\GovernorateResource;
 use App\Models\Governorate;
 use App\Traits\ApiResponser;
@@ -17,22 +18,15 @@ class GovernorateController
     public function index()
     {
         $governorates = Governorate::with('cities')->get();
-        // return view('governorates.index', compact('governorates'));
+        return $this->successResponse(GovernorateResource::collection($governorates));
     }
     /**
      * Store a newly created resource in storage.
      */
     public function store(StoreGovernorateRequest $request)
     {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
+        $governorate = Governorate::create($request->only('name'));
+        return $this->successResponse(new GovernorateResource($governorate));
     }
 
     /**
@@ -40,7 +34,15 @@ class GovernorateController
      */
     public function update(Request $request, string $id)
     {
-        //
+        $request->validate([
+            'name' => 'string|max:255',
+        ]);
+        $governorate = Governorate::findOrFail($id);
+        if ($request->name == $governorate->name) {
+            return $this->errorResponse('The name is the same', 422);
+        }
+        $governorate->update($request->only('name'));
+        return $this->successResponse(new GovernorateResource($governorate));
     }
 
     /**
@@ -48,6 +50,14 @@ class GovernorateController
      */
     public function destroy(string $id)
     {
-        //
+        $governorate = Governorate::findOrFail($id);
+
+        if ($governorate->cities()->exists()) {
+            return $this->errorResponse('This governorate has cities', 422);
+        }
+
+        $governorate->delete();
+
+        return $this->successResponse(new GovernorateResource($governorate));
     }
 }

@@ -4,12 +4,10 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Requests\CheckAuthLoginPhoneRequest;
 use App\Http\Requests\ClientPasswordResetRequest;
-use App\Http\Requests\DonationRequestRequest;
 use App\Http\Requests\StoreAuthLoginRequest;
 use Illuminate\Support\Facades\Notification;
 use App\Http\Resources\ClientResource;
 use App\Http\Resources\DonationRequestResource;
-use App\Mail\ResetPassword;
 use App\Models\BloodType;
 use App\Models\City;
 use App\Models\Client;
@@ -20,8 +18,6 @@ use App\Notifications\SendResetPasswordNotification;
 use App\Traits\ApiResponser;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
 
 class AuthController
@@ -32,6 +28,7 @@ class AuthController
         $request->merge([
             'blood_type_id' => BloodType::where('name', $request->blood_type)->first()->id,
         ]);
+
 
         $validate = validator()->make($request->all(), [
             'name' => 'required|string|max:255',
@@ -62,23 +59,40 @@ class AuthController
             'city_id',
             'blood_type_id'
         ));
-        Auth::guard('api')->user();
-        $client->api_token = Str::random(60);
+
+        if (!$client) {
+            return $this->errorResponse('Failed to create client', 401);
+        }
+
+        Auth::guard('client')->login($client);
+
+            // $api_token = $client->createToken('api_token')->plainTextToken;
+        // $api_token = $client->createToken('token')->plainTextToken;
+        // $client->api_token = $api_token;
+        $client->api_token = str::random(60);
+
+        $client->save();
+
         return $this->successResponse([
             'api_token' => $client->api_token,
             'client' => new ClientResource($client),
         ], 'Client Created Successfully', 201);
     }
 
-    public function login(StoreAuthLoginRequest $request)
+    public function login(Request $request)
     {
-        dd(Auth::client());
-        $client = Client::where([
-            'phone' => $request->phone,
-            'api_token' => $request->api_token,
-        ])->first();
+        // dd(Auth::guard('client')->user());
+        $request->validate([
+            'phone' => 'required|string',
+            'password' => 'required|string',
+        ]);
+
+        $client = Client::where('phone', $request->phone)->first();
 
         if ($client && password_verify($request->password, $client->password)) {
+            // $token = $client->createToken('authToken')->plainTextToken;
+            // $client->api_token = $token;
+            $client->api_token = str::random(60);
             return $this->successResponse([
                 'api_token' => $client->api_token,
                 'client' => new ClientResource($client),
@@ -91,15 +105,14 @@ class AuthController
     public function sendResetCode(CheckAuthLoginPhoneRequest $request)
     {
 
-        $user = client::where('phone', $request->phone)->first();
-
-        if ($user) {
+        $client = client::where('phone', $request->phone)->first();
+        if ($client->exists()) {
             $resetPassCode = str::random(6);
-            $update = $user->update(['pint_code' => $resetPassCode]);
+            $update = $client->update(['pin_code' => $resetPassCode]);
+
             if ($update) {
-                Mail::to($user)->send(new ResetPassword($resetPassCode, $user));
-                // mail($user->email, 'Reset Password Code', $resetPassCode);
-                // Notification::send($user, new SendResetPasswordNotification($resetPassCode, $user, 'Reset Password Code'));
+                Notification::send($client, new SendResetPasswordNotification($client,$resetPassCode,$request->phone));
+
                 return response()->json(['message' => 'Reset code sent successfully'], 200);
             }
             return $this->errorResponse('Failed to send reset code', 401);
@@ -109,32 +122,48 @@ class AuthController
     }
     public function profile(Request $request)
     {
-        $user = Auth::guard('api')->user();
+        $client = Auth::guard('sanctum')->user();
+        return new ClientResource($client);
+    }
+    public function profileUpdate(Request $request)
+    {
+        $client = Auth::guard('sanctum')->user();
+
+        $request->validate([
+            'name' => 'sometimes|string|max:255',
+            'email' => 'sometimes|string|email|max:255|unique:clients,email,' . $client->id,
+            'phone' => 'sometimes|string|max:15|unique:clients,phone,' . $client->id,
+            'password' => 'sometimes|string|min:8|confirmed',
+            'd_o_b' => 'sometimes|date|before:today',
+            'last_donation_date' => 'sometimes|date|before:today',
+            'city_id' => 'sometimes|exists:cities,id',
+            'blood_type_id' => 'sometimes|exists:blood_types,id',
+            'governorate_id' => 'sometimes|exists:governorates,id',
+        ]);
 
         if ($request->has('password')) {
             $request->merge(['password' => bcrypt($request->password)]);
         }
-        if ($request->has('governorate_id')) {
-            $request->merge(['city_id' => $request->governorate_id]);
-        }
-        if ($request->has('blood_type')) {
-            $bloodType = BloodType::where('name', $request->blood_type)->first();
-            $request->merge(['blood_type_id' => $bloodType->id]);
-        }
 
-        // $client = Auth::guard('api')->user();
-        // $client->city->attach($request->city_id);
-        // dd($client);
-            // $client->update($request->all());
-        // $client->save();
+        $client->update($request->only([
+            'name',
+            'email',
+            'phone',
+            'password',
+            'd_o_b',
+            'last_donation_date',
+            'city_id',
+            'blood_type_id',
+            'governorate_id',
+        ]));
 
-        // return $this->successResponse(new ClientResource($client), 'Profile Updated Successfully');
+        return new ClientResource($client);
+
     }
 
     public function resetPassword(ClientPasswordResetRequest $request)
     {
-        $user = Client::where('pin_code', $request->pin_code)->where('pin_code', '!=', 0)->first();
-
+        $user = Client::where('pin_code', $request->pin_code)->where('pin_code', '!=', null)->first();
         return $user ? ($user->update([
             'password' => bcrypt($request->password),
             'pin_code' => null,
@@ -142,91 +171,6 @@ class AuthController
             ? $this->successResponse(new ClientResource($user), 'Password Has Been Updated Successfully')
             : $this->errorResponse('Failed to update password', 401))
             : $this->errorResponse('This Code Isn\'t Valid', 401);
-    }
-
-    public function createDonationRequest(Request $request)
-    {
-        if ($request->has('blood_type')) {
-            $bloodType = BloodType::where('name', $request->blood_type)->first();
-            if (!$bloodType) {
-                return $this->errorResponse('Invalid blood type', 422);
-            }
-            $request->merge(['blood_type_id' => $bloodType->id]);
-        }
-
-        if ($request->has('city_id')) {
-            $city = City::where('id', $request->city_id)->first();
-            if (!$city) {
-                return $this->errorResponse('Invalid city', 422);
-            }
-            $request->merge(['city_id' => $city->id]);
-        }
-        // dd($city);
-
-        $validate = validator()->make($request->all(), [
-            'patient_name' => 'required|string|max:255',
-            'patient_age' => 'required|integer|min:0',
-            'hospital_name' => 'required|string|max:255',
-            'hospital_address' => 'required|string|max:255',
-            'city_id' => 'required|exists:cities,id',
-            'blood_type_id' => 'required|exists:blood_types,id',
-            'client_id' => 'required|exists:clients,id',
-            'notes' => 'nullable|string'
-        ]);
-
-        if ($validate->fails()) {
-            return $this->errorResponse($validate->errors()->first(), 422);
-        }
-
-        $donationRequest = DonationRequest::create([
-            'patient_name' => $request->patient_name,
-            'patient_age' => $request->patient_age,
-            'hospital_name' => $request->hospital_name,
-            'hospital_address' => $request->hospital_address,
-            'city_id' => $request->city_id,
-            'blood_type_id' => $request->blood_type_id,
-            'client_id' => $request->client_id,
-            'details' => $request->details,
-            'patient_phone_number' => $request->patient_phone_number,
-            'bags_number' => $request->bags_number,
-        ]);
-
-        $clients = Client::where('city_id', $donationRequest->city_id)
-            ->where('blood_type_id', $donationRequest->blood_type_id)
-            ->pluck('name')
-            ->toArray();
-
-
-        $notification = ModelsNotification::create([
-            'title' => 'There Is A New Donation Request',
-            'content' => 'There is a new donation request in your city with blood type of ' . $donationRequest->bloodType->name
-                . ' and ' . $donationRequest->bags_number . ' bags.',
-            'donation_request_id' => $donationRequest->id,
-        ]);
-
-        // $notification->clients()->attach($clients);
-        $donationRequest->notifications()->save($notification);
-
-        $tokens = Token::whereIn('client_id', $clientIds)
-            ->where('token', '!=', null)
-            ->pluck('token')
-            ->toArray();
-
-        if (count($tokens)) {
-            $title = 'There Is A New Donation Request';
-            $body = 'There is a new donation request in your city with blood type of ' . $donationRequest->bloodType->name
-                . ' and ' . $donationRequest->bags_number . ' bags.';
-            $data = [
-                'donation_request_id' => $donationRequest->id
-            ];
-
-            $send = notifyByFirebase($title, $body, $tokens, $data);
-            info('firebase result: ' . $send);
-            info('data: ' . json_encode($data));
-        }
-        return $this->successResponse([
-            'donation_request' => new DonationRequestResource($donationRequest)
-        ], 'Donation Request Created Successfully', 201);
     }
 
     public function updateFcmToken(Request $request)
@@ -247,5 +191,11 @@ class AuthController
         );
 
         return $this->successResponse(null, 'FCM Token updated successfully', 200);
+    }
+    public function logout(Request $request)
+    {
+        Auth::guard('client')->logout();
+        // $request->user()->currentAccessToken()->delete();
+        return $this->successResponse(null, 'Logged out successfully', 200);
     }
 }

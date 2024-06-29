@@ -1,7 +1,7 @@
 <x-front.master bodyClass="ask-donation">
     <div class="container mt-5">
         <h2>Ask for Donation</h2>
-        <x-alert/>
+
         @session('success')
             <div class="alert alert-success">
                 {{ session('success') }}

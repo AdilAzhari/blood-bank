@@ -10,6 +10,15 @@ use Illuminate\Http\Request;
 
 class PostController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('permission:view-post')->only(['index', 'show']);
+        $this->middleware('permission:create-post')->only(['create', 'store']);
+        $this->middleware('permission:edit-post')->only(['edit', 'update']);
+        $this->middleware('permission:delete-post')->only('destroy');
+        $this->middleware('permission:viewAny-post')->only('index');
+
+    }
     public function index()
     {
         $posts = Post::with('category')->paginate(10);

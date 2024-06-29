@@ -32,4 +32,11 @@ trait ApiResponser
             'data' => $data
         ], $code);
     }
+    protected function destroyResponse($message = 'Deleted', $code = 200)
+    {
+        return response()->json([
+            'status' => 'success',
+            'message' => $message,
+        ], $code);
+    }
 }

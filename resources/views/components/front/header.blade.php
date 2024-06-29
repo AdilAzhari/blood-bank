@@ -22,15 +22,18 @@
                 <div class="col-md-4">
                     <div class="info" dir="ltr">
                         <div class="phone">
+
                             <i class="fas fa-phone-alt"></i>
-                            <p>{{ Auth::guard('client')->user()->phone }}</p>
+                            <p>{{ Str::limit(Auth::guard('client')->user()->name, 8) }}</p>
+
                         </div>
                         <div class="e-mail">
                             <i class="far fa-envelope"></i>
                             <p>{{ Auth::guard('client')->user()->email }}</p>
                         </div>
                         <div class="dropdown">
-                            <button class="btn btn-secondary dropdown-toggle" type="button" id="profileDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <button class="btn btn-secondary dropdown-toggle" type="button" id="profileDropdown"
+                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 Profile
                                 <i class="fas fa-chevron-down"></i>
                             </button>
@@ -42,10 +45,11 @@
                                     <i class="far fa-heart"></i> Favorites
                                 </a>
                                 <a class="dropdown-item" href="{{ route('front.logout') }}"
-                                   onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                                    onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
                                     <i class="fas fa-sign-out-alt"></i> Logout
                                 </a>
-                                <form id="logout-form" action="{{ route('front.logout') }}" method="POST" style="display: none;">
+                                <form id="logout-form" action="{{ route('front.logout') }}" method="POST"
+                                    style="display: none;">
                                     @csrf
                                 </form>
                             </div>

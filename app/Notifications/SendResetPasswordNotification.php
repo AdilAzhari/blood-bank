@@ -17,7 +17,7 @@ class SendResetPasswordNotification extends Notification
     /**
      * Create a new notification instance.
      */
-    public function __construct($user, string $resetPassCode, string $phone)
+    public function __construct($user, $resetPassCode, $phone)
     {
         $this->user = $user;
         $this->resetPassCode = $resetPassCode;

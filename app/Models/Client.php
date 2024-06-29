@@ -6,14 +6,14 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-use Illuminate\Support\Facades\Log;
+use Spatie\Permission\Traits\HasRoles;
 
 class Client extends Authenticatable
 {
-    use HasFactory, HasApiTokens, Notifiable;
+    use HasFactory, HasApiTokens, Notifiable,HasRoles;
     protected $fillable = [
         'name', 'email', 'phone', 'd_o_b', 'last_donation_date',
-        'pin_code', 'is_active', 'password', 'city_id', 'blood_type_id', 'fcm_token', 'cstatus', 'governorate_id'
+        'pin_code', 'is_active', 'password', 'city_id', 'blood_type_id', 'fcm_token', 'status', 'governorate_id'
     ];
     protected $hidden = [
         'password',

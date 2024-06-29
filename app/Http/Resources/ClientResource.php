@@ -26,7 +26,6 @@ class ClientResource extends JsonResource
             'is_active' => $this->is_active,
             'city' => CityResource::make($this->whenLoaded('city')),
             'blood_type' => BloodTypeResource::make($this->whenLoaded('blood_type')),
-
         ];
     }
 }

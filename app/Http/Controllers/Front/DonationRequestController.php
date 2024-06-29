@@ -3,16 +3,15 @@
 namespace App\Http\Controllers\Front;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\StoreDonationRequestRequest;
 use App\Models\BloodType;
 use App\Models\City;
 use App\Models\Client;
 use App\Models\DonationRequest;
 use App\Models\Governorate;
 use App\Notifications\DonationRequestNotification;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Notification as FacadesNotification;
-use Notification;
+use Illuminate\Support\Facades\Notification;
 class DonationRequestController extends Controller
 {
     public function create()
@@ -23,22 +22,8 @@ class DonationRequestController extends Controller
         return view('front.ask-donation', compact('bloodTypes', 'cities', 'governorates'));
     }
 
-    public function store(Request $request)
+    public function store(StoreDonationRequestRequest $request)
     {
-        $request->validate([
-            'patient_name' => 'required|string|max:255',
-            'patient_age' => 'required|integer',
-            'bags_number' => 'required|integer',
-            'hospital_name' => 'required|string|max:255',
-            'hospital_address' => 'required|string|max:255',
-            'patient_phone_number' => 'required|string|max:15',
-            'details' => 'required|string',
-            'latitude' => 'nullable|string|max:255',
-            'longitude' => 'nullable|string|max:255',
-            'city_id' => 'required|exists:cities,id',
-            'blood_type_id' => 'required|exists:blood_types,id',
-        ]);
-
         $donationRequest = DonationRequest::create([
             'patient_name' => $request->patient_name,
             'patient_age' => $request->patient_age,
@@ -58,7 +43,7 @@ class DonationRequestController extends Controller
                          ->where('city_id', $request->city_id)
                          ->get();
 
-        FacadesNotification::send($clients, new DonationRequestNotification($donationRequest));
+        Notification::send($clients, new DonationRequestNotification($donationRequest));
 
         return redirect()->route('donation-request.create')->with('success', 'Donation request created successfully.');
     }

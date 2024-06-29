@@ -11,9 +11,11 @@ class PostPolicy
     /**
      * Determine whether the user can view any models.
      */
-    public function viewAny(User $user): bool
+    public function viewAny(User $user)
     {
-        //
+        return $user->hasPermissionTo('view-post')
+            ? Response::allow()
+            : Response::deny('You do not have permission to view posts.');
     }
 
     /**

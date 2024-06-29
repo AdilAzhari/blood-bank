@@ -16,6 +16,8 @@ use App\Policies\UserPolicy;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\ServiceProvider;
+use Laravel\Sanctum\PersonalAccessToken;
+use Laravel\Sanctum\Sanctum;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -32,6 +34,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        // Sanctum::usePersonalAccessTokenModel(PersonalAccessToken::class);
         // posts Gate
         Gate::define('update-post', [PostPolicy::class, 'update']);
         Gate::define('delete-post', [PostPolicy::class, 'delete']);

@@ -2,65 +2,40 @@
 
 namespace App\Policies;
 
-use App\Models\Governorate;
 use App\Models\User;
-use Illuminate\Auth\Access\Response;
+use Illuminate\Auth\Access\HandlesAuthorization;
 
 class GovernoratePolicy
 {
-    /**
-     * Determine whether the user can view any models.
-     */
+    use HandlesAuthorization;
+
     public function viewAny(User $user): bool
     {
-        //
+        return $this->hasPermission($user, 'viewAny-governorate');
     }
 
-    /**
-     * Determine whether the user can view the model.
-     */
-    public function view(User $user, Governorate $governorate): bool
+    public function view(User $user): bool
     {
-        //
+        return $this->hasPermission($user, 'view-governorate');
     }
 
-    /**
-     * Determine whether the user can create models.
-     */
     public function create(User $user): bool
     {
-        //
+        return $this->hasPermission($user, 'create-governorate');
     }
 
-    /**
-     * Determine whether the user can update the model.
-     */
-    public function update(User $user, Governorate $governorate): bool
+    public function update(User $user): bool
     {
-        //
+        return $this->hasPermission($user, 'update-governorate');
     }
 
-    /**
-     * Determine whether the user can delete the model.
-     */
-    public function delete(User $user, Governorate $governorate): bool
+    public function delete(User $user): bool
     {
-        //
+        return $this->hasPermission($user, 'delete-governorate');
     }
 
-    /**
-     * Determine whether the user can restore the model.
-     */
-    public function restore(User $user, Governorate $governorate): bool
+    private function hasPermission(User $user, string $permissionName): bool
     {
-        //
-    }
-
-    /**
-     * Determine whether the user can permanently delete the model.
-     */
-    public function forceDelete(User $user, Governorate $governorate): bool
-    {
-        //
+        return $user->getPermissionsViaRoles()->contains('name', $permissionName);
     }
 }

@@ -15,6 +15,8 @@ class CityController extends Controller
      */
     public function index()
     {
+        $this->authorize('viewAny', city::class);
+
         $cities = City::with('governorate')->paginate();
         return view('admin.cities.index', compact('cities'));
     }
@@ -24,6 +26,8 @@ class CityController extends Controller
      */
     public function create()
     {
+        $this->authorize('view', city::class);
+
         $governorates = Governorate::all();
         return view('admin.cities.create', compact('governorates'));
     }
@@ -33,6 +37,8 @@ class CityController extends Controller
      */
     public function store(StoreCityRequest $request)
     {
+        $this->authorize('create', city::class);
+
         $city = City::create($request->only('name', 'governorate_id'));
         return to_route('cities.index')->with('success', 'City created successfully');
     }
@@ -42,6 +48,8 @@ class CityController extends Controller
      */
     public function show(city $city)
     {
+        $this->authorize('view', city::class);
+
         return view('admin.cities.show', compact('city'));
     }
 
@@ -50,6 +58,8 @@ class CityController extends Controller
      */
     public function edit(city $city)
     {
+        $this->authorize('create', city::class);
+
         $governorates = Governorate::all();
         return view('cities.edit', compact('city', 'governorates'));
     }
@@ -59,6 +69,8 @@ class CityController extends Controller
      */
     public function update(Request $request, city $city)
     {
+        $this->authorize('update', city::class);
+
         $request->validate([
             'name' => 'required|string|max:255|min:3',
             'governorate_id' => 'required|exists:governorates,id',
@@ -72,6 +84,8 @@ class CityController extends Controller
      */
     public function destroy(City $city)
     {
+        $this->authorize('delete', city::class);
+
         // $city->clients()->each(function ($client) {
         //     $client->delete();
         // });

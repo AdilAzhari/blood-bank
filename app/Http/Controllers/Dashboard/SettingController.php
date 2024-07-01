@@ -10,8 +10,6 @@ class SettingController extends Controller
 {
     public function index()
     {
-        $user = auth()->user()->getPermissionsViaRoles();
-        dd($user);
         $this->authorize('viewAny', Setting::class);
 
         $settings = Setting::first();

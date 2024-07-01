@@ -3,12 +3,11 @@
 namespace App\Policies;
 
 use App\Models\User;
-use App\Models\permissions;
-use Illuminate\Auth\Access\Response;
+use Illuminate\Auth\Access\HandlesAuthorization;
 
 class PermissionPolicy
 {
-    /use HandlesAuthorization;
+    use HandlesAuthorization;
 
     public function viewAny(User $user): bool
     {

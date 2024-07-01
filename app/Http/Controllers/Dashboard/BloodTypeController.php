@@ -27,6 +27,8 @@ class BloodTypeController extends Controller
      */
     public function show(BloodType $bloodType)
     {
+        $this->authorize('view', BloodType::class);
+
         return view('admin.bloodType.show', compact('bloodType'));
     }
 
@@ -35,6 +37,8 @@ class BloodTypeController extends Controller
      */
     public function edit(BloodType $bloodType)
     {
+        $this->authorize('create', BloodType::class);
+
         return view('admin.bloodType.edit', compact('bloodType'))->with('Info', 'Blood Type Updated Successfully');
     }
 
@@ -43,6 +47,8 @@ class BloodTypeController extends Controller
      */
     public function update(Request $request, BloodType $bloodType)
     {
+        $this->authorize('update', BloodType::class);
+
         $request->validate([
             'name' => 'required|string|max:255',
         ]);
@@ -55,6 +61,8 @@ class BloodTypeController extends Controller
      */
     public function destroy(BloodType $bloodType)
     {
+        $this->authorize('delete', BloodType::class);
+
         $bloodType->delete();
         return to_route('bloodType.index')->with('Danger', 'Blood Type Deleted Successfully');
     }

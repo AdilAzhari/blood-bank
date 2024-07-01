@@ -5,35 +5,38 @@ namespace App\Policies;
 use App\Models\Client;
 use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
-use Illuminate\Auth\Access\Response;
-use Spatie\Permission\Models\Role;
 
 class ClientPolicy
 {
     use HandlesAuthorization;
 
-    public function viewAny(User $user)
+    public function viewAny(User $user): bool
     {
-        return $user->can('viewAny-client');
+        return $this->hasPermission($user, 'viewAny-client');
     }
 
-    public function view(User $user, Client $client)
+    public function view(User $user): bool
     {
-        return $user->can('view-client');
+        return $this->hasPermission($user, 'view-client');
     }
 
-    public function create(User $user)
+    public function create(User $user): bool
     {
-        return $user->can('create-client');
+        return $this->hasPermission($user, 'create-client');
     }
 
-    public function update(User $user, Client $client)
+    public function update(User $user): bool
     {
-        return $user->can('update-client');
+        return $this->hasPermission($user, 'update-client');
     }
 
-    public function delete(User $user, Client $client)
+    public function delete(User $user): bool
     {
-        return $user->can('delete-client');
+        return $this->hasPermission($user, 'delete-client');
+    }
+
+    private function hasPermission(User $user, string $permissionName): bool
+    {
+        return $user->getPermissionsViaRoles()->contains('name', $permissionName);
     }
 }

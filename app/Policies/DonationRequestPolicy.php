@@ -2,65 +2,51 @@
 
 namespace App\Policies;
 
-use App\Models\Donation_request;
 use App\Models\User;
-use Illuminate\Auth\Access\Response;
+use Illuminate\Auth\Access\HandlesAuthorization;
 
 class DonationRequestPolicy
 {
-    /**
-     * Determine whether the user can view any models.
-     */
+
+    use HandlesAuthorization;
+
     public function viewAny(User $user): bool
     {
-        //
+        return $this->hasPermission($user, 'viewAny-Donation');
     }
 
-    /**
-     * Determine whether the user can view the model.
-     */
-    public function view(User $user, Donation_request $donationRequest): bool
+    public function view(User $user): bool
     {
-        //
+        return $this->hasPermission($user, 'view-Donation');
     }
 
-    /**
-     * Determine whether the user can create models.
-     */
     public function create(User $user): bool
     {
-        //
+        return $this->hasPermission($user, 'create-Donation');
     }
 
-    /**
-     * Determine whether the user can update the model.
-     */
-    public function update(User $user, Donation_request $donationRequest): bool
+    public function update(User $user): bool
     {
-        //
+        return $this->hasPermission($user, 'update-Donation');
     }
 
-    /**
-     * Determine whether the user can delete the model.
-     */
-    public function delete(User $user, Donation_request $donationRequest): bool
+    public function delete(User $user): bool
     {
-        //
+        return $this->hasPermission($user, 'delete-Donation');
     }
 
-    /**
-     * Determine whether the user can restore the model.
-     */
-    public function restore(User $user, Donation_request $donationRequest): bool
+    public function restore(User $user): bool
     {
-        //
+        return true;
     }
 
-    /**
-     * Determine whether the user can permanently delete the model.
-     */
-    public function forceDelete(User $user, Donation_request $donationRequest): bool
+    public function forceDelete(User $user): bool
     {
-        //
+        return true;
+    }
+
+    private function hasPermission(User $user, string $permissionName): bool
+    {
+        return $user->getPermissionsViaRoles()->contains('name', $permissionName);
     }
 }

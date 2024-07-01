@@ -13,8 +13,10 @@ class CategoryController extends Controller
      */
     public function index()
     {
+        $this->authorize('viewAny', category::class);
+
         $categories = Category::paginate(10);
-        return view('categories.index', compact('categories'));
+        return view('admin.categories.index', compact('categories'));
     }
 
     /**
@@ -22,7 +24,9 @@ class CategoryController extends Controller
      */
     public function create()
     {
-        return view('categories.create');
+        $this->authorize('create', category::class);
+
+        return view('admin.categories.create');
     }
 
     /**
@@ -30,6 +34,8 @@ class CategoryController extends Controller
      */
     public function store(Request $request)
     {
+        $this->authorize('create', category::class);
+
         $request->validate([
             'name' => 'required|string|max:255|min:3',
         ]);
@@ -42,8 +48,10 @@ class CategoryController extends Controller
      */
     public function show(string $id)
     {
+        $this->authorize('view', category::class);
+
         $category = Category::findOrFail($id);
-        return view('categories.show', compact('category'));
+        return view('admin.categories.show', compact('category'));
     }
 
     /**
@@ -51,8 +59,10 @@ class CategoryController extends Controller
      */
     public function edit(string $id)
     {
+        $this->authorize('update', category::class);
+
         $category = Category::findOrFail($id);
-        return view('categories.edit',compact('category'));
+        return view('admin.categories.edit',compact('category'));
     }
 
     /**
@@ -60,6 +70,8 @@ class CategoryController extends Controller
      */
     public function update(Request $request, Category $category)
     {
+        $this->authorize('update', category::class);
+
         $request->validate([
             'name' => 'required|string|max:255|min:3',
         ]);
@@ -72,6 +84,8 @@ class CategoryController extends Controller
      */
     public function destroy(Category $category)
     {
+        $this->authorize('delete', category::class);
+
         $category->delete();
         return to_route('categories.index')->with('Danger', 'Category deleted successfully');
     }

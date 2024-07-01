@@ -13,6 +13,8 @@ class DonationRequestController extends Controller
      */
     public function index()
     {
+        $this->authorize('viewAny', DonationRequest::class);
+
         $donations = DonationRequest::query();
 
         if (request()->has('search')) {
@@ -22,16 +24,21 @@ class DonationRequestController extends Controller
 
         $donations = $donations->paginate(10);
 
-        return view('donations.index', compact('donations'));
+        return view('admin.donations.index', compact('donations'));
     }
 
     public function show(DonationRequest $donation)
     {
-        return view('donations.show', compact('donation'));
+        $this->authorize('view', DonationRequest::class);
+
+        return view('admin.donations.show', compact('donation'));
     }
     public function destroy(DonationRequest $donation)
     {
+        $this->authorize('delete', DonationRequest::class);
+
         $donation->delete();
+
         return to_route('donations.index')->with('Danger', 'Donation deleted successfully.');
     }
 }

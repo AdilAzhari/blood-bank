@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Middleware\AlwaysAcceptJson;
+use App\Http\Middleware\RedirectIfUnauthenticated;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
@@ -23,6 +24,7 @@ return Application::configure(basePath: dirname(__DIR__))
             'always-accept-json' => AlwaysAcceptJson::class,
             'check-permission' => \App\Http\Middleware\CheckPermission::class,
             'auth:client' => \App\Http\Middleware\ClientAuthenticate::class,
+            'AdminAuthIfUnauthenticated' => RedirectIfUnauthenticated::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {

@@ -4,63 +4,40 @@ namespace App\Policies;
 
 use App\Models\Setting;
 use App\Models\User;
+use Illuminate\Auth\Access\HandlesAuthorization;
 use Illuminate\Auth\Access\Response;
 
 class SettingPolicy
 {
-    /**
-     * Determine whether the user can view any models.
-     */
+    use HandlesAuthorization;
+
     public function viewAny(User $user): bool
     {
-        //
+        return $this->hasPermission($user, 'viewAny-setting');
     }
 
-    /**
-     * Determine whether the user can view the model.
-     */
-    public function view(User $user, Setting $setting): bool
+    public function view(User $user): bool
     {
-        //
+        return $this->hasPermission($user, 'view-setting');
     }
 
-    /**
-     * Determine whether the user can create models.
-     */
     public function create(User $user): bool
     {
-        //
+        return $this->hasPermission($user, 'create-setting');
     }
 
-    /**
-     * Determine whether the user can update the model.
-     */
-    public function update(User $user, Setting $setting): bool
+    public function update(User $user): bool
     {
-        //
+        return $this->hasPermission($user, 'update-setting');
     }
 
-    /**
-     * Determine whether the user can delete the model.
-     */
-    public function delete(User $user, Setting $setting): bool
+    public function delete(User $user): bool
     {
-        //
+        return $this->hasPermission($user, 'delete-setting');
     }
 
-    /**
-     * Determine whether the user can restore the model.
-     */
-    public function restore(User $user, Setting $setting): bool
+    private function hasPermission(User $user, string $permissionName): bool
     {
-        //
-    }
-
-    /**
-     * Determine whether the user can permanently delete the model.
-     */
-    public function forceDelete(User $user, Setting $setting): bool
-    {
-        //
+        return $user->getPermissionsViaRoles()->contains('name', $permissionName);
     }
 }

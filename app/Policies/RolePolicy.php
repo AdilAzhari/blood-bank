@@ -2,65 +2,37 @@
 
 namespace App\Policies;
 
-use App\Models\Role;
 use App\Models\User;
-use Illuminate\Auth\Access\Response;
 
 class RolePolicy
 {
-    /**
-     * Determine whether the user can view any models.
-     */
+
     public function viewAny(User $user): bool
     {
-        //
+        return $this->hasPermission($user, 'viewAny-role');
     }
 
-    /**
-     * Determine whether the user can view the model.
-     */
-    public function view(User $user, Role $role): bool
+    public function view(User $user): bool
     {
-        //
+        return $this->hasPermission($user, 'view-role');
     }
 
-    /**
-     * Determine whether the user can create models.
-     */
     public function create(User $user): bool
     {
-        //
+        return $this->hasPermission($user, 'create-role');
     }
 
-    /**
-     * Determine whether the user can update the model.
-     */
-    public function update(User $user, Role $role): bool
+    public function update(User $user): bool
     {
-        //
+        return $this->hasPermission($user, 'update-role');
     }
 
-    /**
-     * Determine whether the user can delete the model.
-     */
-    public function delete(User $user, Role $role): bool
+    public function delete(User $user): bool
     {
-        //
+        return $this->hasPermission($user, 'delete-role');
     }
-
-    /**
-     * Determine whether the user can restore the model.
-     */
-    public function restore(User $user, Role $role): bool
+    private function hasPermission(User $user, string $permissionName): bool
     {
-        //
-    }
-
-    /**
-     * Determine whether the user can permanently delete the model.
-     */
-    public function forceDelete(User $user, Role $role): bool
-    {
-        //
+        return $user->getPermissionsViaRoles()->contains('name', $permissionName);
     }
 }

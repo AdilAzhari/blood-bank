@@ -101,6 +101,7 @@ class AppServiceProvider extends ServiceProvider
         Gate::define('update-post', [PostPolicy::class, 'update']);
         Gate::define('delete-post', [PostPolicy::class, 'delete']);
         Gate::define('create-post', [PostPolicy::class, 'create']);
+        Gate::define('create-post', [PostPolicy::class, 'edit']);
         gate::define('view-post', [PostPolicy::class, 'view']);
         Gate::define('viewAny-post', [PostPolicy::class, 'viewAny']);
 
@@ -127,6 +128,6 @@ class AppServiceProvider extends ServiceProvider
 
 
         // Paginator::defaultView('view.front.custom-pagination');
-        Paginator::useBootstrap();
+        // Paginator::useBootstrap();
     }
 }

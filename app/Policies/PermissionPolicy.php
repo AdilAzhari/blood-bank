@@ -8,59 +8,35 @@ use Illuminate\Auth\Access\Response;
 
 class PermissionPolicy
 {
-    /**
-     * Determine whether the user can view any models.
-     */
+    /use HandlesAuthorization;
+
     public function viewAny(User $user): bool
     {
-        return $user->can('viewAny-permission');
+        return $this->hasPermission($user, 'viewAny-permission');
     }
 
-    /**
-     * Determine whether the user can view the model.
-     */
-    public function view(User $user, permissions $permissions): bool
+    public function view(User $user): bool
     {
-        //
+        return $this->hasPermission($user, 'view-permission');
     }
 
-    /**
-     * Determine whether the user can create models.
-     */
     public function create(User $user): bool
     {
-        //
+        return $this->hasPermission($user, 'create-permission');
     }
 
-    /**
-     * Determine whether the user can update the model.
-     */
-    public function update(User $user, permissions $permissions): bool
+    public function update(User $user): bool
     {
-        //
+        return $this->hasPermission($user, 'update-permission');
     }
 
-    /**
-     * Determine whether the user can delete the model.
-     */
-    public function delete(User $user, permissions $permissions): bool
+    public function delete(User $user): bool
     {
-        //
+        return $this->hasPermission($user, 'delete-permission');
     }
 
-    /**
-     * Determine whether the user can restore the model.
-     */
-    public function restore(User $user, permissions $permissions): bool
+    private function hasPermission(User $user, string $permissionName): bool
     {
-        //
-    }
-
-    /**
-     * Determine whether the user can permanently delete the model.
-     */
-    public function forceDelete(User $user, permissions $permissions): bool
-    {
-        //
+        return $user->getPermissionsViaRoles()->contains('name', $permissionName);
     }
 }

@@ -17,12 +17,12 @@ class PermissionController extends Controller
         $permissions = Permission::when($query, function ($queryBuilder, $query) {
             return $queryBuilder->where('name', 'LIKE', "%{$query}%");
         })->get();
-        return view('permissions.index', compact('permissions'));
+        return view('admin.permissions.index', compact('permissions'));
     }
 
     public function store(Request $request)
     {
-        // $this->authorize('create', Permission::class);
+        $this->authorize('create', Permission::class);
 
         $request->validate([
             'name' => 'required|string|max:255|unique:permissions,name',
@@ -32,16 +32,17 @@ class PermissionController extends Controller
         return to_route('permissions.index')->with('Info', 'Permission created successfully!');
     }
 
+
     public function edit(Permission $permission)
     {
-        // $this->authorize('update', $permission);
+        $this->authorize('update', $permission);
 
-        return view('permissions.edit', compact('permission'));
+        return view('admin.permissions.edit', compact('permission'));
     }
 
     public function update(Request $request, Permission $permission)
     {
-        // $this->authorize('update', $permission);
+        $this->authorize('update', $permission);
 
         $request->validate([
             'name' => 'required|string|max:255|' . Rule::unique('permissions', 'name')->ignore($permission->id),
@@ -54,7 +55,7 @@ class PermissionController extends Controller
 
     public function destroy(Permission $permission)
     {
-        // $this->authorize('delete', $permission);
+        $this->authorize('delete', $permission);
 
         $permission->delete();
 

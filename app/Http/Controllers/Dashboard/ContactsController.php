@@ -13,6 +13,8 @@ class ContactsController extends Controller
      */
     public function index(Request $request)
     {
+        $this->authorize('viewAny', Contact::class);
+
         $contacts = Contact::query();
 
         if ($request->has('search')) {
@@ -22,7 +24,7 @@ class ContactsController extends Controller
 
         $contacts = $contacts->paginate(10);
 
-        return view('contacts.index', compact('contacts'));
+        return view('admin.contacts.index', compact('contacts'));
     }
 
     /**
@@ -31,6 +33,8 @@ class ContactsController extends Controller
 
     public function destroy(Contact $contact)
     {
+        $this->authorize('delete', Contact::class);
+
         $contact->delete();
         return to_route('contacts.index')->with('success', 'Contact deleted successfully.');
     }

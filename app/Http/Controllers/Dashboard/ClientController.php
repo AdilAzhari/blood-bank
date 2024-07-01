@@ -20,12 +20,12 @@ class ClientController extends Controller
      */
     public function index(request $request)
     {
+        $this->authorize('viewAny', Client::class);
 
-        // $this->authorize('viewAny', Client::class);
         $filters = $request->only(['name', 'status']);
         $clients = Client::with('governorates')->filter($filters)->latest()->paginate(10);
 
-        return view('clients.index', compact('clients'));
+        return view('admin.clients.index', compact('clients'));
     }
 
     /**
@@ -33,11 +33,13 @@ class ClientController extends Controller
      */
     public function create()
     {
-        // $this->authorize('create', Client::class);
+        $this->authorize('create', Client::class);
+
         $cities = City::all();
         $bloodTypes = BloodType::all();
         $governorates = Governorate::all();
-        return view('clients.create', compact('cities', 'bloodTypes', 'governorates'));
+
+        return view('admin.clients.create', compact('cities', 'bloodTypes', 'governorates'));
     }
 
     /**
@@ -45,7 +47,7 @@ class ClientController extends Controller
      */
     public function store(Request $request)
     {
-        // $this->authorize('create', Client::class);
+        $this->authorize('create', Client::class);
 
         $request->validate([
             'name' => 'required|string|max:255',
@@ -81,9 +83,9 @@ class ClientController extends Controller
      */
     public function show(Client $client)
     {
-        // $this->authorize('view', $client);
+        $this->authorize('view', $client);
 
-        return view('clients.show', compact('client'));
+        return view('admin.clients.show', compact('client'));
     }
 
     /**
@@ -91,10 +93,12 @@ class ClientController extends Controller
      */
     public function edit(client $client)
     {
-        // $this->authorize('update', $client);
+        $this->authorize('update', $client);
+
         $cities = City::all();
         $bloodTypes = BloodType::all();
         $governorates = Governorate::all();
+
         return view('clients.edit', compact('client', 'cities', 'bloodTypes', 'governorates'));
     }
 
@@ -103,7 +107,7 @@ class ClientController extends Controller
      */
     public function update(Request $request, client $client)
     {
-        // $this->authorize('update', $client);
+        $this->authorize('update', $client);
 
         $request->validate([
             'name' => 'required|string|max:255',
@@ -139,9 +143,10 @@ class ClientController extends Controller
      */
     public function destroy(client $client)
     {
-        // $this->authorize('delete', $client);
+        $this->authorize('delete', $client);
 
         $client->delete();
+
         return to_route('clients.index')->with('Danger', 'Client deleted successfully');
     }
 }

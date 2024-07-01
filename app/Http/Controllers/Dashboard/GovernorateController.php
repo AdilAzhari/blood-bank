@@ -13,8 +13,10 @@ class GovernorateController extends Controller
      */
     public function index()
     {
+        $this->authorize('viewAny', Governorate::class);
+
         $governorates = Governorate::paginate(10);
-        return view('governorates.index', compact('governorates'));
+        return view('admin.governorates.index', compact('governorates'));
     }
 
     /**
@@ -22,7 +24,9 @@ class GovernorateController extends Controller
      */
     public function create()
     {
-        return view('governorates.create');
+        $this->authorize('create', Governorate::class);
+
+        return view('admin.governorates.create');
     }
 
     /**
@@ -30,6 +34,8 @@ class GovernorateController extends Controller
      */
     public function store(Request $request)
     {
+        $this->authorize('create', Governorate::class);
+
         $request->validate([
             'name' => 'required|string|max:255|min:3',
         ]);
@@ -42,7 +48,9 @@ class GovernorateController extends Controller
      */
     public function show(Governorate $governorate)
     {
-        return view('governorates.show', compact('governorate'));
+        $this->authorize('view', Governorate::class);
+
+        return view('admin.governorates.show', compact('governorate'));
     }
 
     /**
@@ -51,7 +59,7 @@ class GovernorateController extends Controller
     public function edit(string $id)
     {
         $governorate = Governorate::findOrFail($id);
-        return view('governorates.edit',compact('governorate'));
+        return view('admin.governorates.edit',compact('governorate'));
     }
 
     /**
@@ -59,6 +67,8 @@ class GovernorateController extends Controller
      */
     public function update(Request $request, string $id)
     {
+        $this->authorize('update', Governorate::class);
+
         $request->validate([
             'name' => 'required|string|max:255|min:3',
         ]);
@@ -73,8 +83,11 @@ class GovernorateController extends Controller
      */
     public function destroy(string $id)
     {
+        $this->authorize('delete', Governorate::class);
+
         $governorate = Governorate::findOrFail($id);
         $governorate->delete();
+
         return to_route('governorates.index')->with('Danger', 'Governorate deleted successfully');
     }
 }

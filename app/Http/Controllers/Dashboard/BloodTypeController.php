@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Dashboard;
 
 use App\Http\Controllers\Controller;
 use App\Models\BloodType;
+use App\Models\Client;
 use Illuminate\Http\Request;
 
 class BloodTypeController extends Controller
@@ -13,8 +14,12 @@ class BloodTypeController extends Controller
      */
     public function index()
     {
-        $bloodTypes = BloodType::all();
-        return view('bloodType.index',compact('bloodTypes'));
+        $this->authorize('viewAny', BloodType::class);
+
+        $bloodTypes = BloodType::with('donations')->get();
+        dd($bloodTypes->clients);
+        $clients = Client::where()->get();
+        return view('admin.bloodType.index',compact('bloodTypes'));
     }
 
     /**
@@ -22,7 +27,7 @@ class BloodTypeController extends Controller
      */
     public function show(BloodType $bloodType)
     {
-        return view('bloodType.show', compact('bloodType'));
+        return view('admin.bloodType.show', compact('bloodType'));
     }
 
     /**
@@ -30,7 +35,7 @@ class BloodTypeController extends Controller
      */
     public function edit(BloodType $bloodType)
     {
-        return view('bloodType.edit', compact('bloodType'))->with('Info', 'Blood Type Updated Successfully');
+        return view('admin.bloodType.edit', compact('bloodType'))->with('Info', 'Blood Type Updated Successfully');
     }
 
     /**

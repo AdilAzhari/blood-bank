@@ -17,6 +17,7 @@ class DashboardController extends Controller
 {
     public function index()
     {
+
         $categoryCount = Category::count();
         $cityCount = City::count();
         $postCount = Post::count();

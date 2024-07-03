@@ -25,11 +25,11 @@ require __DIR__.'/auth.php';
 require __DIR__.'/front.php';
 
 
-route::Resource('roles',RoleController::class);
-
 Route::middleware(['auth','AdminAuthIfUnauthenticated'])->group(function () {
 
     route::Resource('admin/posts',PostController::class);
+
+    route::Resource('admin/categories',CategoryController::class);
 
     route::Resource('admin/roles',RoleController::class);
 

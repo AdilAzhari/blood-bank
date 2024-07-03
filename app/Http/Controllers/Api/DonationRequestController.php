@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Resources\DonationRequestResource;
+use App\Jobs\SendDonationRequestNotification;
 use App\Models\BloodType;
 use App\Models\City;
 use App\Models\Client;
@@ -73,8 +74,7 @@ class DonationRequestController
             return $this->errorResponse('No Clients Found', 404);
         }
 
-
-            Notification::send($clients, new DonationRequestNotification($donationRequest));
+        SendDonationRequestNotification::dispatch($donationRequest, $clients);
 
             // $this->firebaseService->sendNotification($clients, $title, $body, [
             //     'donation_request_id' => $donationRequest->id

@@ -19,6 +19,7 @@ class DonationRequestController extends Controller
         $bloodTypes = BloodType::all();
         $cities = City::all();
         $governorates = Governorate::all();
+
         return view('front.ask-donation', compact('bloodTypes', 'cities', 'governorates'));
     }
 

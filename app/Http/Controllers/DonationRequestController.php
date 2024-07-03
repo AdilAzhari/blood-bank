@@ -16,7 +16,6 @@ class DonationRequestController
             $donations->where('name', 'like', '%' . request()->search . '%')
                 ->orWhere('email', 'like', '%' . request()->search . '%');
         }
-
         $donations = $donations->paginate(10);
 
         return view('donations.index', compact('donations'));

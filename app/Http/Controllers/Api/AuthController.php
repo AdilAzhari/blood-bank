@@ -82,6 +82,7 @@ class AuthController
     public function login(Request $request)
     {
         // dd(Auth::guard('client')->user());
+
         $request->validate([
             'phone' => 'required|string',
             'password' => 'required|string',

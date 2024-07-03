@@ -11,7 +11,7 @@
                 <div class="p-2 bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700">
                     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                         <div class="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg shadow-md">
-                            <a href="{{ route('categories.index') }}"
+                            <a href="{{ url('admin/categories') }}"
                                 class="text-lg font-semibold text-gray-800 dark:text-gray-100">
                                 Categories
                             </a>
@@ -19,7 +19,7 @@
                             <p class="mt-2 text-gray-600 dark:text-gray-400">Total: {{ $categoryCount }}</p>
                         </div>
                         <div class="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg shadow-md">
-                            <a href="{{ route('cities.index') }}"
+                            <a href="{{ url('admin/cities') }}"
                                 class="text-lg font-semibold text-gray-800 dark:text-gray-100">
                                 Cities
                             </a>
@@ -27,7 +27,7 @@
                             <p class="mt-2 text-gray-600 dark:text-gray-400">Total: {{ $cityCount }}</p>
                         </div>
                         <div class="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg shadow-md">
-                            <a href="{{ route('posts.index') }}"
+                            <a href="{{ url('admin/posts') }}"
                                 class="text-lg font-semibold text-gray-800 dark:text-gray-100">
                                 Posts
                             </a>
@@ -35,7 +35,7 @@
                             <p class="mt-2 text-gray-600 dark:text-gray-400">Total: {{ $postCount }}</p>
                         </div>
                         <div class="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg shadow-md">
-                            <a href="{{ route('governorates.index') }}"
+                            <a href="{{ url('admin/governorates') }}"
                                 class="text-lg font-semibold text-gray-800 dark:text-gray-100">
                                 Governorates
                             </a>
@@ -43,7 +43,7 @@
                             <p class="mt-2 text-gray-600 dark:text-gray-400">Total: {{ $governorateCount }}</p>
                         </div>
                         <div class="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg shadow-md">
-                            <a href="{{ route('contacts.index') }}"
+                            <a href="{{ url('admin/contacts') }}"
                                 class="text-lg font-semibold text-gray-800 dark:text-gray-100">
                                 Contacts
                             </a>
@@ -51,7 +51,7 @@
                             <p class="mt-2 text-gray-600 dark:text-gray-400">Total: {{ $contactCount }}</p>
                         </div>
                         <div class="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg shadow-md">
-                            <a href="{{ route('donations.index') }}"
+                            <a href="{{ url('admin/donations') }}"
                                 class="text-lg font-semibold text-gray-800 dark:text-gray-100">
                                 Donations
                             </a>
@@ -59,7 +59,7 @@
                             <p class="mt-2 text-gray-600 dark:text-gray-400">Total: {{ $donationCount }}</p>
                         </div>
                         <div class="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg shadow-md">
-                            <a href="{{ route('blood_types.index') }}"
+                            <a href="{{ url('admin/blood_types.index') }}"
                                 class="text-lg font-semibold text-gray-800 dark:text-gray-100">
                                 Blood Types
                             </a>
@@ -67,7 +67,7 @@
                             <p class="mt-2 text-gray-600 dark:text-gray-400">Total: {{ $donationCount }}</p>
                         </div>
                         <div class="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg shadow-md">
-                            <a href="{{ route('clients.index') }}"
+                            <a href="{{ url('admin/clients.index') }}"
                                 class="text-lg font-semibold text-gray-800 dark:text-gray-100">
                                 Clients
                             </a>
@@ -75,7 +75,7 @@
                             <p class="mt-2 text-gray-600 dark:text-gray-400">Total: {{ $donationCount }}</p>
                         </div>
                         <div class="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg shadow-md">
-                            <a href="{{ route('donations.index') }}"
+                            <a href="{{ url('admin/donations.index') }}"
                                 class="text-lg font-semibold text-gray-800 dark:text-gray-100">
                                 Donations
                             </a>
@@ -83,7 +83,7 @@
                             <p class="mt-2 text-gray-600 dark:text-gray-400">Total: {{ $donationCount }}</p>
                         </div>
                         <div class="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg shadow-md">
-                            <a href="{{ route('roles.index') }}"
+                            <a href="{{ url('admin/roles') }}"
                                 class="text-lg font-semibold text-gray-800 dark:text-gray-100">
                                 Roles And Permissions
                             </a>
@@ -92,7 +92,7 @@
                         </div>
 
                         <div class="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg shadow-md">
-                            <a href="{{ route('settings.index') }}"
+                            <a href="{{ url('admin/settings.index') }}"
                                 class="text-lg font-semibold text-gray-800 dark:text-gray-100">
                                 Settings
                             </a>

@@ -14,15 +14,6 @@ use Tests\TestCase;
 class NotificationTest extends TestCase
 {
     use RefreshDatabase;
-    /**
-     * A basic feature test example.
-     */
-    public function test_example(): void
-    {
-        $response = $this->get('/');
-
-        $response->assertStatus(200);
-    }
     public function test_creates_notification_and_attaches_clients()
     {
         $city = City::factory()->create();

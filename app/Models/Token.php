@@ -3,9 +3,8 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
-
-class Token extends Model
+use Laravel\Sanctum\PersonalAccessToken as SanctumPersonalAccessToken;
+class Token extends SanctumPersonalAccessToken
 {
     use HasFactory;
     protected $fillable = ['client_id', 'token'];

@@ -13,29 +13,7 @@ class ClientController
 
     public function index()
     {
-
-        $data = Client::all();
-        $message = 'All Clients';
-        $status = true;
-        $code = 200;
-        if ($data->isEmpty()) {
-            $message = 'No Clients Found';
-            $data = null;
-        }
-        // return ClientResource::collection(Client::all());
-
-        return $this->customResponse($data,$status, $message, 200);
-    }
-    public function Show($id)
-    {
-        $data = Client::findOrFail($id);
-        $message = 'Client Details';
-        $status = true;
-        $code = 200;
-        if ($data == null) {
-            $message = 'No Client Found';
-            $data = null;
-        }
-        return $this->customResponse($status,$data, $message, 200);
+        $clients = Client::all();
+        return $this->successResponse(ClientResource::collection($clients), 'Clients Retrieved Successfully');
     }
 }

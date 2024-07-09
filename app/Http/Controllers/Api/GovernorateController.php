@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Requests\StoreGovernorateRequest;
-use App\Http\Requests\UpdateGovernorateRequest;
 use App\Http\Resources\GovernorateResource;
 use App\Models\Governorate;
 use App\Traits\ApiResponser;

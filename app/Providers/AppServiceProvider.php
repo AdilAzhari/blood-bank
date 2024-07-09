@@ -13,8 +13,11 @@ use App\Policies\PostPolicy;
 use App\Policies\RolePolicy;
 use App\Policies\SettingPolicy;
 use App\Policies\UserPolicy;
+use Illuminate\Cache\RateLimiting\Limit;
+use Illuminate\Http\Request;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\ServiceProvider;
 use Laravel\Sanctum\PersonalAccessToken;
 use Laravel\Sanctum\Sanctum;
@@ -34,8 +37,6 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        // Sanctum::usePersonalAccessTokenModel(PersonalAccessToken::class);
-        // posts Gate
         Gate::define('update-post', [PostPolicy::class, 'update']);
         Gate::define('delete-post', [PostPolicy::class, 'delete']);
         Gate::define('create-post', [PostPolicy::class, 'create']);
@@ -126,8 +127,8 @@ class AppServiceProvider extends ServiceProvider
         gate::define('view-client', [ClientPolicy::class, 'view']);
         Gate::define('viewAny-client', [ClientPolicy::class, 'viewAny']);
 
-
-        // Paginator::defaultView('view.front.custom-pagination');
-        // Paginator::useBootstrap();
+        RateLimiter::for('api', function (Request $request) {
+            return Limit::perMinute(6)->by($request->user()?->id ?: $request->ip());
+        });
     }
 }

@@ -30,9 +30,9 @@ class DatabaseSeeder extends Seeder
         //     PermissionSeeder::class,
         // ]);
         // $city->clients()->attach($client->id);
-        $client = Client::factory()->create();
-        $post = Post::factory()->create();
-        $post->client()->associate($client);
+        // $client = Client::factory()->create();
+        // $post = Post::factory()->create();
+        // $post->client()->associate($client);
 
         // User::factory()->create([
         //     'name' => 'Test User',

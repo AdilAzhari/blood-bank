@@ -22,16 +22,16 @@ class DonationRequestController
     public function index()
     {
 
-        $donationRequests = DonationRequest::paginate(10);
+        $donationRequests = DonationRequest::all();
 
-        if ($donationRequests->isEmpty()) {
+        if (!$donationRequests->exists()) {
             return $this->errorResponse('No Donation Requests Found', 404);
         }
 
         return $this->successResponse(DonationRequestResource::collection($donationRequests), 'Donation Requests Retrieved Successfully');
     }
 
-    public function store(Request $request)
+    public function createDonationRequest(Request $request)
     {
         if ($request->has('blood_type')) {
             $bloodType = BloodType::where('name', $request->blood_type)->first();
@@ -47,7 +47,7 @@ class DonationRequestController
             'bags_number' => 'required|integer|min:1|max:5',
             'hospital_name' => 'required|string|max:255',
             'hospital_address' => 'required|string|max:255',
-            'patient_phone_number' => 'required|string|max:15',
+            'patient_phone_number' => 'required|string|max:19',
             'details' => 'required|string',
             'latitude' => 'nullable|string|max:255',
             'longitude' => 'nullable|string|max:255',
@@ -73,12 +73,7 @@ class DonationRequestController
             return $this->errorResponse('No Clients Found', 404);
         }
 
-
-            Notification::send($clients, new DonationRequestNotification($donationRequest));
-
-            // $this->firebaseService->sendNotification($clients, $title, $body, [
-            //     'donation_request_id' => $donationRequest->id
-            // ]);
+        Notification::send($clients, new DonationRequestNotification($donationRequest));
 
         return $this->successResponse([
             'donation_request' => new DonationRequestResource($donationRequest),
@@ -87,9 +82,9 @@ class DonationRequestController
     }
     public function show($id)
     {
-        $donationRequest = DonationRequest::find($id);
+        $donationRequest = DonationRequest::find($id); // DonationRequest::where('id', $id)->first();
 
-        if (!$donationRequest) {
+        if (!$donationRequest->exists()) {
             return $this->errorResponse('Donation Request Not Found', 404);
         }
 

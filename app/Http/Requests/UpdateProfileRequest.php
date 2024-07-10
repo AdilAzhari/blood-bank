@@ -27,7 +27,6 @@ class UpdateProfileRequest extends FormRequest
             'phone' => 'string|max:15',
             'd_o_b' => 'required|date',
             'last_donation_date' => 'nullable|date',
-            'pin_code' => 'nullable|string|between:4,8',
             'is_active' => 'boolean',
             'password' => 'nullable|string|min:8|confirmed',
             'city_id' => 'required|exists:cities,id',

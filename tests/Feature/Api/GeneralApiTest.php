@@ -7,7 +7,6 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Laravel\Sanctum\Sanctum;
 use Tests\TestCase;
-
 class GeneralApiTest extends TestCase
 {
     use RefreshDatabase;
@@ -45,40 +44,44 @@ class GeneralApiTest extends TestCase
         $response = $this->getJson('/api/v1/governorates');
         $response->assertStatus(200);
 
-        $response = $this->getJson('/api/v1/posts');
+        $response = $this->getJson('/api/v1/cities');
         $response->assertStatus(200);
 
-        $response = $this->getJson('/api/v1/donation-request/create',[
-            'blood_type' => 'AB+',
-            'city_id' => 1,
-            'details' => 'Test details',
-            'patient_name' => 'Test Patient',
-            'patient_age' => 25,
-            'bags_number' => 2,
-            'hospital_name' => 'Test Hospital',
-            'hospital_address' => 'Test Hospital Address',
-            'patient_phone_number' => '0123456789',
-            'latitude' => '30.123456',
-            'longitude' => '31.123456',
-            'client_id' => 1
-        ]);
+        $response = $this->getJson('/api/v1/bloodTypes');
+        $response->assertStatus(200);
 
-        $response->assertStatus(500);
+        $response = $this->getJson('/api/v1/categories');
+        $response->assertStatus(200);
+
+        $response->assertStatus(200);
     }
 
-    // public function test_can_get_settings()
-    // {
-    //     $response = $this->getJson('/api/settings');
+    public function test_can_get_profile()
+    {
+        $user = User::factory()->create();
+        Sanctum::actingAs($user);
 
-    //     $response->assertStatus(200);
-    // }
+        $response = $this->postJson('/api/v1/user/profile');
+        $response->assertStatus(200);
+    }
 
-    // public function test_can_contact_us()
-    // {
-    //     $response = $this->post('/api/contactus', [
-    //         'name' => 'Test User',
-    //         'email' => 'test@gmail.com',
-    //         'message' => 'This is a test message.'
-    //     ]);
-    // }
+    public function test_user_can_update_his_profile()
+    {
+        $user = User::factory()->create();
+        Sanctum::actingAs($user);
+
+        $response = $this->postJson('/api/v1/user/update', [
+            'name' => 'Test User',
+            'email' => 'adsds@fv.com',
+            'phone' => '0123456789',
+            'password' => 'password',
+            'd_o_b' => '1990-01-01',
+            'last_donation_date' => '2021-01-01',
+            'city_id' => 1,
+            'blood_type_id' => 1,
+            'governorate_id' => 1,
+        ]);
+
+        $response->assertStatus(200);
+    }
 }

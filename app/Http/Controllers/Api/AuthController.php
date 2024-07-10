@@ -5,9 +5,9 @@ namespace App\Http\Controllers\Api;
 use App\Http\Requests\CheckAuthLoginPhoneRequest;
 use App\Http\Requests\ClientPasswordResetRequest;
 use App\Http\Requests\StoreAuthLoginRequest;
+use App\Http\Requests\UpdateProfileRequest;
 use Illuminate\Support\Facades\Notification;
 use App\Http\Resources\ClientResource;
-use App\Http\Resources\DonationRequestResource;
 use App\Models\BloodType;
 use App\Models\City;
 use App\Models\Client;
@@ -32,7 +32,6 @@ class AuthController
         $request->merge([
             'blood_type_id' => BloodType::where('name', $request->blood_type)->first()->id,
         ]);
-
 
         $validate = validator()->make($request->all(), [
             'name' => 'required|string|max:255',
@@ -135,9 +134,11 @@ class AuthController
     #[Endpoint('Profile', <<<DESC
         Get the client profile
         DESC)]
-    public function profile(Request $request)
+    public function profile(UpdateProfileRequest $request)
     {
-        $client = Auth::guard('sanctum')->user();
+        dd($request->all());
+        // $client = Auth::guard('sanctum')->user();
+        // dd($client);
         return $this->successResponse(new ClientResource($client), 'Client Profile', 200);
     }
     #[Endpoint('Update Profile', <<<DESC
@@ -145,7 +146,8 @@ class AuthController
         DESC)]
     public function profileUpdate(Request $request)
     {
-        $client = Auth::guard('sanctum')->user();
+        $client = Auth::guard('client')->user();
+        $client = Auth::user();
 
         $request->validate([
             'name' => 'required|string|max:255',

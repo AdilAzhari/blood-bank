@@ -33,7 +33,14 @@ class CategoryPolicy
     {
         return $this->hasPermission($user, 'delete-category');
     }
-
+    public function restore(User $user): bool
+    {
+        return $this->hasPermission($user, 'restore-category');
+    }
+    public function forceDelete(User $user): bool
+    {
+        return $this->hasPermission($user, 'forceDelete-category');
+    }
     private function hasPermission(User $user, string $permissionName): bool
     {
         return $user->getPermissionsViaRoles()->contains('name', $permissionName);

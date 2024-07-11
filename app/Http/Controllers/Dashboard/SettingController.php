@@ -10,10 +10,10 @@ class SettingController extends Controller
 {
     public function index()
     {
-        $this->authorize('viewAny', Setting::class);
+        // $this->authorize('viewAny', Setting::class);
 
         $settings = Setting::first();
-        return view('settings.index',compact('settings'));
+        return view('admin.settings.index',compact('settings'));
     }
     public function update(Request $request)
     {

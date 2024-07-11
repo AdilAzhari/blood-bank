@@ -36,6 +36,16 @@ class CityPolicy
         return $this->hasPermission($user, 'delete-city');
     }
 
+    public function restore(User $user): bool
+    {
+        return $this->hasPermission($user, 'restore-city');
+    }
+
+    public function forceDelete(User $user): bool
+    {
+        return $this->hasPermission($user, 'forceDelete-city');
+    }
+
     private function hasPermission(User $user, string $permissionName): bool
     {
         return $user->getPermissionsViaRoles()->contains('name', $permissionName);

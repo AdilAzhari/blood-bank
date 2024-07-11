@@ -10,11 +10,16 @@ use Spatie\Permission\Models\Role;
 
 class RoleController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $this->authorize('viewAny', Role::class);
+        // $this->authorize('viewAny', Role::class);
 
-        $roles = Role::with('permissions')->get();
+        $query = Role::query();
+
+        if ($request->filled('name')) {
+            $query->where('name', 'like', '%' . $request->name . '%');
+        }
+        $roles = Role::with('permissions')->paginate(10);
 
         return view('admin.roles.index', compact('roles'));
     }
@@ -36,14 +41,15 @@ class RoleController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'name' => 'required|string|max:255|unique:roles',
+            'name' => 'required|string|max:255',
             'permissions' => 'required|array',
+            'permissions.*' => 'exists:permissions,id',
         ]);
 
-        $role = Role::create($request->only('name', 'description'));
-        $role->syncPermissions($request->permissions);
+        $role = Role::create($request->only('name'));
+        $role->permissions()->sync($request->permissions);
 
-        return to_route('Roles.index')->with('Info', 'Role created successfully');
+        return to_route('roles.index')->with('Info', 'Role created successfully');
     }
 
     public function edit(role $role)
@@ -57,21 +63,42 @@ class RoleController extends Controller
     {
         $request->validate([
             'name' => 'required|string|max:255',
-            'description' => 'required|string|max:255',
             'permissions' => 'required|array',
+            'permissions.*' => 'exists:permissions,id',
         ]);
 
-        $role->name = $request->name;
-        $role->description = $request->description;
-        $role->save();
-
-        $role->syncPermissions($request->permissions);
+        $role->update($request->only('name'));
+        $role->permissions()->sync($request->permissions);
 
         return redirect()->route('roles.index')->with('info', 'Role updated successfully');
     }
     public function destroy(Role $role)
     {
         $role->delete();
-        return to_route('admin.roles.index')->with('Danger', 'Role deleted successfully');
+        return to_route('roles.index')->with('Danger', 'Role deleted successfully');
+    }
+
+    public function trash()
+    {
+        $trashedRoles = Role::onlyTrashed()->paginate(10);
+        return view('roles.trash', compact('trashedRoles'));
+    }
+
+    public function restore($id)
+    {
+        $role = Role::withTrashed()->find($id);
+        if ($role) {
+            $role->restore();
+        }
+        return redirect()->route('roles.trash')->with('success', 'Role restored successfully.');
+    }
+
+    public function forceDelete($id)
+    {
+        $role = Role::withTrashed()->find($id);
+        if ($role) {
+            $role->forceDelete();
+        }
+        return redirect()->route('roles.trash')->with('success', 'Role permanently deleted.');
     }
 }

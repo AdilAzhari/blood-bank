@@ -1,92 +1,78 @@
-<x-app-layout>
-    <div class="container mx-auto py-8 px-4 md:px-8">
-        <x-form.breadcrumb :items="['Home', 'Permissions']" :routes="['/', '/permissions']" />
-        <x-alert />
-        <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
-            <h1 class="text-2xl font-bold text-gray-800 dark:text-gray-100 mb-6">{{ __('Permissions') }}</h1>
+@extends('layouts.app')
 
-            <div class="mb-6">
-                <form action="{{ route('permissions.index') }}" method="GET" class="flex items-center mb-4">
-                    <input type="text" name="search" id="search" value="{{ request('search') }}"
-                        class="mt-1 block w-full bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-gray-200 border-gray-300 rounded-md shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-                        placeholder="Search Permissions">
-                    <button type="submit"
-                        class="ml-4 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">Search</button>
-                </form>
+@section('content')
+    <div class="container-fluid py-8 px-4 md:px-8">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{{ route('home') }}">Home</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Permissions</li>
+            </ol>
+        </nav>
 
-                <form action="{{ route('permissions.store') }}" method="POST" class="flex items-center">
-                    @csrf
-                    <input type="text" name="name" id="name"
-                        class="mt-1 block w-full bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-gray-200 border-gray-300 rounded-md shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-                        placeholder="New Permission" required>
-                    <button type="submit"
-                        class="ml-4 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">Add</button>
-                </form>
-            </div>
+        @include('components.alert')
 
-            <div class="flex flex-wrap -mx-2">
-                @forelse ($permissions as $permission)
-                    <div class="w-full sm:w-1/2 md:w-1/3 px-2 mb-4">
-                        <div class="bg-white dark:bg-gray-700 rounded shadow p-4 flex items-center justify-between">
-                            <div>
-                                <span
-                                    class="inline-flex items-center px-3 py-0.5 rounded-full text-sm font-medium bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300">{{ $permission->name }}</span>
-                            </div>
-                            <div>
-                                <a href="{{ route('permissions.edit', $permission->id) }}"
-                                    class="text-indigo-600 hover:text-indigo-900 mr-2">Edit</a>
-                                <form class="inline" method="POST"
-                                    action="{{ route('permissions.destroy', $permission->id) }}">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit"
-                                        class="text-red-600 hover:text-red-900 focus:outline-none">Delete</button>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                @empty
-                    <div class="w-full px-2 mb-4">
-                        <div class="bg-white dark:bg-gray-700 rounded shadow p-4 text-center">
-                            <span class="text-sm text-gray-500 dark:text-gray-300">No permissions found</span>
-                        </div>
-                    </div>
-                @endforelse
-            </div>
-        </div>
-    </div>
-</x-app-layout>
-{{-- <x-app-layout>
-    <div class="container mx-auto py-8 px-4 md:px-8">
-        <x-alert />
-        <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
-            <h1 class="text-2xl font-bold text-gray-800 dark:text-gray-100 mb-6">{{ __('Permissions') }}</h1>
-
-            @can('create', Spatie\Permission\Models\Permission::class)
-                <a href="{{ route('permissions.create') }}" class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 mb-4 inline-block">Add Permission</a>
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h1 class="h3 mb-0 text-gray-800">Permissions</h1>
+            @can('create', App\Models\Permission::class)
+                <a href="{{ route('permissions.create') }}" class="btn btn-primary">Create</a>
             @endcan
+        </div>
 
-            <div class="flex flex-wrap -mx-2">
-                @foreach ($permissions as $permission)
-                    <div class="w-full sm:w-1/2 md:w-1/3 px-2 mb-4">
-                        <div class="bg-white dark:bg-gray-700 rounded shadow p-4 flex items-center justify-between">
-                            <span class="inline-flex items-center px-3 py-0.5 rounded-full text-sm font-medium bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300">{{ $permission->name }}</span>
-                            <div>
-                                @can('update', $permission)
-                                    <a href="{{ route('permissions.edit', $permission->id) }}" class="text-indigo-600 hover:text-indigo-900 mr-2">Edit</a>
+        <form action="{{ route('permissions.index') }}" method="GET" class="mb-4 d-flex flex-column flex-md-row">
+            <input type="text" name="name" class="form-control mb-2 mb-md-0 me-md-2" placeholder="Search by name"
+                value="{{ request('name') }}">
+            <button type="submit" class="btn btn-primary">Search</button>
+        </form>
+
+        <div class="card shadow mb-4">
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-bordered" width="100%" cellspacing="0">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Name</th>
+                                <th>Created At</th>
+                                @can('delete', App\Models\Permission::class)
+                                    <th>Actions</th>
                                 @endcan
-                                @can('delete', $permission)
-                                    <form class="inline" method="POST" action="{{ route('permissions.destroy', $permission->id) }}">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit" class="text-red-600 hover:text-red-900 focus:outline-none">Delete</button>
-                                    </form>
-                                @endcan
-                            </div>
-                        </div>
-                    </div>
-                @endforeach
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @forelse ($permissions as $permission)
+                                <tr>
+                                    <td>{{ $permission->id }}</td>
+                                    <td><a href="{{ route('permissions.show', $permission) }}">{{ $permission->name }}</a>
+                                    </td>
+                                    <td>{{ $permission->created_at->diffForHumans() }}</td>
+                                    <td class="d-flex">
+                                        @can('update', App\Models\Permission::class)
+                                            <a href="{{ route('permissions.edit', $permission) }}"
+                                                class="btn btn-warning btn-sm me-2">Edit</a>
+                                        @endcan
+                                        @can('delete', App\Models\Permission::class)
+                                            <form action="{{ route('permissions.destroy', $permission) }}" method="POST"
+                                                onsubmit="return confirm('Are you sure?');">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                                            </form>
+                                        @endcan
+                                    </td>
+                                </tr>
+                            @empty
+                                <tr>
+                                    <td colspan="4" class="text-center">No permissions found</td>
+                                </tr>
+                            @endforelse
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
+
+        <div class="mt-4">
+            {{ $permissions->links() }}
+        </div>
     </div>
-</x-app-layout> --}}
+@endsection

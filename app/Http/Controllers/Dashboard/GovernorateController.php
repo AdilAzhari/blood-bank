@@ -11,11 +11,18 @@ class GovernorateController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
         $this->authorize('viewAny', Governorate::class);
 
-        $governorates = Governorate::paginate(10);
+        $query = Governorate::query();
+
+        if ($request->filled('name')) {
+            $query->where('name', 'like', '%' . $request->name . '%');
+        }
+
+        $governorates = $query->paginate(10);
+
         return view('admin.governorates.index', compact('governorates'));
     }
 
@@ -89,5 +96,29 @@ class GovernorateController extends Controller
         $governorate->delete();
 
         return to_route('governorates.index')->with('Danger', 'Governorate deleted successfully');
+    }
+
+    public function trashed()
+    {
+        $trashedGovernorates = Governorate::onlyTrashed()->paginate(10);
+        return view('governorates.trash', compact('trashedGovernorates'));
+    }
+
+    public function restore($id)
+    {
+        $governorate = Governorate::withTrashed()->find($id);
+        if ($governorate) {
+            $governorate->restore();
+        }
+        return redirect()->route('governorates.trash')->with('success', 'Governorate restored successfully.');
+    }
+
+    public function forceDelete($id)
+    {
+        $governorate = Governorate::withTrashed()->find($id);
+        if ($governorate) {
+            $governorate->forceDelete();
+        }
+        return redirect()->route('governorates.trash')->with('success', 'Governorate permanently deleted.');
     }
 }

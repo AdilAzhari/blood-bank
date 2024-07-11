@@ -1,69 +1,63 @@
-<x-app-layout>
+@extends('layouts.app')
+
+@section('content')
     <div class="container mx-auto py-8 px-4 md:px-8">
-        <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
-            <h1 class="text-2xl font-bold text-gray-800 dark:text-gray-100 mb-6">{{ __('Edit User') }}</h1>
-            <form method="POST" action="{{ route('users.update', $user->id) }}">
-                @csrf
-                @method('PUT')
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{{ route('home') }}">Home</a></li>
+                <li class="breadcrumb-item"><a href="{{ route('users.index') }}">Users</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Create User</li>
+            </ol>
+        </nav>
 
-                <div class="mb-4">
-                    <label for="name"
-                        class="block text-sm font-medium text-gray-700 dark:text-gray-300">{{ __('Name') }}</label>
-                    <input id="name" type="text" name="name" value="{{ $user->name }}" required
-                        class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white @error('name') is-invalid @enderror">
-                    @error('name')
-                        <span class="text-red-500 text-sm">{{ $message }}</span>
-                    @enderror
-                </div>
-
-                <div class="mb-4">
-                    <label for="email"
-                        class="block text-sm font-medium text-gray-700 dark:text-gray-300">{{ __('Email') }}</label>
-                    <input id="email" type="email" name="email" value="{{ $user->email }}" required
-                        class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white @error('email') is-invalid @enderror">
-                    @error('email')
-                        <span class="text-red-500 text-sm">{{ $message }}</span>
-                    @enderror
-                </div>
-                <div class="mb-4">
-                    <label for="password"
-                        class="block text-sm font-medium text-gray-700 dark:text-gray-300">{{ __('Password') }}</label>
-                    <input id="password" type="password" name="password"
-                        class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white @error('password') is-invalid @enderror">
-                    @error('password')
-                        <span class="text-red-500 text-sm">{{ $message }}</span>
-                    @enderror
-                </div>
-
-                <div class="mb-4">
-                    <label for="password_confirmation"
-                        class="block text-sm font-medium text-gray-700 dark:text-gray-300">{{ __('Confirm Password') }}</label>
-                    <input id="password_confirmation" type="password" name="password_confirmation"
-                        class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white @error('password_confirmation') is-invalid @enderror">
-                    @error('password_confirmation')
-                        <span class="text-red-500 text-sm">{{ $message }}</span>
-                    @enderror
-                </div>
-
-                <div class="mb-4">
-                    <label for="roles"
-                        class="block text-sm font-medium text-gray-700 dark:text-gray-300">{{ __('Roles') }}</label>
-                    <select name="roles[]" id="roles" multiple required
-                        class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white">
-                        @foreach ($roles as $role)
-                            <option value="{{ $role->id }}" @if ($user->roles->contains($role->id)) selected @endif>
-                                {{ $role->name }}</option>
-                        @endforeach
-                    </select>
-                </div>
-
-                <div class="flex justify-end mt-4">
-                    <button type="submit"
-                        class="inline-flex items-center px-4 py-2 bg-blue-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-blue-500 active:bg-blue-700 focus:outline-none focus:border-blue-700 focus:ring ring-blue-300 disabled:opacity-25 transition ease-in-out duration-150">
-                        {{ __('Update User') }}
-                    </button>
-                </div>
-            </form>
+        <div class="card shadow mb-4">
+            <div class="card-body">
+                <h1 class="h3 mb-4 text-gray-800">Create User</h1>
+                <form action="{{ route('users.store') }}" method="POST">
+                    @csrf
+                    <div class="form-group">
+                        <label for="name">User Name</label>
+                        <input type="text" name="name" class="form-control @error('name') is-invalid @enderror" id="name" placeholder="Enter user name" value="{{ old('name') }}">
+                        @error('name')
+                            <span class="invalid-feedback" role="alert">
+                                <strong>{{ $message }}</strong>
+                            </span>
+                        @enderror
+                    </div>
+                    <div class="form-group mt-3">
+                        <label for="email">Email</label>
+                        <input type="email" name="email" class="form-control @error('email') is-invalid @enderror" id="email" placeholder="Enter email" value="{{ old('email') }}">
+                        @error('email')
+                            <span class="invalid-feedback" role="alert">
+                                <strong>{{ $message }}</strong>
+                            </span>
+                        @enderror
+                    </div>
+                    <div class="form-group mt-3">
+                        <label for="password">Password</label>
+                        <input type="password" name="password" class="form-control @error('password') is-invalid @enderror" id="password" placeholder="Enter password">
+                        @error('password')
+                            <span class="invalid-feedback" role="alert">
+                                <strong>{{ $message }}</strong>
+                            </span>
+                        @enderror
+                    </div>
+                    <div class="form-group mt-3">
+                        <label for="roles">Assign Roles</label>
+                        <select name="roles[]" class="form-control @error('roles') is-invalid @enderror" id="roles" multiple>
+                            @foreach($roles as $role)
+                                <option value="{{ $role->id }}">{{ $role->name }}</option>
+                            @endforeach
+                        </select>
+                        @error('roles')
+                            <span class="invalid-feedback" role="alert">
+                                <strong>{{ $message }}</strong>
+                            </span>
+                        @enderror
+                    </div>
+                    <button type="submit" class="btn btn-primary mt-3">Submit</button>
+                </form>
+            </div>
         </div>
     </div>
-</x-app-layout>
+@endsection

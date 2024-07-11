@@ -33,7 +33,14 @@ class GovernoratePolicy
     {
         return $this->hasPermission($user, 'delete-governorate');
     }
-
+    public function restore(User $user): bool
+    {
+        return $this->hasPermission($user, 'restore-governorate');
+    }
+    public function forceDelete(User $user): bool
+    {
+        return $this->hasPermission($user, 'forceDelete-governorate');
+    }
     private function hasPermission(User $user, string $permissionName): bool
     {
         return $user->getPermissionsViaRoles()->contains('name', $permissionName);

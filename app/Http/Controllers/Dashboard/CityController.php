@@ -13,11 +13,18 @@ class CityController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
         $this->authorize('viewAny', city::class);
 
-        $cities = City::with('governorate')->paginate();
+        $query = City::query();
+
+        if ($request->filled('name')) {
+            $query->where('name', 'like', '%' . $request->name . '%');
+        }
+
+        $cities = $query->paginate(10);
+
         return view('admin.cities.index', compact('cities'));
     }
 
@@ -86,17 +93,38 @@ class CityController extends Controller
     {
         $this->authorize('delete', city::class);
 
-        // $city->clients()->each(function ($client) {
-        //     $client->delete();
-        // });
-        // $city->clients()->update(['city_id' => null]);
-        // print($city->clients()->to);
-        // foreach ($city->clients as $client) {
-        //     $client->update(['city_id' => null]);
-        // }
-        // governorate::where('city_id', $city->id)->update(['city_id' => null]);
         $city->delete();
 
         return to_route('cities.index')->with('Danger', 'City deleted successfully');
+    }
+
+    public function trash()
+    {
+        $this->authorize('viewAny', City::class);
+
+        $trashedCities = City::onlyTrashed()->paginate(10);
+        return view('cities.trash', compact('trashedCities'));
+    }
+
+    public function restore($id)
+    {
+        $this->authorize('update', City::class);
+
+        $city = City::withTrashed()->find($id);
+        if ($city) {
+            $city->restore();
+        }
+        return redirect()->route('cities.trash')->with('success', 'City restored successfully.');
+    }
+
+    public function forceDelete($id)
+    {
+        $this->authorize('delete', City::class);
+
+        $city = City::withTrashed()->find($id);
+        if ($city) {
+            $city->forceDelete();
+        }
+        return redirect()->route('cities.trash')->with('success', 'City permanently deleted.');
     }
 }

@@ -89,4 +89,30 @@ class CategoryController extends Controller
         $category->delete();
         return to_route('categories.index')->with('Danger', 'Category deleted successfully');
     }
+
+    public function trashed()
+    {
+        $this->authorize('viewAny', Category::class);
+
+        $categories = Category::onlyTrashed()->paginate(10);
+        return view('admin.categories.trash', compact('categories'));
+    }
+
+    public function restore(string $id)
+    {
+        $this->authorize('restore', Category::class);
+
+        $category = Category::onlyTrashed()->findOrFail($id);
+        $category->restore();
+        return to_route('categories.index')->with('success', 'Category restored successfully');
+    }
+
+    public function forceDelete(string $id)
+    {
+        $this->authorize('forceDelete', Category::class);
+
+        $category = Category::onlyTrashed()->findOrFail($id);
+        $category->forceDelete();
+        return to_route('categories.index')->with('Danger', 'Category deleted permanently');
+    }
 }

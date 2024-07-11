@@ -12,9 +12,9 @@ class UserController extends Controller
 {
     public function index()
     {
-        $this->authorize('viewAny', user::class);
+        // $this->authorize('viewAny', user::class);
 
-        $users = user::with('roles')->paginate();
+        $users = user::with('roles')->paginate(8);
         // $user = user::find(20);
         // $user->getPermissionsViaRoles();
         // foreach ($user->getPermissionsViaRoles() as $role) {
@@ -25,7 +25,7 @@ class UserController extends Controller
 
     public function create()
     {
-        $this->authorize('create', user::class);
+        // $this->authorize('create', user::class);
 
         $roles = Role::all();
         return view('admin.users.create', compact('roles'));
@@ -33,7 +33,7 @@ class UserController extends Controller
 
     public function store(Request $request)
     {
-        $this->authorize('create', user::class);
+        // $this->authorize('create', user::class);
 
         $request->validate([
             'name' => 'required|string|max:255',
@@ -53,6 +53,13 @@ class UserController extends Controller
         return to_route('users.index')->with('success', 'User created successfully.');
     }
 
+    public function show(User $user)
+    {
+        // $this->authorize('view', user::class);
+
+        return view('admin.users.show', compact('user'));
+    }
+
     public function edit(User $user)
     {
         $roles = Role::all();
@@ -61,7 +68,7 @@ class UserController extends Controller
 
     public function update(Request $request, User $user)
     {
-        $this->authorize('update', user::class);
+        // $this->authorize('update', user::class);
 
         $request->validate([
             'name' => 'required|string|max:255',

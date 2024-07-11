@@ -16,19 +16,19 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         // User::factory(10)->create();
-        // $this->call([
-        //     BloodTypeSeeder::class,
-        //     GovernorateSeeder::class,
-        //     CitySeeder::class,
-        //     CategorySeeder::class,
-        //     PostSeeder::class,
-        //     ClientSeeder::class,
-        //     settingSeeder::class,
-        //     ContactSeeder::class,
-        //     DonationRequestSeeder::class,
-        //     NotificationSeeder::class,
-        //     PermissionSeeder::class,
-        // ]);
+        $this->call([
+            // BloodTypeSeeder::class,
+            // GovernorateSeeder::class,
+            // CitySeeder::class,
+            // CategorySeeder::class,
+            // PostSeeder::class,
+            // ClientSeeder::class,
+            // settingSeeder::class,
+            // ContactSeeder::class,
+            // DonationRequestSeeder::class,
+            // NotificationSeeder::class,
+            PermissionSeeder::class,
+        ]);
         // $city->clients()->attach($client->id);
         // $client = Client::factory()->create();
         // $post = Post::factory()->create();

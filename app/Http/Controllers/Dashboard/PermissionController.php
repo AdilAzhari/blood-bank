@@ -9,20 +9,30 @@ use Spatie\Permission\Models\Permission;
 
 class PermissionController extends Controller
 {
-    public function index()
+    public function index(request $request)
     {
         // $this->authorize('viewAny', Permission::class);
 
-        $query = request()->input('search');
-        $permissions = Permission::when($query, function ($queryBuilder, $query) {
-            return $queryBuilder->where('name', 'LIKE', "%{$query}%");
-        })->get();
+        $query = Permission::query();
+
+        if ($request->filled('name')) {
+            $query->where('name', 'like', '%' . $request->name . '%');
+        }
+
+        $permissions = $query->paginate(10);
+
         return view('admin.permissions.index', compact('permissions'));
     }
 
+    public function create()
+    {
+        // $this->authorize('create', Permission::class);
+
+        return view('admin.permissions.create');
+    }
     public function store(Request $request)
     {
-        $this->authorize('create', Permission::class);
+        // $this->authorize('create', Permission::class);
 
         $request->validate([
             'name' => 'required|string|max:255|unique:permissions,name',
@@ -48,7 +58,7 @@ class PermissionController extends Controller
             'name' => 'required|string|max:255|' . Rule::unique('permissions', 'name')->ignore($permission->id),
         ]);
 
-        $permission->update($request->only('name', 'description'));
+        $permission->update($request->only('name'));
 
         return to_route('permissions.index')->with('Info', 'Permission updated successfully!');
     }
@@ -60,5 +70,29 @@ class PermissionController extends Controller
         $permission->delete();
 
         return to_route('permissions.index')->with('Danger', 'Permission deleted successfully!');
+    }
+
+    public function trash()
+    {
+        $trashedPermissions = Permission::onlyTrashed()->paginate(10);
+        return view('permissions.trash', compact('trashedPermissions'));
+    }
+
+    public function restore($id)
+    {
+        $permission = Permission::withTrashed()->find($id);
+        if ($permission) {
+            $permission->restore();
+        }
+        return redirect()->route('permissions.trash')->with('success', 'Permission restored successfully.');
+    }
+
+    public function forceDelete($id)
+    {
+        $permission = Permission::withTrashed()->find($id);
+        if ($permission) {
+            $permission->forceDelete();
+        }
+        return redirect()->route('permissions.trash')->with('success', 'Permission permanently deleted.');
     }
 }

@@ -6,56 +6,74 @@
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="{{ route('home') }}">Home</a></li>
                 <li class="breadcrumb-item"><a href="{{ route('users.index') }}">Users</a></li>
-                <li class="breadcrumb-item active" aria-current="page">Create User</li>
+                <li class="breadcrumb-item active" aria-current="page">Edit User</li>
             </ol>
         </nav>
 
         <div class="card shadow mb-4">
             <div class="card-body">
                 <h1 class="h3 mb-4 text-gray-800">Create User</h1>
-                <form action="{{ route('users.store') }}" method="POST">
+
+                <form action="{{ route('users.update', $user->id) }}" method="POST">
                     @csrf
-                    <div class="form-group">
-                        <label for="name">User Name</label>
-                        <input type="text" name="name" class="form-control @error('name') is-invalid @enderror" id="name" placeholder="Enter user name" value="{{ old('name') }}">
+                    @method('PUT')
+
+                    <div class="form-group
+                        @error('name') has-error @enderror">
+                        <label for="name">Name</label>
+                        <input type="text" name="name" id="name" class="form-control"
+                            value="{{ old('name', $user->name) }}">
                         @error('name')
-                            <span class="invalid-feedback" role="alert">
-                                <strong>{{ $message }}</strong>
-                            </span>
+                            <p class="form-text text-danger">{{ $message }}</p>
                         @enderror
                     </div>
-                    <div class="form-group mt-3">
+
+                    <div class="form-group
+                        @error('email') has-error @enderror">
                         <label for="email">Email</label>
-                        <input type="email" name="email" class="form-control @error('email') is-invalid @enderror" id="email" placeholder="Enter email" value="{{ old('email') }}">
+                        <input type="email" name="email" id="email" class="form-control"
+                            value="{{ old('email', $user->email) }}">
                         @error('email')
-                            <span class="invalid-feedback" role="alert">
-                                <strong>{{ $message }}</strong>
-                            </span>
+                            <p class="form-text text-danger">{{ $message }}</p>
                         @enderror
                     </div>
-                    <div class="form-group mt-3">
+
+                    <div class="form-group
+                        @error('password') has-error @enderror">
                         <label for="password">Password</label>
-                        <input type="password" name="password" class="form-control @error('password') is-invalid @enderror" id="password" placeholder="Enter password">
+                        <input type="password" name="password" id="password" class="form-control">
                         @error('password')
-                            <span class="invalid-feedback" role="alert">
-                                <strong>{{ $message }}</strong>
-                            </span>
+                            <p class="form-text text-danger">{{ $message }}</p>
                         @enderror
                     </div>
-                    <div class="form-group mt-3">
-                        <label for="roles">Assign Roles</label>
-                        <select name="roles[]" class="form-control @error('roles') is-invalid @enderror" id="roles" multiple>
-                            @foreach($roles as $role)
-                                <option value="{{ $role->id }}">{{ $role->name }}</option>
+
+                    <div class="form-group
+                        @error('password_confirmation') has-error @enderror">
+                        <label for="password_confirmation">Confirm Password</label>
+                        <input type="password" name="password_confirmation" id="password_confirmation" class="form-control">
+                        @error('password_confirmation')
+                            <p class="form-text text-danger">{{ $message }}</p>
+                        @enderror
+                    </div>
+
+                    <div class="form-group
+                        @error('role') has-error @enderror">
+                        <label for="role">Role</label>
+                        <select name="role" id="role" class="form-control">
+                            <option value="">Select Role</option>
+                            @foreach ($roles as $role)
+                                <option value="{{ $role->id }}"
+                                    {{ old('role', $user->role_id) == $role->id ? 'selected' : '' }}>
+                                    {{ $role->name }}
+                                </option>
                             @endforeach
                         </select>
-                        @error('roles')
-                            <span class="invalid-feedback" role="alert">
-                                <strong>{{ $message }}</strong>
-                            </span>
+                        @error('role')
+                            <p class="form-text text-danger">{{ $message }}</p>
                         @enderror
                     </div>
-                    <button type="submit" class="btn btn-primary mt-3">Submit</button>
+
+                    <button type="submit" class="btn btn-primary">Update User</button>
                 </form>
             </div>
         </div>

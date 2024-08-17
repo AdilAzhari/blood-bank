@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Dashboard;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\storePermissionRequest;
+use App\Http\Requests\updatePermissionRequest;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use Spatie\Permission\Models\Permission;
@@ -11,32 +13,21 @@ class PermissionController extends Controller
 {
     public function index(request $request)
     {
-        // $this->authorize('viewAny', Permission::class);
+        $this->authorize('viewAny', Permission::class);
 
-        $query = Permission::query();
-
-        if ($request->filled('name')) {
-            $query->where('name', 'like', '%' . $request->name . '%');
-        }
-
-        $permissions = $query->paginate(10);
+        $query = Permission::filterByName($request->name)->paginate(10);
 
         return view('admin.permissions.index', compact('permissions'));
     }
 
     public function create()
     {
-        // $this->authorize('create', Permission::class);
+        $this->authorize('create', Permission::class);
 
         return view('admin.permissions.create');
     }
-    public function store(Request $request)
+    public function store(storePermissionRequest $request)
     {
-        // $this->authorize('create', Permission::class);
-
-        $request->validate([
-            'name' => 'required|string|max:255|unique:permissions,name',
-        ]);
         Permission::create($request->all());
 
         return to_route('permissions.index')->with('Info', 'Permission created successfully!');
@@ -50,14 +41,8 @@ class PermissionController extends Controller
         return view('admin.permissions.edit', compact('permission'));
     }
 
-    public function update(Request $request, Permission $permission)
+    public function update(updatePermissionRequest $request, Permission $permission)
     {
-        $this->authorize('update', $permission);
-
-        $request->validate([
-            'name' => 'required|string|max:255|' . Rule::unique('permissions', 'name')->ignore($permission->id),
-        ]);
-
         $permission->update($request->only('name'));
 
         return to_route('permissions.index')->with('Info', 'Permission updated successfully!');

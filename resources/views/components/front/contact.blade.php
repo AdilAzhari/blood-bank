@@ -7,7 +7,7 @@
             <p class="text">You can contact us to inquire about information and you will be answered</p>
             <div class="row whatsapp">
                 <a href="#">
-                    <img src="{{ asset('front/imgs/whats.png') }}">
+                    <img src="{{ asset('front/img/whats.png') }}">
                     <p dir="ltr">+002 1215454551</p>
                 </a>
             </div>

@@ -13,9 +13,6 @@
 
         <div class="d-flex justify-content-between align-items-center mb-4">
             <h1 class="h3 mb-0 text-gray-800">Posts</h1>
-            @can('create', App\Models\Post::class)
-                <a href="{{ route('posts.create') }}" class="btn btn-primary">Create</a>
-            @endcan
         </div>
 
         <form action="{{ route('posts.index') }}" method="GET" class="mb-4 d-flex flex-column flex-md-row">
@@ -45,11 +42,6 @@
                                     <td>{{ Str::limit($post->content, 50) }}</td>
                                     <td>{{ $post->created_at->diffForHumans() }}</td>
                                     <td class="d-flex">
-                                        @can('update', $post)
-
-                                            <a href="{{ route('posts.edit', $post) }}"
-                                                class="btn btn-warning btn-sm me-2">Edit</a>
-                                        @endcan
                                         @can('delete', $post)
                                             <form action="{{ route('posts.destroy', $post) }}" method="POST"
                                                 onsubmit="return confirm('Are you sure?');">

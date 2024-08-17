@@ -11,7 +11,7 @@ class UpdateCityRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return $this->user()->can('update', City::class);
     }
 
     /**
@@ -22,7 +22,8 @@ class UpdateCityRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'name' => 'required|string|max:255',
+            'governorate_id' => 'required|exists:governorates,id'
         ];
     }
 }

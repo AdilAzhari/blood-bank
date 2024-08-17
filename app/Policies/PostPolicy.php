@@ -3,39 +3,31 @@
 namespace App\Policies;
 
 use App\Models\User;
-use Illuminate\Auth\Access\HandlesAuthorization;
 
-class PostPolicy
+class PostPolicy extends BasePolicy
 {
-    use HandlesAuthorization;
-
     public function viewAny(User $user): bool
     {
-        return $this->hasPermission($user, 'viewAny-post');
+        return $this->checkPermission($user, 'viewAny','post');
     }
 
     public function view(User $user): bool
     {
-        return $this->hasPermission($user, 'view-post');
+        return $this->checkPermission($user, 'view','post');
     }
 
     public function create(User $user): bool
     {
-        return $this->hasPermission($user, 'create-post');
+        return $this->checkPermission($user, 'create','post');
     }
 
     public function update(User $user): bool
     {
-        return $this->hasPermission($user, 'update-post');
+        return $this->checkPermission($user, 'update','post');
     }
 
     public function delete(User $user): bool
     {
-        return $this->hasPermission($user, 'delete-post');
-    }
-
-    private function hasPermission(User $user, string $permissionName): bool
-    {
-        return $user->getPermissionsViaRoles()->contains('name', $permissionName);
+        return $this->checkPermission($user, 'delete','post');
     }
 }

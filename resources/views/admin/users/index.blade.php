@@ -11,7 +11,13 @@
         <div class="card shadow mb-4">
             <div class="card-body">
                 <h1 class="h3 mb-4 text-gray-800">Users</h1>
-                <a href="{{ route('users.create') }}" class="btn btn-primary mb-3">Create User</a>
+                @can('create', App\Models\User::class)
+                    <a href="{{ route('users.create') }}" class="btn btn-primary mb-3">Create User</a>
+                @endcan
+                @can('trashed', App\Models\User::class)
+                    <a href="{{ route('users.trashed') }}" class="btn btn-warning mb-3">Trash</a>
+                @endcan
+
                 <table class="table table-bordered">
                     <thead>
                         <tr>
@@ -32,13 +38,17 @@
                                 <td>{{ $user->roles->pluck('name')->join(', ') }}</td>
                                 <td>{{ $user->created_at->format('Y-m-d H:i:s') }}</td>
                                 <td>
-                                    <a href="{{ route('users.show', $user) }}" class="btn btn-info">Show</a>
-                                    <a href="{{ route('users.edit', $user) }}" class="btn btn-warning">Edit</a>
-                                    <form action="{{ route('users.destroy', $user) }}" method="POST" class="d-inline">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure?')">Delete</button>
-                                    </form>
+                                    @can('update', $user)
+                                        <a href="{{ route('users.edit', $user) }}" class="btn btn-warning">Edit</a>
+                                    @endcan
+                                    @can('delete', $user)
+                                        <form action="{{ route('users.destroy', $user) }}" method="POST" class="d-inline">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="btn btn-danger"
+                                                onclick="return confirm('Are you sure?')">Delete</button>
+                                        </form>
+                                    @endcan
                                 </td>
                             </tr>
                         @endforeach
@@ -48,7 +58,6 @@
             <div class="card-footer">
                 {{ $users->links() }}
             </div>
-            {{-- {{ $users->links() }} --}}
         </div>
     </div>
 @endsection

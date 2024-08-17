@@ -22,28 +22,4 @@ class RoleObserver
     {
         $role->description = ucfirst($role->description);
     }
-
-    /**
-     * Handle the role "deleted" event.
-     */
-    public function deleted(role $role): void
-    {
-        //
-    }
-
-    /**
-     * Handle the role "restored" event.
-     */
-    public function restored(role $role): void
-    {
-        //
-    }
-
-    /**
-     * Handle the role "force deleted" event.
-     */
-    public function forceDeleted(role $role): void
-    {
-        //
-    }
 }

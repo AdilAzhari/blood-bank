@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Dashboard;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\UpdateClientRequest;
 use App\Models\Client;
 use Illuminate\Http\Request;
 
@@ -24,23 +25,9 @@ class ClientController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, client $client)
+    public function update(UpdateClientRequest $updateClientRequest, client $client)
     {
-        $this->authorize('update', $client);
-
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|email|max:255|unique:clients,email,' . $client->id,
-            'd_o_b' => 'required|date',
-            'phone' => 'required|string|max:255',
-            'last_donation_date' => 'required|date',
-            'city_id' => 'required|exists:cities,id',
-            'blood_type_id' => 'required|exists:blood_types,id',
-            'password' => 'nullable|string|min:8|confirmed',
-            'governorate_id' => 'required|exists:governorates,id',
-            'status' => 'nullable',
-        ]);
-        $client->update($request->only([
+        $client->update($updateClientRequest->only([
             'name',
             'email',
             'd_o_b',
@@ -48,11 +35,11 @@ class ClientController extends Controller
             'last_donation_date',
             'city_id',
             'blood_type_id',
-            'password' => bcrypt($request->password),
+            'password' => bcrypt($updateClientRequest->password),
             'status'
         ]));
 
-        $client->governorates()->sync($request->governorate_id);
+        $client->governorates()->sync($updateClientRequest->governorate_id);
 
         return to_route('clients.index')->with('info', 'Client updated successfully');
     }

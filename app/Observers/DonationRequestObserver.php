@@ -40,37 +40,4 @@ class DonationRequestObserver
             $notification->clients()->attach($clients);
         }
     }
-
-
-    /**
-     * Handle the DonationRequest "updated" event.
-     */
-    public function updated(DonationRequest $donationRequest): void
-    {
-        //
-    }
-
-    /**
-     * Handle the DonationRequest "deleted" event.
-     */
-    public function deleted(DonationRequest $donationRequest): void
-    {
-        //
-    }
-
-    /**
-     * Handle the DonationRequest "restored" event.
-     */
-    public function restored(DonationRequest $donationRequest): void
-    {
-        //
-    }
-
-    /**
-     * Handle the DonationRequest "force deleted" event.
-     */
-    public function forceDeleted(DonationRequest $donationRequest): void
-    {
-        //
-    }
 }

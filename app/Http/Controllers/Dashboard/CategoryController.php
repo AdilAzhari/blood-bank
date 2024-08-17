@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Dashboard;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\StoreCategoryRequest;
+use App\Http\Requests\UpdateCityRequest;
 use App\Models\Category;
 use Illuminate\Http\Request;
 
@@ -16,6 +18,7 @@ class CategoryController extends Controller
         $this->authorize('viewAny', category::class);
 
         $categories = Category::paginate(10);
+
         return view('admin.categories.index', compact('categories'));
     }
 
@@ -32,50 +35,39 @@ class CategoryController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StoreCategoryRequest $request)
     {
-        $this->authorize('create', category::class);
+        Category::create($request->only('name'));
 
-        $request->validate([
-            'name' => 'required|string|max:255|min:3',
-        ]);
-        $category = Category::create($request->only('name'));
         return to_route('categories.index')->with('success', 'Category created successfully');
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(category $category)
     {
         $this->authorize('view', category::class);
 
-        $category = Category::findOrFail($id);
         return view('admin.categories.show', compact('category'));
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(category $category)
     {
         $this->authorize('update', category::class);
 
-        $category = Category::findOrFail($id);
         return view('admin.categories.edit',compact('category'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Category $category)
+    public function update(UpdateCityRequest $updateCityRequest, Category $category)
     {
-        $this->authorize('update', category::class);
-
-        $request->validate([
-            'name' => 'required|string|max:255|min:3',
-        ]);
-        $category->update($request->only('name'));
+        $category->update($updateCityRequest->only('name'));
         return to_route('categories.index')->with('success', 'Category updated successfully');
     }
 
@@ -85,16 +77,17 @@ class CategoryController extends Controller
     public function destroy(Category $category)
     {
         $this->authorize('delete', category::class);
-
         $category->delete();
+
         return to_route('categories.index')->with('Danger', 'Category deleted successfully');
     }
 
     public function trashed()
     {
-        $this->authorize('viewAny', Category::class);
+        $this->authorize('trashed', category::class);
 
         $categories = Category::onlyTrashed()->paginate(10);
+
         return view('admin.categories.trash', compact('categories'));
     }
 
@@ -104,6 +97,7 @@ class CategoryController extends Controller
 
         $category = Category::onlyTrashed()->findOrFail($id);
         $category->restore();
+
         return to_route('categories.index')->with('success', 'Category restored successfully');
     }
 
@@ -113,6 +107,7 @@ class CategoryController extends Controller
 
         $category = Category::onlyTrashed()->findOrFail($id);
         $category->forceDelete();
+
         return to_route('categories.index')->with('Danger', 'Category deleted permanently');
     }
 }

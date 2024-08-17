@@ -44,8 +44,8 @@ Route::controller(LoginController::class)->name('front.')->group(function () {
     Route::get('create-account', 'showRegistrationForm')->name('register');
     Route::post('Sign-in', 'login')->name('login');
     Route::post('Sign-Out', 'authLogout')->name('logout');
-    Route::get('password/reset', 'showLinkRequestForm')->name('password.request');
+    Route::get('front.password/reset', 'showLinkRequestForm')->name('password.request.auth');
     Route::post('password/email', 'sendResetLinkEmail')->name('password.email');
-    Route::get('password/reset/{token}', 'showResetForm')->name('password.reset');
-    Route::post('password/reset', 'reset')->name('password.update');
+    Route::get('front.password/reset/{token}', 'showResetForm')->name('password.reset');
+    Route::post('front.password/reset', 'reset')->name('password.update');
 });

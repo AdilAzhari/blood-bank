@@ -15,7 +15,7 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // User::factory(10)->create();
+        User::factory(10)->create();
         $this->call([
             // BloodTypeSeeder::class,
             // GovernorateSeeder::class,
@@ -27,7 +27,7 @@ class DatabaseSeeder extends Seeder
             // ContactSeeder::class,
             // DonationRequestSeeder::class,
             // NotificationSeeder::class,
-            PermissionSeeder::class,
+            // PermissionSeeder::class,
         ]);
         // $city->clients()->attach($client->id);
         // $client = Client::factory()->create();

@@ -2,52 +2,45 @@
 
 namespace App\Policies;
 
-use App\Models\City;
 use App\Models\User;
-use Illuminate\Auth\Access\HandlesAuthorization;
-use Illuminate\Auth\Access\Response;
-
-class CityPolicy
+class CityPolicy extends BasePolicy
 {
-    use HandlesAuthorization;
-
     public function viewAny(User $user): bool
     {
-        return $this->hasPermission($user, 'viewAny-city');
+        return $this->checkPermission($user, 'viewAny','city');
     }
 
     public function view(User $user): bool
     {
-        return $this->hasPermission($user, 'view-city');
-    }
+        return $this->checkPermission($user, 'view','city');
 
+    }
     public function create(User $user): bool
     {
-        return $this->hasPermission($user, 'create-city');
+        return $this->checkPermission($user, 'create','city');
     }
 
     public function update(User $user): bool
     {
-        return $this->hasPermission($user, 'update-city');
+        return $this->checkPermission($user, 'update','city');
     }
 
     public function delete(User $user): bool
     {
-        return $this->hasPermission($user, 'delete-city');
+        return $this->checkPermission($user, 'delete','city');
+    }
+    public function trashed(User $user): bool
+    {
+        return $this->checkPermission($user, 'trashed','city');
     }
 
     public function restore(User $user): bool
     {
-        return $this->hasPermission($user, 'restore-city');
+        return $this->checkPermission($user, 'restore','city');
     }
 
     public function forceDelete(User $user): bool
     {
-        return $this->hasPermission($user, 'forceDelete-city');
-    }
-
-    private function hasPermission(User $user, string $permissionName): bool
-    {
-        return $user->getPermissionsViaRoles()->contains('name', $permissionName);
+        return $this->checkPermission($user, 'forceDelete','city');
     }
 }

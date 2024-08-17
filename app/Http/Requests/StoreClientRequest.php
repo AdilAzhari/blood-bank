@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Models\Client;
 use Illuminate\Foundation\Http\FormRequest;
 
 class StoreClientRequest extends FormRequest
@@ -11,7 +12,7 @@ class StoreClientRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return $this->user()->can('create', Client::class);
     }
 
     /**
@@ -22,7 +23,16 @@ class StoreClientRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'name' => 'required|string|max:255',
+            'email' => ['required','email','max:255','unique:clients,email'],
+            'd_o_b' => 'required|date',
+            'phone' => 'required|string|max:255',
+            'last_donation_date' => 'required|date',
+            'password' => 'nullable|string|min:8|confirmed',
+            'status' => 'nullable',
+            'city_id' => 'required|exists:cities,id',
+            'blood_type_id' => 'required|exists:blood_types,id',
+            'governorate_id' => 'required|exists:governorates,id',
         ];
     }
 }

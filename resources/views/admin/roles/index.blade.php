@@ -13,11 +13,17 @@
 
         <div class="d-flex justify-content-between align-items-center mb-4">
             <h1 class="h3 mb-0 text-gray-800">Roles</h1>
-            <a href="{{ route('roles.create') }}" class="btn btn-primary">Create</a>
+            @can('create', Spatie\Permission\Models\Role::class)
+                <a href="{{ route('roles.create') }}" class="btn btn-primary">Create</a>
+            @endcan
+            @can('viewAny', Spatie\Permission\Models\role::class)
+                <a href="{{ route('roles.trashed') }}" class="btn btn-info">Trashed</a>
+            @endcan
         </div>
 
         <form action="{{ route('roles.index') }}" method="GET" class="mb-4 d-flex flex-column flex-md-row">
-            <input type="text" name="name" class="form-control mb-2 mb-md-0 me-md-2" placeholder="Search by name" value="{{ request('name') }}">
+            <input type="text" name="name" class="form-control mb-2 mb-md-0 me-md-2" placeholder="Search by name"
+                value="{{ request('name') }}">
             <button type="submit" class="btn btn-primary">Search</button>
         </form>
 
@@ -42,12 +48,22 @@
                                     <td>{{ $role->permissions->pluck('name')->join(', ') }}</td>
                                     <td>{{ $role->created_at->diffForHumans() }}</td>
                                     <td class="d-flex">
-                                        <a href="{{ route('roles.edit', $role) }}" class="btn btn-warning btn-sm me-2">Edit</a>
-                                        <form action="{{ route('roles.destroy', $role) }}" method="POST" onsubmit="return confirm('Are you sure?');">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button type="submit" class="btn btn-danger btn-sm">Delete</button>
-                                        </form>
+                                        @can('view', $role)
+                                            <a href="{{ route('roles.show', $role) }}"
+                                                class="btn btn-info btn-sm me-2">View</a>
+                                        @endcan
+                                        @can('update', $role)
+                                            <a href="{{ route('roles.edit', $role) }}"
+                                                class="btn btn-warning btn-sm me-2">Edit</a>
+                                        @endcan
+                                        @can('delete', $role)
+                                            <form action="{{ route('roles.destroy', $role) }}" method="POST"
+                                                onsubmit="return confirm('Are you sure?');">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                                            </form>
+                                        @endcan
                                     </td>
                                 </tr>
                             @empty

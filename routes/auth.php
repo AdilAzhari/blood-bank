@@ -12,10 +12,10 @@ Route::middleware('guest')->group(function () {
         ->name('login');
 
     Volt::route('forgot-password', 'pages.auth.forgot-password')
-        ->name('password.request');
+        ->name('password.auth.request');
 
     Volt::route('reset-password/{token}', 'pages.auth.reset-password')
-        ->name('password.reset');
+        ->name('password.auth.reset');
 });
 
 Route::middleware('auth')->group(function () {
@@ -27,5 +27,5 @@ Route::middleware('auth')->group(function () {
         ->name('verification.verify');
 
     Volt::route('confirm-password', 'pages.auth.confirm-password')
-        ->name('password.confirm');
+        ->name('password.auth.confirm');
 });

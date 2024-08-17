@@ -3,8 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\DonationRequest;
-use App\Http\Requests\StoreDonationRequestRequest;
-use App\Http\Requests\UpdateDonationRequestRequest;
 
 class DonationRequestController
 {
@@ -19,12 +17,12 @@ class DonationRequestController
 
         $donations = $donations->paginate(10);
 
-        return view('donations.index', compact('donations'));
+        return view('admin.donations.index', compact('donations'));
     }
 
     public function show(DonationRequest $donation)
     {
-        return view('donations.show', compact('donation'));
+        return view('admin.donations.show', compact('donation'));
     }
     public function destroy(DonationRequest $donation)
     {

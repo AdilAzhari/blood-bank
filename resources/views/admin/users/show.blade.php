@@ -16,7 +16,9 @@
                 <p><strong>Name:</strong> {{ $user->name }}</p>
                 <p><strong>Email:</strong> {{ $user->email }}</p>
                 <p><strong>Created At:</strong> {{ $user->created_at->format('Y-m-d H:i:s') }}</p>
-                <a href="{{ route('users.edit', $user) }}" class="btn btn-warning mt-3">Edit</a>
+                @can('update', $user)
+                    <a href="{{ route('users.edit', $user) }}" class="btn btn-warning mt-3">Edit</a>
+                @endcan
             </div>
         </div>
     </div>

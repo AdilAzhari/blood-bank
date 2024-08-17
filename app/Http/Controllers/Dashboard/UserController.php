@@ -3,7 +3,8 @@
 namespace App\Http\Controllers\Dashboard;
 
 use App\Http\Controllers\Controller;
-use App\Models\Client;
+use App\Http\Requests\StoreUserRequest;
+use App\Http\Requests\UpdateUserRequest;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Spatie\Permission\Models\Role;
@@ -12,36 +13,22 @@ class UserController extends Controller
 {
     public function index()
     {
-        // $this->authorize('viewAny', user::class);
+        $this->authorize('viewAny', user::class);
 
         $users = user::with('roles')->paginate(8);
-        // $user = user::find(20);
-        // $user->getPermissionsViaRoles();
-        // foreach ($user->getPermissionsViaRoles() as $role) {
-            // dd($user->permissions);
-        // }
         return view('admin.users.index', compact('users'));
     }
 
     public function create()
     {
-        // $this->authorize('create', user::class);
+        $this->authorize('create', user::class);
 
         $roles = Role::all();
         return view('admin.users.create', compact('roles'));
     }
 
-    public function store(Request $request)
+    public function store(StoreUserRequest $request)
     {
-        // $this->authorize('create', user::class);
-
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users',
-            'password' => 'required|string|min:8|confirmed',
-            'roles' => 'required|array'
-        ]);
-
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
@@ -55,7 +42,7 @@ class UserController extends Controller
 
     public function show(User $user)
     {
-        // $this->authorize('view', user::class);
+        $this->authorize('view', user::class);
 
         return view('admin.users.show', compact('user'));
     }
@@ -66,20 +53,9 @@ class UserController extends Controller
         return view('admin.users.edit', compact('user', 'roles'));
     }
 
-    public function update(Request $request, User $user)
+    public function update(UpdateUserRequest $request, User $user)
     {
-        // $this->authorize('update', user::class);
-
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users,email,' . $user->id,
-            'roles' => 'required|array'
-        ]);
-
-        $user->update([
-            'name' => $request->name,
-            'email' => $request->email,
-        ]);
+        $user->update->only('name', 'email');
 
         if ($request->filled('password')) {
             $user->update(['password' => bcrypt($request->password)]);
@@ -97,4 +73,33 @@ class UserController extends Controller
         $user->delete();
         return redirect()->route('users.index')->with('Danger', 'User deleted successfully.');
     }
+
+    public function trashed()
+    {
+        $this->authorize('trashed', user::class);
+
+        $users = user::onlyTrashed()->paginate(8);
+        return view('admin.users.trash', compact('users'));
+    }
+
+    public function restore($id)
+    {
+        $this->authorize('restore', user::class);
+
+        $user = user::onlyTrashed()->findOrFail($id);
+        $user->restore();
+
+        return redirect()->route('users.index')->with('Info', 'User restored successfully.');
+    }
+
+    public function forceDelete($id)
+    {
+        $this->authorize('forceDelete', user::class);
+
+        $user = user::onlyTrashed()->findOrFail($id);
+        $user->forceDelete();
+
+        return redirect()->route('users.index')->with('Danger', 'User deleted successfully.');
+    }
+
 }

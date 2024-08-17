@@ -13,12 +13,15 @@ class PermissionSeeder extends Seeder
      */
     public function run(): void
     {
+        /* This PHP code snippet is a Seeder class named `PermissionSeeder` that is used in Laravel
+        applications to populate the database with predefined permissions. */
         $permissions = [
             'view-role',
             'create-role',
             'update-role',
             'delete-role',
             'viewAny-role',
+            'trashed-role',
             'restore-role',
             'forceDelete-role',
 
@@ -26,6 +29,7 @@ class PermissionSeeder extends Seeder
             'create-permission',
             'update-permission',
             'delete-permission',
+            'trashed-permission',
             'viewAny-permission',
             'restore-permission',
             'forceDelete-permission',
@@ -36,6 +40,7 @@ class PermissionSeeder extends Seeder
             'delete-city',
             'viewAny-city',
             'restore-city',
+            'trashed-city',
             'forceDelete-city',
 
             'view-user',
@@ -44,11 +49,15 @@ class PermissionSeeder extends Seeder
             'delete-user',
             'viewAny-user',
             'restore-user',
+            'trashed-user',
             'forceDelete-user',
 
             'view-client',
             'delete-client',
             'viewAny-client',
+            'trashed-client',
+            'update-client',
+            'trashed-client',
             'restore-client',
             'forceDelete-client',
 
@@ -56,19 +65,17 @@ class PermissionSeeder extends Seeder
             'delete-post',
             'viewAny-post',
             'restore-post',
+            'trashed-post',
             'forceDelete-post',
 
-            'view-bloodtype',
-            'create-bloodtype',
-            'update-bloodtype',
-            'delete-bloodtype',
-            'viewAny-bloodtype',
-            'restore-bloodType',
-            'forceDelete-bloodType',
+            'view-bloodType',
+            'create-bloodType',
+            'viewAny-bloodType',
 
             'view-Donation',
             'delete-Donation',
             'viewAny-Donation',
+            'trashed-Donation',
             'restore-Donation',
             'forceDelete-Donation',
 
@@ -77,6 +84,7 @@ class PermissionSeeder extends Seeder
             'update-category',
             'delete-category',
             'viewAny-category',
+            'trashed-category',
             'restore-category',
             'forceDelete-category',
 
@@ -84,6 +92,7 @@ class PermissionSeeder extends Seeder
             'create-governorate',
             'update-governorate',
             'delete-governorate',
+            'viewAny-governorate',
             'viewAny-governorate',
             'restore-governorate',
             'forceDelete-governorate',
@@ -93,6 +102,7 @@ class PermissionSeeder extends Seeder
             'update-setting',
             'delete-setting',
             'viewAny-setting',
+            'trashed-setting',
             'restore-setting',
             'forceDelete-setting',
 
@@ -100,6 +110,7 @@ class PermissionSeeder extends Seeder
             'create-contact',
             'update-contact',
             'delete-contact',
+            'viewAny-contact',
             'viewAny-contact',
             'restore-contact',
             'forceDelete-contact',

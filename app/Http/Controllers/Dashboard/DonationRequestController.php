@@ -13,7 +13,7 @@ class DonationRequestController extends Controller
      */
     public function index()
     {
-        $this->authorize('viewAny', DonationRequest::class);
+        // $this->authorize('viewAny', DonationRequest::class);
 
         $donations = DonationRequest::query();
 
@@ -27,9 +27,13 @@ class DonationRequestController extends Controller
         return view('admin.donations.index', compact('donations'));
     }
 
+    public function restores(){
+
+    }
+
     public function show(DonationRequest $donation)
     {
-        $this->authorize('view', DonationRequest::class);
+        // $this->authorize('view', DonationRequest::class);
 
         return view('admin.donations.show', compact('donation'));
     }
@@ -40,5 +44,40 @@ class DonationRequestController extends Controller
         $donation->delete();
 
         return to_route('donations.index')->with('Danger', 'Donation deleted successfully.');
+    }
+
+    public function trash()
+    {
+        // $this->authorize('viewAny', DonationRequest::class);
+
+        // $donations = DonationRequest::onlyTrashed()->paginate(10);
+
+        // return view('admin.donations.trashed', compact('donations'));
+    }
+
+    public function restore($id)
+    {
+        $this->authorize('restore', DonationRequest::class);
+
+        $donation = DonationRequest::onlyTrashed()->find($id);
+
+        if ($donation) {
+            $donation->restore();
+        }
+
+        return redirect()->route('donations.index')->with('success', 'Donation restored successfully.');
+    }
+
+    public function forceDelete($id)
+    {
+        $this->authorize('forceDelete', DonationRequest::class);
+
+        $donation = DonationRequest::onlyTrashed()->find($id);
+
+        if ($donation) {
+            $donation->forceDelete();
+        }
+
+        return redirect()->route('donations.index')->with('danger', 'Donation deleted successfully.');
     }
 }

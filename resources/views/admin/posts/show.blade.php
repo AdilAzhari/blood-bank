@@ -17,9 +17,6 @@
                 <p><strong>Title:</strong> {{ $post->title }}</p>
                 <p><strong>Content:</strong> {{ $post->content }}</p>
                 <p><strong>Created At:</strong> {{ $post->created_at->format('Y-m-d H:i:s') }}</p>
-                @can('update', $post)
-                    <a href="{{ route('posts.edit', $post) }}" class="btn btn-warning mt-3">Edit</a>
-                @endcan
             </div>
         </div>
     </div>

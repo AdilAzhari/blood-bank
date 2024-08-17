@@ -16,7 +16,6 @@ class HomeController extends Controller
 
     public function index(request $request)
     {
-
         $bloodTypes = BloodType::all();
         $cities = City::all();
         $articles = Post::take(9)->get();
@@ -45,21 +44,17 @@ class HomeController extends Controller
 
     public function donationRequest(Request $request)
     {
-        $query = DonationRequest::with(['bloodType', 'city']);
+        $donations = DonationRequest::query();
 
-        if ($request->has('blood_type_id') && $request->blood_type_id) {
-            $query->whereHas('bloodType', function ($q) use ($request) {
-                $q->where('id', $request->blood_type_id);
-            });
+        if ($request->has('blood_type_id') && $request->blood_type_id != '') {
+            $donations->where('blood_type_id', $request->blood_type_id);
         }
 
-        if ($request->has('city_id') && $request->city_id) {
-            $query->whereHas('city', function ($q) use ($request) {
-                $q->where('id', $request->city_id);
-            });
+        if ($request->has('city_id') && $request->city_id != '') {
+            $donations->where('city_id', $request->city_id);
         }
 
-        $donationRequests = $query->paginate(8);
+        $donationRequests = $donations->paginate(8);
         $bloodTypes = BloodType::all();
         $cities = City::all();
         $articles = Post::take(9)->get();

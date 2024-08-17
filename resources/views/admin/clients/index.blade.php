@@ -11,9 +11,6 @@
         <div class="card shadow mb-4">
             <div class="card-body">
                 <h1 class="h3 mb-4 text-gray-800">Clients</h1>
-                @can('create', App\Models\Client::class)
-                    <a href="{{ route('clients.create') }}" class="btn btn-primary mb-3">Create Client</a>
-                @endcan
                 <table class="table table-bordered">
                     <thead>
                         <tr>

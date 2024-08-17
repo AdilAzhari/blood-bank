@@ -16,7 +16,6 @@
                 <p><strong>ID:</strong> {{ $bloodType->id }}</p>
                 <p><strong>Name:</strong> {{ $bloodType->name }}</p>
                 <p><strong>Created At:</strong> {{ $bloodType->created_at->format('Y-m-d H:i:s') }}</p>
-                <a href="{{ route('blood_types.edit', $bloodType) }}" class="btn btn-warning mt-3">Edit</a>
             </div>
         </div>
     </div>

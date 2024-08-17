@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Models\City;
 use Illuminate\Foundation\Http\FormRequest;
 
 class StoreCityRequest extends FormRequest
@@ -11,7 +12,7 @@ class StoreCityRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return $this->user()->can('create', City::class);
     }
 
     /**
@@ -22,7 +23,8 @@ class StoreCityRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'name' => 'required|string|max:255',
+            'governorate_id' => 'required|exists:governorates,id'
         ];
     }
 }

@@ -17,13 +17,8 @@ class CityController extends Controller
     {
         $this->authorize('viewAny', city::class);
 
-        $query = City::query();
-
-        if ($request->filled('name')) {
-            $query->where('name', 'like', '%' . $request->name . '%');
-        }
-
-        $cities = $query->paginate(10);
+        $cities = City::filterByName($request->name)
+        ->paginate(10);
 
         return view('admin.cities.index', compact('cities'));
     }
@@ -36,6 +31,7 @@ class CityController extends Controller
         $this->authorize('view', city::class);
 
         $governorates = Governorate::all();
+
         return view('admin.cities.create', compact('governorates'));
     }
 
@@ -44,9 +40,9 @@ class CityController extends Controller
      */
     public function store(StoreCityRequest $request)
     {
-        $this->authorize('create', city::class);
 
-        $city = City::create($request->only('name', 'governorate_id'));
+        City::create($request->only('name', 'governorate_id'));
+
         return to_route('cities.index')->with('success', 'City created successfully');
     }
 
@@ -68,7 +64,7 @@ class CityController extends Controller
         $this->authorize('create', city::class);
 
         $governorates = Governorate::all();
-        return view('cities.edit', compact('city', 'governorates'));
+        return view('admin.cities.edit', compact('city', 'governorates'));
     }
 
     /**
@@ -76,16 +72,10 @@ class CityController extends Controller
      */
     public function update(Request $request, city $city)
     {
-        $this->authorize('update', city::class);
-
-        $request->validate([
-            'name' => 'required|string|max:255|min:3',
-            'governorate_id' => 'required|exists:governorates,id',
-        ]);
         $city->update($request->only('name', 'governorate_id'));
+
         return to_route('cities.index')->with('success', 'City updated successfully');
     }
-
     /**
      * Remove the specified resource from storage.
      */

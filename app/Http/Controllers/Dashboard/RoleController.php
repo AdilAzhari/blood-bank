@@ -3,7 +3,8 @@
 namespace App\Http\Controllers\Dashboard;
 
 use App\Http\Controllers\Controller;
-use App\Models\User;
+use App\Http\Requests\storeRoleRequest;
+use App\Http\Requests\UpdateRoleRequest;
 use Illuminate\Http\Request;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
@@ -12,21 +13,18 @@ class RoleController extends Controller
 {
     public function index(Request $request)
     {
-        // $this->authorize('viewAny', Role::class);
+        $this->authorize('viewAny', Role::class);
 
-        $query = Role::query();
-
-        if ($request->filled('name')) {
-            $query->where('name', 'like', '%' . $request->name . '%');
-        }
-        $roles = Role::with('permissions')->paginate(10);
+        $roles = Role::filterByName($request->input('name'))
+                ->with('permissions')
+                ->paginate(10);
 
         return view('admin.roles.index', compact('roles'));
     }
 
     public function show(Role $role)
     {
-        // $this->authorize('view', $role);
+        $this->authorize('view', $role);
 
         return view('admin.roles.show', compact('role'));
     }
@@ -38,14 +36,8 @@ class RoleController extends Controller
     }
 
 
-    public function store(Request $request)
+    public function store(storeRoleRequest $request)
     {
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'permissions' => 'required|array',
-            'permissions.*' => 'exists:permissions,id',
-        ]);
-
         $role = Role::create($request->only('name'));
         $role->permissions()->sync($request->permissions);
 
@@ -59,14 +51,8 @@ class RoleController extends Controller
         return view('admin.Roles.Edit', compact('role', 'permissions'));
     }
 
-    public function update(Request $request, Role $role)
+    public function update(UpdateRoleRequest $request, Role $role)
     {
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'permissions' => 'required|array',
-            'permissions.*' => 'exists:permissions,id',
-        ]);
-
         $role->update($request->only('name'));
         $role->permissions()->sync($request->permissions);
 
@@ -80,12 +66,16 @@ class RoleController extends Controller
 
     public function trash()
     {
+        $this->authorize('viewAny', Role::class);
+
         $trashedRoles = Role::onlyTrashed()->paginate(10);
         return view('roles.trash', compact('trashedRoles'));
     }
 
     public function restore($id)
     {
+        $this->authorize('restore', Role::class);
+
         $role = Role::withTrashed()->find($id);
         if ($role) {
             $role->restore();
@@ -95,6 +85,8 @@ class RoleController extends Controller
 
     public function forceDelete($id)
     {
+        $this->authorize('forceDelete', Role::class);
+
         $role = Role::withTrashed()->find($id);
         if ($role) {
             $role->forceDelete();

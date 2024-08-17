@@ -16,10 +16,8 @@ class BloodTypeController extends Controller
     {
         $this->authorize('viewAny', BloodType::class);
 
-        $bloodTypes = BloodType::with('donations')->get();
-        dd($bloodTypes->clients);
-        $clients = Client::where()->get();
-        return view('admin.bloodType.index',compact('bloodTypes'));
+        $bloodTypes = BloodType::all();
+        return view('admin.bloodType.index', compact('bloodTypes'));
     }
 
     /**
@@ -30,40 +28,5 @@ class BloodTypeController extends Controller
         $this->authorize('view', BloodType::class);
 
         return view('admin.bloodType.show', compact('bloodType'));
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(BloodType $bloodType)
-    {
-        $this->authorize('create', BloodType::class);
-
-        return view('admin.bloodType.edit', compact('bloodType'))->with('Info', 'Blood Type Updated Successfully');
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, BloodType $bloodType)
-    {
-        $this->authorize('update', BloodType::class);
-
-        $request->validate([
-            'name' => 'required|string|max:255',
-        ]);
-        $bloodType->update($request->all());
-        return to_route('bloodType.index')->with('Info', 'Blood Type Updated Successfully');
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(BloodType $bloodType)
-    {
-        $this->authorize('delete', BloodType::class);
-
-        $bloodType->delete();
-        return to_route('bloodType.index')->with('Danger', 'Blood Type Deleted Successfully');
     }
 }

@@ -14,9 +14,6 @@ return new class extends Migration
         Schema::create('clientables', function (Blueprint $table) {
             $table->foreignId('client_id')->constrained('clients')->cascadeOnDelete();
             $table->morphs('clientable');
-            // $table->string('clientable_type', 255);
-            // $table->unsignedBigInteger('clientable_id');
-
             $table->primary(['client_id', 'clientable_type', 'clientable_id']);
             $table->timestamps();
         });
@@ -28,5 +25,6 @@ return new class extends Migration
     public function down(): void
     {
         Schema::dropIfExists('clientables');
+
     }
 };

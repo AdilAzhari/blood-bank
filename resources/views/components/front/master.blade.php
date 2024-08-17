@@ -14,7 +14,7 @@
 
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css">
-    <link rel="icon" href="{{ asset('front/imgs/Icon.png') }}">
+    <link rel="icon" href="{{ asset('front/assets/imgs/Icon.png') }}">
 
     <!-- Owl Carousel -->
     <link rel="stylesheet" href="{{ asset('front/assets/css/owl.carousel.min.css') }}">
@@ -27,6 +27,7 @@
     <link rel="stylesheet" href="{{ asset('front/assets/css/style-ltr.css') }}">
 
     <title>Blood Bank</title>
+    <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
 </head>
 <body class="{{ $bodyClass }}">
     <x-front.header />

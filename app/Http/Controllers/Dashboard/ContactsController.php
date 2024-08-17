@@ -11,31 +11,31 @@ class ContactsController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(Request $request)
+    public function index()
     {
         $this->authorize('viewAny', Contact::class);
 
-        $contacts = Contact::query();
+        $contact = Contact::first()->get();
 
-        if ($request->has('search')) {
-            $contacts->where('name', 'like', '%' . $request->search . '%')
-                ->orWhere('email', 'like', '%' . $request->search . '%');
-        }
-
-        $contacts = $contacts->paginate(10);
-
-        return view('admin.contacts.index', compact('contacts'));
+        return view('admin.contacts.index', compact('contact'));
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-
-    public function destroy(Contact $contact)
+    public function update(Request $request, Contact $contact)
     {
-        $this->authorize('delete', Contact::class);
+        $this->authorize('update', Contact::class);
 
-        $contact->delete();
-        return to_route('contacts.index')->with('success', 'Contact deleted successfully.');
+        $request->validate([
+            'phone' => 'required|string|max:255',
+            'address' => 'required|string|max:255',
+            'phone_number' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255',
+            'fb_link' => 'required|string|url|max:255',
+            'tw_link' => 'required|string|url|max:255',
+            'insta_link' => 'required|string|url|max:255',
+        ]);
+
+        $contact->update($request->all());
+
+        return redirect()->back()->with('success', 'Contact updated successfully.');
     }
 }

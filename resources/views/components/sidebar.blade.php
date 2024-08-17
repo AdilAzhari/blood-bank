@@ -122,7 +122,7 @@
                     </li>
                 @endcan
                 <!-- Donations Link -->
-                @can('viewAny', App\Models\Donation::class)
+                @can('viewAny', App\Models\DonationRequest::class)
                     <li class="nav-item">
                         <a href="{{ route('donations.index') }}" class="nav-link">
                             <i class="nav-icon fas fa-hand-holding-heart"></i>

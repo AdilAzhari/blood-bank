@@ -1,3 +1,4 @@
+```markdown
 # Blood Bank Management System
 
 ## Overview
@@ -13,6 +14,8 @@ The Blood Bank Management System is a comprehensive application designed to mana
 - **Notifications**: Send notifications via email and push notifications.
 - **API Integration**: Expose and consume APIs for data exchange.
 - **File Uploads**: Handle file uploads for documentation and records.
+- **Permissions Management**: Manage user roles and permissions with Spatie's Laravel Permission package.
+- **UI Components**: Utilize Laravel UI for authentication scaffolding and Bootstrap for front-end components.
 
 ## Technologies Used
 
@@ -20,6 +23,9 @@ The Blood Bank Management System is a comprehensive application designed to mana
 - **Frontend**: AdminLTE (for the admin panel), Bootstrap
 - **Database**: MySQL
 - **Other**: Laravel Notification Channels, Laravel APIs, File Storage
+- **Packages**:
+  - `laravel/ui`: Provides authentication scaffolding for Laravel.
+  - `spatie/laravel-permission`: Manages roles and permissions in the application.
 
 ## Installation
 
@@ -40,6 +46,14 @@ cd bloodbank-project
 
 ```bash
 composer install
+```
+
+### Install Additional Packages
+
+Install Laravel UI and Spatie Laravel Permission:
+
+```bash
+composer require laravel/ui spatie/laravel-permission
 ```
 
 ### Set Up Environment

@@ -18,7 +18,7 @@ class CityController extends Controller
         $this->authorize('viewAny', city::class);
 
         $cities = City::filterByName($request->name)
-        ->paginate(10);
+            ->paginate(10);
 
         return view('admin.cities.index', compact('cities'));
     }
@@ -64,6 +64,7 @@ class CityController extends Controller
         $this->authorize('create', city::class);
 
         $governorates = Governorate::all();
+
         return view('admin.cities.edit', compact('city', 'governorates'));
     }
 
@@ -76,6 +77,7 @@ class CityController extends Controller
 
         return to_route('cities.index')->with('success', 'City updated successfully');
     }
+
     /**
      * Remove the specified resource from storage.
      */
@@ -93,6 +95,7 @@ class CityController extends Controller
         $this->authorize('viewAny', City::class);
 
         $trashedCities = City::onlyTrashed()->paginate(10);
+
         return view('cities.trash', compact('trashedCities'));
     }
 
@@ -104,6 +107,7 @@ class CityController extends Controller
         if ($city) {
             $city->restore();
         }
+
         return redirect()->route('cities.trash')->with('success', 'City restored successfully.');
     }
 
@@ -115,6 +119,7 @@ class CityController extends Controller
         if ($city) {
             $city->forceDelete();
         }
+
         return redirect()->route('cities.trash')->with('success', 'City permanently deleted.');
     }
 }

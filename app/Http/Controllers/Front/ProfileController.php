@@ -12,7 +12,7 @@ class ProfileController extends Controller
     {
         $user = Auth::guard('client')->user();
 
-        if(!$user) {
+        if (! $user) {
             return redirect()->route('front.login');
         }
 
@@ -25,7 +25,7 @@ class ProfileController extends Controller
     {
         $request->validate([
             'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:clients,email,' . Auth::guard('client')->id(),
+            'email' => 'required|string|email|max:255|unique:clients,email,'.Auth::guard('client')->id(),
             'phone' => 'required|string|max:255',
             'password' => 'nullable|string|min:8|confirmed',
         ]);
@@ -41,5 +41,4 @@ class ProfileController extends Controller
 
         return redirect()->route('profile.show')->with('success', 'Profile updated successfully.');
     }
-
 }

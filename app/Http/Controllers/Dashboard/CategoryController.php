@@ -6,7 +6,6 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreCategoryRequest;
 use App\Http\Requests\UpdateCityRequest;
 use App\Models\Category;
-use Illuminate\Http\Request;
 
 class CategoryController extends Controller
 {
@@ -59,7 +58,7 @@ class CategoryController extends Controller
     {
         $this->authorize('update', category::class);
 
-        return view('admin.categories.edit',compact('category'));
+        return view('admin.categories.edit', compact('category'));
     }
 
     /**
@@ -68,6 +67,7 @@ class CategoryController extends Controller
     public function update(UpdateCityRequest $updateCityRequest, Category $category)
     {
         $category->update($updateCityRequest->only('name'));
+
         return to_route('categories.index')->with('success', 'Category updated successfully');
     }
 

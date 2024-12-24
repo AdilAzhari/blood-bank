@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Front;
 
 use App\Http\Controllers\Controller;
 use App\Models\Post;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class FavoriteController extends Controller
@@ -12,6 +11,7 @@ class FavoriteController extends Controller
     public function index()
     {
         $favorites = Auth::guard('client')->user()->favorites;
+
         return view('front.profile', compact('favorites'));
     }
 
@@ -26,5 +26,4 @@ class FavoriteController extends Controller
 
         return redirect()->back();
     }
-
 }

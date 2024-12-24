@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Dashboard;
 
 use App\Http\Controllers\Controller;
 use App\Models\DonationRequest;
-use Illuminate\Http\Request;
 
 class DonationRequestController extends Controller
 {
@@ -18,8 +17,8 @@ class DonationRequestController extends Controller
         $donations = DonationRequest::query();
 
         if (request()->has('search')) {
-            $donations->where('name', 'like', '%' . request()->search . '%')
-                ->orWhere('email', 'like', '%' . request()->search . '%');
+            $donations->where('name', 'like', '%'.request()->search.'%')
+                ->orWhere('email', 'like', '%'.request()->search.'%');
         }
 
         $donations = $donations->paginate(10);
@@ -27,9 +26,7 @@ class DonationRequestController extends Controller
         return view('admin.donations.index', compact('donations'));
     }
 
-    public function restores(){
-
-    }
+    public function restores() {}
 
     public function show(DonationRequest $donation)
     {
@@ -37,6 +34,7 @@ class DonationRequestController extends Controller
 
         return view('admin.donations.show', compact('donation'));
     }
+
     public function destroy(DonationRequest $donation)
     {
         $this->authorize('delete', DonationRequest::class);

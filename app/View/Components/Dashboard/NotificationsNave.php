@@ -8,7 +8,10 @@ use Illuminate\View\Component;
 
 class NotificationsNave extends Component
 {
-    public $count,$notification;
+    public $count;
+
+    public $notification;
+
     /**
      * Create a new component instance.
      */

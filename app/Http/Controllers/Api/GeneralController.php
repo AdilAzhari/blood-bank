@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\BloodTypeResource;
 use App\Http\Resources\CityResource;
-use App\Http\Resources\GovernorateResource;
 use App\Models\BloodType;
 use App\Models\Category;
 use App\Models\City;
@@ -19,21 +18,25 @@ use Knuckles\Scribe\Attributes\BodyParam;
 class GeneralController extends Controller
 {
     use ApiResponser;
+
     public function governorates()
     {
         $governorates = Governorate::all();
+
         return $this->successResponse($governorates, 'Governorates Retrieved Successfully');
     }
 
     public function cities()
     {
         $cities = City::all();
+
         return $this->successResponse(CityResource::collection($cities), 'Cities Retrieved Successfully');
     }
 
     public function settings()
     {
         $settings = Setting::first();
+
         return $this->successResponse($settings, 'Settings Retrieved Successfully');
     }
 
@@ -54,12 +57,14 @@ class GeneralController extends Controller
     public function categories()
     {
         $categories = Category::all();
+
         return $this->successResponse($categories, 'Categories Retrieved Successfully');
     }
 
     public function bloodTypes()
     {
         $bloodTypes = BloodType::all();
+
         return $this->successResponse(BloodTypeResource::collection($bloodTypes), 'Blood Types Retrieved Successfully');
     }
 }

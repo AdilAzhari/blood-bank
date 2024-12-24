@@ -6,7 +6,6 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreUserRequest;
 use App\Http\Requests\UpdateUserRequest;
 use App\Models\User;
-use Illuminate\Http\Request;
 use Spatie\Permission\Models\Role;
 
 class UserController extends Controller
@@ -16,6 +15,7 @@ class UserController extends Controller
         $this->authorize('viewAny', user::class);
 
         $users = user::with('roles')->paginate(8);
+
         return view('admin.users.index', compact('users'));
     }
 
@@ -24,6 +24,7 @@ class UserController extends Controller
         $this->authorize('create', user::class);
 
         $roles = Role::all();
+
         return view('admin.users.create', compact('roles'));
     }
 
@@ -50,6 +51,7 @@ class UserController extends Controller
     public function edit(User $user)
     {
         $roles = Role::all();
+
         return view('admin.users.edit', compact('user', 'roles'));
     }
 
@@ -71,6 +73,7 @@ class UserController extends Controller
         $this->authorize('delete', user::class);
 
         $user->delete();
+
         return redirect()->route('users.index')->with('Danger', 'User deleted successfully.');
     }
 
@@ -79,6 +82,7 @@ class UserController extends Controller
         $this->authorize('trashed', user::class);
 
         $users = user::onlyTrashed()->paginate(8);
+
         return view('admin.users.trash', compact('users'));
     }
 
@@ -101,5 +105,4 @@ class UserController extends Controller
 
         return redirect()->route('users.index')->with('Danger', 'User deleted successfully.');
     }
-
 }

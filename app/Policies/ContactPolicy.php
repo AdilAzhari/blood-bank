@@ -8,10 +8,11 @@ class ContactPolicy extends BasePolicy
 {
     public function viewAny(User $user): bool
     {
-        return $this->checkPermission($user, 'viewAny','contact');
+        return $this->checkPermission($user, 'viewAny', 'contact');
     }
+
     public function delete(User $user): bool
     {
-        return $this->checkPermission($user, 'delete','contact');
+        return $this->checkPermission($user, 'delete', 'contact');
     }
 }

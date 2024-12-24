@@ -12,7 +12,7 @@ use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable
 {
-    use HasFactory, Notifiable, HasApiTokens, HasRoles,SoftDeletes;
+    use HasApiTokens, HasFactory, HasRoles, Notifiable,SoftDeletes;
 
     /**
      * The attributes that are mass assignable.
@@ -34,6 +34,11 @@ class User extends Authenticatable
         'password',
         'remember_token',
     ];
+
+    public static function count()
+    {
+        return self::count();
+    }
 
     /**
      * Get the attributes that should be cast.

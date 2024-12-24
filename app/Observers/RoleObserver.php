@@ -3,7 +3,6 @@
 namespace App\Observers;
 
 use Spatie\Permission\Contracts\Role;
-use Spatie\Permission\Models\Role as ModelsRole;
 
 class RoleObserver
 {

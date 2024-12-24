@@ -9,24 +9,27 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class City extends Model
 {
     use HasFactory,SoftDeletes;
+
     protected $fillable = [
         'name',
         'governorate_id',
     ];
+
     public function governorate()
     {
         return $this->belongsTo(Governorate::class)->withDefault('No Governorate');
     }
+
     public function clients()
     {
-        return $this->morphedByMany(Client::class,'clientable');
+        return $this->morphedByMany(Client::class, 'clientable');
     }
 
-// In the City model
+    // In the City model
     public function scopeFilterByName($query, $name)
     {
         if ($name) {
-            return $query->where('name', 'like', '%' . $name . '%');
+            return $query->where('name', 'like', '%'.$name.'%');
         }
 
         return $query;

@@ -24,7 +24,7 @@ class StoreCityRequest extends FormRequest
     {
         return [
             'name' => 'required|string|max:255',
-            'governorate_id' => 'required|exists:governorates,id'
+            'governorate_id' => 'required|exists:governorates,id',
         ];
     }
 }

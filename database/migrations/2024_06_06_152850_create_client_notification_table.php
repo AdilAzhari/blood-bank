@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        if(Schema::hasTable('client_notification')) {
+        if (Schema::hasTable('client_notification')) {
             return;
         }
         Schema::create('client_notification', function (Blueprint $table) {

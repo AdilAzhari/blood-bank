@@ -23,31 +23,30 @@ Route::view('profile', 'profile')
 require __DIR__.'/auth.php';
 require __DIR__.'/front.php';
 
+Route::middleware(['auth', 'AdminAuthIfUnauthenticated'])->prefix('admin')->group(function () {
 
-Route::middleware(['auth','AdminAuthIfUnauthenticated'])->prefix('admin')->group(function () {
-
-    route::Resource('/posts',PostController::class);
+    route::Resource('/posts', PostController::class);
     Route::controller(postController::class)->prefix('/posts')->name('posts.')->group(function () {
         Route::get('/trashed', 'trashed')->name('trashed');
         Route::get('/restore/{post}', 'restore')->name('restore');
         Route::delete('/forceDelete/{post}', 'forceDelete')->name('forceDelete');
     });
 
-    route::Resource('/roles',RoleController::class);
+    route::Resource('/roles', RoleController::class);
     Route::controller(roleController::class)->prefix('/roles')->name('roles.')->group(function () {
         Route::get('/trashed', 'trashed')->name('trashed');
         Route::get('/restore/{role}', 'restore')->name('restore');
         Route::delete('/forceDelete/{role}', 'forceDelete')->name('forceDelete');
     });
 
-    route::Resource('/permissions',PermissionController::class);
+    route::Resource('/permissions', PermissionController::class);
     Route::controller(permissionController::class)->prefix('/permissions')->name('permissions.')->group(function () {
         Route::get('/trashed', 'trashed')->name('trashed');
         Route::get('/restore/{permission}', 'restore')->name('restore');
         Route::delete('/forceDelete/{permission}', 'forceDelete')->name('forceDelete');
     });
 
-    route::Resource('/users',UserController::class);
+    route::Resource('/users', UserController::class);
     Route::controller(userController::class)->prefix('/users')->name('users.')->group(function () {
         Route::get('/trashed', 'trashed')->name('trashed');
         Route::get('/restore/{user}', 'restore')->name('restore');

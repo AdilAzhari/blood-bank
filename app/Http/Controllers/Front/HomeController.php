@@ -9,11 +9,9 @@ use App\Models\DonationRequest;
 use App\Models\Post;
 use App\Models\Setting;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 
 class HomeController extends Controller
 {
-
     public function index(request $request)
     {
         $bloodTypes = BloodType::all();
@@ -21,24 +19,28 @@ class HomeController extends Controller
         $articles = Post::take(9)->get();
         $donationRequests = DonationRequest::take(8)->latest()->get();
         $Setting = Setting::first();
+
         return view('front.home', compact('articles', 'donationRequests', 'bloodTypes', 'cities', 'Setting'));
     }
 
     public function about()
     {
         $about = Setting::all();
+
         return view('front.about', compact('about'));
     }
 
     public function contactUs()
     {
         $Setting = Setting::first();
+
         return view('front.contact-us', compact('Setting'));
     }
 
     public function whoAreUs()
     {
         $about = Setting::pluck('about_app')->first();
+
         return view('front.who-are-us', compact('about'));
     }
 
@@ -62,7 +64,6 @@ class HomeController extends Controller
         return view('front.donationRequest', compact('articles', 'donationRequests', 'bloodTypes', 'cities'));
     }
 
-
     public function insideRequest(DonationRequest $donationRequest)
     {
         return view('front.inside-requests', compact('donationRequest'));
@@ -72,6 +73,7 @@ class HomeController extends Controller
     {
         $articles = Post::all();
         $Article = $articles->first();
+
         return view('front.articles', compact('articles', 'Article'));
     }
 
@@ -79,11 +81,14 @@ class HomeController extends Controller
     {
         $articles = Post::all();
         $article = $post;
+
         return view('front.showArticle', compact('articles', 'article'));
     }
+
     public function donationRequestDetails($id)
     {
         $donationRequest = DonationRequest::find($id);
+
         return view('front.donation-request-details', compact('donationRequest'));
     }
 }

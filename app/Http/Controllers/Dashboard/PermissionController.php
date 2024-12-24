@@ -6,7 +6,6 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\storePermissionRequest;
 use App\Http\Requests\updatePermissionRequest;
 use Illuminate\Http\Request;
-use Illuminate\Validation\Rule;
 use Spatie\Permission\Models\Permission;
 
 class PermissionController extends Controller
@@ -17,6 +16,7 @@ class PermissionController extends Controller
 
         $query = Permission::filterByName($request->name)->paginate(10);
 
+        $permissions = null;
         return view('admin.permissions.index', compact('permissions'));
     }
 
@@ -26,13 +26,13 @@ class PermissionController extends Controller
 
         return view('admin.permissions.create');
     }
+
     public function store(storePermissionRequest $request)
     {
         Permission::create($request->all());
 
         return to_route('permissions.index')->with('Info', 'Permission created successfully!');
     }
-
 
     public function edit(Permission $permission)
     {
@@ -60,6 +60,7 @@ class PermissionController extends Controller
     public function trash()
     {
         $trashedPermissions = Permission::onlyTrashed()->paginate(10);
+
         return view('permissions.trash', compact('trashedPermissions'));
     }
 
@@ -69,6 +70,7 @@ class PermissionController extends Controller
         if ($permission) {
             $permission->restore();
         }
+
         return redirect()->route('permissions.trash')->with('success', 'Permission restored successfully.');
     }
 
@@ -78,6 +80,7 @@ class PermissionController extends Controller
         if ($permission) {
             $permission->forceDelete();
         }
+
         return redirect()->route('permissions.trash')->with('success', 'Permission permanently deleted.');
     }
 }

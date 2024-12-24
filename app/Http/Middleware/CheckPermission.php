@@ -5,8 +5,6 @@ namespace App\Http\Middleware;
 use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Spatie\Permission\Models\Permission;
-use Symfony\Component\HttpFoundation\Response;
 
 class CheckPermission
 {
@@ -17,7 +15,7 @@ class CheckPermission
      */
     public function handle($request, Closure $next, $permission)
     {
-        if (!Auth::user()->can($permission)) {
+        if (! Auth::user()->can($permission)) {
             abort(403, 'Unauthorized action.');
         }
 

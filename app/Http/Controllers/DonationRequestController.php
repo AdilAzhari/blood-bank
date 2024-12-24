@@ -11,8 +11,8 @@ class DonationRequestController
         $donations = DonationRequest::all();
 
         if (request()->has('search')) {
-            $donations->where('name', 'like', '%' . request()->search . '%')
-                ->orWhere('email', 'like', '%' . request()->search . '%');
+            $donations->where('name', 'like', '%'.request()->search.'%')
+                ->orWhere('email', 'like', '%'.request()->search.'%');
         }
 
         $donations = $donations->paginate(10);
@@ -24,9 +24,11 @@ class DonationRequestController
     {
         return view('admin.donations.show', compact('donation'));
     }
+
     public function destroy(DonationRequest $donation)
     {
         $donation->delete();
+
         return to_route('donations.index')->with('Danger', 'Donation deleted successfully.');
     }
 }

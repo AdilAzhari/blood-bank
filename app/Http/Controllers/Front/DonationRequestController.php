@@ -12,6 +12,7 @@ use App\Models\Governorate;
 use App\Notifications\DonationRequestNotification;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Notification;
+
 class DonationRequestController extends Controller
 {
     public function create()
@@ -19,6 +20,7 @@ class DonationRequestController extends Controller
         $bloodTypes = BloodType::all();
         $cities = City::all();
         $governorates = Governorate::all();
+
         return view('front.ask-donation', compact('bloodTypes', 'cities', 'governorates'));
     }
 
@@ -40,8 +42,8 @@ class DonationRequestController extends Controller
         ]);
 
         $clients = Client::where('blood_type_id', $request->blood_type_id)
-                         ->where('city_id', $request->city_id)
-                         ->get();
+            ->where('city_id', $request->city_id)
+            ->get();
 
         Notification::send($clients, new DonationRequestNotification($donationRequest));
 

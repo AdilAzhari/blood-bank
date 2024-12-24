@@ -3,10 +3,8 @@
 namespace App\Http\Controllers\Dashboard;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\StoreSettingRequest;
 use App\Http\Requests\UpdateSettingRequest;
 use App\Models\Setting;
-use Illuminate\Http\Request;
 
 class SettingController extends Controller
 {
@@ -15,8 +13,10 @@ class SettingController extends Controller
         $this->authorize('viewAny', Setting::class);
 
         $settings = Setting::first();
-        return view('admin.settings.index',compact('settings'));
+
+        return view('admin.settings.index', compact('settings'));
     }
+
     public function update(UpdateSettingRequest $request)
     {
         $settings = Setting::first();

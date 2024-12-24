@@ -25,7 +25,7 @@ class UpdateClientRequest extends FormRequest
     {
         return [
             'name' => 'required|string|max:255',
-            'email' => ['required','email','max:255',Rule::unique('clients', 'email')->ignore($this->route('client'))],
+            'email' => ['required', 'email', 'max:255', Rule::unique('clients', 'email')->ignore($this->route('client'))],
             'd_o_b' => 'required|date',
             'phone' => 'required|string|max:255',
             'last_donation_date' => 'required|date',

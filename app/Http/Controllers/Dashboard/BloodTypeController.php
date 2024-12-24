@@ -4,8 +4,6 @@ namespace App\Http\Controllers\Dashboard;
 
 use App\Http\Controllers\Controller;
 use App\Models\BloodType;
-use App\Models\Client;
-use Illuminate\Http\Request;
 
 class BloodTypeController extends Controller
 {
@@ -17,6 +15,7 @@ class BloodTypeController extends Controller
         $this->authorize('viewAny', BloodType::class);
 
         $bloodTypes = BloodType::all();
+
         return view('admin.bloodType.index', compact('bloodTypes'));
     }
 

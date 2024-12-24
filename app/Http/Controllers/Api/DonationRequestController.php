@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Resources\DonationRequestResource;
 use App\Models\BloodType;
-use App\Models\City;
 use App\Models\Client;
 use App\Models\DonationRequest;
 use App\Notifications\DonationRequestNotification;
@@ -16,15 +15,15 @@ use Illuminate\Support\Facades\Notification;
 class DonationRequestController
 {
     use ApiResponser;
-    public function __construct(public FirebaseService $firebaseService)
-    {
-    }
+
+    public function __construct(public FirebaseService $firebaseService) {}
+
     public function index()
     {
 
         $donationRequests = DonationRequest::all();
 
-        if (!$donationRequests->exists()) {
+        if (! $donationRequests->exists()) {
             return $this->errorResponse('No Donation Requests Found', 404);
         }
 
@@ -35,7 +34,7 @@ class DonationRequestController
     {
         if ($request->has('blood_type')) {
             $bloodType = BloodType::where('name', $request->blood_type)->first();
-            if (!$bloodType) {
+            if (! $bloodType) {
                 return $this->errorResponse('Invalid blood type', 422);
             }
             $request->merge(['blood_type_id' => $bloodType->id]);
@@ -53,7 +52,7 @@ class DonationRequestController
             'longitude' => 'nullable|string|max:255',
             'city_id' => 'required|exists:cities,id',
             'blood_type_id' => 'required|exists:blood_types,id',
-            'client_id' => 'required|exists:clients,id'
+            'client_id' => 'required|exists:clients,id',
         ]);
 
         if ($validate->fails()) {
@@ -62,14 +61,14 @@ class DonationRequestController
 
         $donationRequest = DonationRequest::create($request->only([
             'patient_name', 'patient_age', 'hospital_name', 'hospital_address',
-            'city_id', 'blood_type_id', 'client_id', 'details', 'patient_phone_number', 'bags_number'
+            'city_id', 'blood_type_id', 'client_id', 'details', 'patient_phone_number', 'bags_number',
         ]));
 
         $clients = Client::where('city_id', $donationRequest->city_id)
             ->where('blood_type_id', $donationRequest->blood_type_id)
             ->get();
 
-        if($clients->isEmpty()){
+        if ($clients->isEmpty()) {
             return $this->errorResponse('No Clients Found', 404);
         }
 
@@ -77,14 +76,15 @@ class DonationRequestController
 
         return $this->successResponse([
             'donation_request' => new DonationRequestResource($donationRequest),
-            'notified_clients' => $clients
+            'notified_clients' => $clients,
         ], 'Donation Request Created Successfully', 201);
     }
+
     public function show($id)
     {
         $donationRequest = DonationRequest::find($id); // DonationRequest::where('id', $id)->first();
 
-        if (!$donationRequest->exists()) {
+        if (! $donationRequest->exists()) {
             return $this->errorResponse('Donation Request Not Found', 404);
         }
 

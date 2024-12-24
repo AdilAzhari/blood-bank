@@ -20,6 +20,7 @@ class LoginController extends Controller
 
         if (Auth::guard('client')->attempt($credentials, $request->filled('remember'))) {
             $request->session()->regenerate();
+
             return to_route('home');
         }
 
@@ -27,11 +28,13 @@ class LoginController extends Controller
             'phone' => 'The provided credentials do not match our records.',
         ])->withInput($request->only('phone', 'remember'));
     }
+
     public function showRegistrationForm()
     {
         $governorates = Governorate::all();
         $cities = City::all();
         $bloodTypes = BloodType::all();
+
         return view('front.register', compact('governorates', 'cities', 'bloodTypes'));
     }
 
@@ -47,9 +50,8 @@ class LoginController extends Controller
             'blood_type_id' => 'required|exists:blood_types,id',
             'password' => 'required|string|min:8|confirmed',
             'governorate_id' => 'required|exists:governorates,id',
-            'status' => 'in:active,inactive'
+            'status' => 'in:active,inactive',
         ]);
-
 
         $request->merge(['password' => bcrypt($request->password)]);
 

@@ -12,7 +12,7 @@ use App\Models\Governorate;
 use App\Models\Post;
 use App\Models\Setting;
 use App\Models\User;
-use Illuminate\Http\Request;
+use Illuminate\Contracts\Support\Renderable;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
 
@@ -31,7 +31,7 @@ class HomeController extends Controller
     /**
      * Show the application dashboard.
      *
-     * @return \Illuminate\Contracts\Support\Renderable
+     * @return Renderable
      */
     public function index()
     {

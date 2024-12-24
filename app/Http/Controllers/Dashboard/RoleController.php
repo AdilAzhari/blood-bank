@@ -16,8 +16,8 @@ class RoleController extends Controller
         $this->authorize('viewAny', Role::class);
 
         $roles = Role::filterByName($request->input('name'))
-                ->with('permissions')
-                ->paginate(10);
+            ->with('permissions')
+            ->paginate(10);
 
         return view('admin.roles.index', compact('roles'));
     }
@@ -32,9 +32,9 @@ class RoleController extends Controller
     public function create()
     {
         $permissions = Permission::all();
+
         return view('admin.Roles.create', compact('permissions'));
     }
-
 
     public function store(storeRoleRequest $request)
     {
@@ -58,9 +58,11 @@ class RoleController extends Controller
 
         return redirect()->route('roles.index')->with('info', 'Role updated successfully');
     }
+
     public function destroy(Role $role)
     {
         $role->delete();
+
         return to_route('roles.index')->with('Danger', 'Role deleted successfully');
     }
 
@@ -69,6 +71,7 @@ class RoleController extends Controller
         $this->authorize('viewAny', Role::class);
 
         $trashedRoles = Role::onlyTrashed()->paginate(10);
+
         return view('roles.trash', compact('trashedRoles'));
     }
 
@@ -80,6 +83,7 @@ class RoleController extends Controller
         if ($role) {
             $role->restore();
         }
+
         return redirect()->route('roles.trash')->with('success', 'Role restored successfully.');
     }
 
@@ -91,6 +95,7 @@ class RoleController extends Controller
         if ($role) {
             $role->forceDelete();
         }
+
         return redirect()->route('roles.trash')->with('success', 'Role permanently deleted.');
     }
 }

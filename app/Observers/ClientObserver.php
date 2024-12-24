@@ -10,7 +10,6 @@ class ClientObserver
     /**
      * Handle the client "creating" event.
      */
-
     public function creating(client $client): void
     {
         $client->password = bcrypt($client->password);

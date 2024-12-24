@@ -1,8 +1,8 @@
 <?php
+
 namespace App\Notifications;
 
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
@@ -11,7 +11,9 @@ class SendResetPasswordNotification extends Notification
     use Queueable;
 
     public $user;
+
     public $resetPassCode;
+
     public $phone;
 
     /**
@@ -46,7 +48,7 @@ class SendResetPasswordNotification extends Notification
             ->line("You have requested to reset your password from this number: {$this->phone}")
             ->line("Please enter this code to reset your password: {$this->resetPassCode}")
             ->salutation('Best regards,')
-            ->salutation(config('app.name') . ' Team');
+            ->salutation(config('app.name').' Team');
     }
 
     /**

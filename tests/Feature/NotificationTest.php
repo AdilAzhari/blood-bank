@@ -8,12 +8,12 @@ use App\Models\Client;
 use App\Models\DonationRequest;
 use App\Models\Notification;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 
 class NotificationTest extends TestCase
 {
     use RefreshDatabase;
+
     public function test_creates_notification_and_attaches_clients()
     {
         $city = City::factory()->create();
@@ -37,7 +37,6 @@ class NotificationTest extends TestCase
         $response->assertStatus(201);
         $donationRequest = DonationRequest::first();
         $this->assertNotNull($donationRequest);
-
 
         $notification = Notification::first();
         $this->assertNotNull($notification);

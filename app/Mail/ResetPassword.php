@@ -4,7 +4,6 @@ namespace App\Mail;
 
 use App\Models\Client;
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
@@ -17,9 +16,7 @@ class ResetPassword extends Mailable
     /**
      * Create a new message instance.
      */
-    public function __construct(public $reset_code,public Client $user)
-    {
-    }
+    public function __construct(public $reset_code, public Client $user) {}
 
     /**
      * Get the message envelope.

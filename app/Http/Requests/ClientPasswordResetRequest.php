@@ -22,7 +22,7 @@ class ClientPasswordResetRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'password' => ['required', 'string','confirmed'],
+            'password' => ['required', 'string', 'confirmed'],
             'pin_code' => ['required', 'string'],
         ];
     }

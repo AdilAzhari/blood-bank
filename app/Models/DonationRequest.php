@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class DonationRequest extends Model
 {
     use HasFactory,SoftDeletes;
+
     protected $fillable = [
         'patient_name',
         'patient_age',
@@ -23,6 +24,7 @@ class DonationRequest extends Model
         'city_id',
         'blood_type_id',
     ];
+
     public function city()
     {
         return $this->belongsTo(City::class);
@@ -37,6 +39,7 @@ class DonationRequest extends Model
     {
         return $this->belongsTo(BloodType::class);
     }
+
     public function notification()
     {
         return $this->hasOne(Notification::class);

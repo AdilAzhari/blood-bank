@@ -13,21 +13,21 @@ class SettingPolicy extends BasePolicy
 
     public function view(User $user): bool
     {
-        return $this->checkPermission($user, 'view','setting');
+        return $this->checkPermission($user, 'view', 'setting');
     }
 
     public function create(User $user): bool
     {
-        return $this->checkPermission($user, 'create','setting');
+        return $this->checkPermission($user, 'create', 'setting');
     }
 
     public function update(User $user): bool
     {
-        return $this->checkPermission($user, 'update','setting');
+        return $this->checkPermission($user, 'update', 'setting');
     }
 
     public function delete(User $user): bool
     {
-        return $this->checkPermission($user, 'delete','setting');
+        return $this->checkPermission($user, 'delete', 'setting');
     }
 }

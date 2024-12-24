@@ -11,20 +11,24 @@ use Illuminate\Http\Request;
 class GovernorateController
 {
     use ApiResponser;
+
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
         $governorates = Governorate::with('cities')->get();
+
         return $this->successResponse(GovernorateResource::collection($governorates));
     }
+
     /**
      * Store a newly created resource in storage.
      */
     public function store(StoreGovernorateRequest $request)
     {
         $governorate = Governorate::create($request->only('name'));
+
         return $this->successResponse(new GovernorateResource($governorate));
     }
 
@@ -41,6 +45,7 @@ class GovernorateController
             return $this->errorResponse('The name is the same', 422);
         }
         $governorate->update($request->only('name'));
+
         return $this->successResponse(new GovernorateResource($governorate));
     }
 

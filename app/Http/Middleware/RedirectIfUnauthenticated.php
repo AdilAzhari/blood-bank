@@ -16,7 +16,7 @@ class RedirectIfUnauthenticated
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if (!Auth::user()) {
+        if (! Auth::user()) {
             return redirect()->route('login'); // Redirect to login page
         }
 

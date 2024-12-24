@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Setting extends Model
 {
     use HasFactory,SoftDeletes;
+
     protected $fillable = [
         'about_app',
         'phone_number',
@@ -18,4 +19,9 @@ class Setting extends Model
         'insta_link',
         'notification_setting_text',
     ];
+
+    public static function count()
+    {
+        return Setting::count();
+    }
 }

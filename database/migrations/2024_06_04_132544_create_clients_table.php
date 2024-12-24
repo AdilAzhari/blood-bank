@@ -26,7 +26,7 @@ return new class extends Migration
             $table->string('last_donation_date');
             $table->date('d_o_b');
             $table->string('pin_code', 255)->nullable();
-            $table->enum('status',['active','inactive']);
+            $table->enum('status', ['active', 'inactive']);
             $table->timestamps();
         });
     }

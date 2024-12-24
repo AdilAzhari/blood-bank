@@ -36,19 +36,21 @@ class ClientController extends Controller
             'city_id',
             'blood_type_id',
             'password' => bcrypt($updateClientRequest->password),
-            'status'
+            'status',
         ]));
 
         $client->governorates()->sync($updateClientRequest->governorate_id);
 
         return to_route('clients.index')->with('info', 'Client updated successfully');
     }
+
     public function show(client $client)
     {
         $this->authorize('view', $client);
 
         return view('admin.clients.show', compact('client'));
     }
+
     /**
      * Remove the specified resource from storage.
      */

@@ -27,9 +27,9 @@ Route::middleware('auth:client')->group(function () {
 
     Route::controller(FavoriteController::class)->prefix('favorites')->name('favorite.')->
             group(function () {
-        Route::get('/', 'index')->name('index');
-        Route::post('/{post}', 'toggle')->name('toggle');
-    });
+                Route::get('/', 'index')->name('index');
+                Route::post('/{post}', 'toggle')->name('toggle');
+            });
 
     Route::controller(DonationRequestController::class)->name('donation-request.')->group(function () {
         Route::get('/ask-donation', 'create')->name('create');

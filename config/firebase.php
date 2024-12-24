@@ -1,4 +1,5 @@
 <?php
+
 return [
     'api_key' => env('FIREBASE_API_KEY'),
     'auth_domain' => env('FIREBASE_AUTH_DOMAIN'),
@@ -8,5 +9,5 @@ return [
     'messaging_sender_id' => env('FIREBASE_MESSAGING_SENDER_ID'),
     'app_id' => env('FIREBASE_APP_ID'),
     'measurement_id' => env('FIREBASE_MEASUREMENT_ID'),
-    'server_key' => env('FIREBASE_SERVER_KEY')
+    'server_key' => env('FIREBASE_SERVER_KEY'),
 ];

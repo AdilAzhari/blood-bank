@@ -24,7 +24,7 @@ class StoreClientRequest extends FormRequest
     {
         return [
             'name' => 'required|string|max:255',
-            'email' => ['required','email','max:255','unique:clients,email'],
+            'email' => ['required', 'email', 'max:255', 'unique:clients,email'],
             'd_o_b' => 'required|date',
             'phone' => 'required|string|max:255',
             'last_donation_date' => 'required|date',

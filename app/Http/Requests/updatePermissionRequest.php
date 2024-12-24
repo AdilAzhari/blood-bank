@@ -13,7 +13,7 @@ class updatePermissionRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return $this->user->can('update',Permission::class);
+        return $this->user->can('update', Permission::class);
     }
 
     /**
@@ -24,7 +24,7 @@ class updatePermissionRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'required|string|max:255|' . Rule::unique('permissions', 'name')->ignore($permission->id),
+            'name' => 'required|string|max:255|'.Rule::unique('permissions', 'name')->ignore($permission->id),
         ];
     }
 }

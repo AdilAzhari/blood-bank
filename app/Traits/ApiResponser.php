@@ -2,17 +2,15 @@
 
 namespace App\Traits;
 
-use App\Http\Resources\ClientResource;
-
 trait ApiResponser
 {
     protected function successResponse($data, $message = 'Success', $code = 200)
     {
         return response()->json([
-                'status' => 'success',
-                'message' => $message,
-                'data' => $data
-            ], $code);
+            'status' => 'success',
+            'message' => $message,
+            'data' => $data,
+        ], $code);
     }
 
     protected function errorResponse($message, $code)
@@ -20,7 +18,7 @@ trait ApiResponser
         return response()->json([
             'status' => 'error',
             'message' => $message,
-            'data' => null
+            'data' => null,
         ], $code);
     }
 
@@ -29,9 +27,10 @@ trait ApiResponser
         response()->json([
             'status' => $status,
             'message' => $message,
-            'data' => $data
+            'data' => $data,
         ], $code);
     }
+
     protected function destroyResponse($message = 'Deleted', $code = 200)
     {
         return response()->json([

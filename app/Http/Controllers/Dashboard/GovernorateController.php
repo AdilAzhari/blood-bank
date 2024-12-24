@@ -18,7 +18,7 @@ class GovernorateController extends Controller
         $query = Governorate::query();
 
         if ($request->filled('name')) {
-            $query->where('name', 'like', '%' . $request->name . '%');
+            $query->where('name', 'like', '%'.$request->name.'%');
         }
 
         $governorates = $query->paginate(10);
@@ -46,7 +46,8 @@ class GovernorateController extends Controller
         $request->validate([
             'name' => 'required|string|max:255|min:3',
         ]);
-        $governorate = Governorate::create($request->only('name'));
+        Governorate::create($request->only('name'));
+
         return to_route('governorates.index')->with('success', 'Governorate created successfully');
     }
 
@@ -66,7 +67,8 @@ class GovernorateController extends Controller
     public function edit(string $id)
     {
         $governorate = Governorate::findOrFail($id);
-        return view('admin.governorates.edit',compact('governorate'));
+
+        return view('admin.governorates.edit', compact('governorate'));
     }
 
     /**
@@ -101,6 +103,7 @@ class GovernorateController extends Controller
     public function trashed()
     {
         $trashedGovernorates = Governorate::onlyTrashed()->paginate(10);
+
         return view('governorates.trash', compact('trashedGovernorates'));
     }
 
@@ -110,6 +113,7 @@ class GovernorateController extends Controller
         if ($governorate) {
             $governorate->restore();
         }
+
         return redirect()->route('governorates.trash')->with('success', 'Governorate restored successfully.');
     }
 
@@ -119,6 +123,7 @@ class GovernorateController extends Controller
         if ($governorate) {
             $governorate->forceDelete();
         }
+
         return redirect()->route('governorates.trash')->with('success', 'Governorate permanently deleted.');
     }
 }

@@ -30,8 +30,8 @@ class DonationRequestObserver
         if ($clients) {
             $notification = $donationRequest->client->notifications()->create([
                 'title' => 'There Is A New Donation Request',
-                'content' => 'There is a new donation request in your city with blood type of ' . $donationRequest->bloodType->name
-                    . ' and ' . $donationRequest->bags_number . ' bags.',
+                'content' => 'There is a new donation request in your city with blood type of '.$donationRequest->bloodType->name
+                    .' and '.$donationRequest->bags_number.' bags.',
                 'donation_request_id' => $donationRequest->id,
             ]);
 

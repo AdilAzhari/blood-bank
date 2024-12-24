@@ -11,12 +11,14 @@ class PostController extends Controller
     {
         $this->authorize('viewAny', Post::class);
         $posts = Post::with('category')->paginate(10);
+
         return view('admin.posts.index', compact('posts'));
     }
 
     public function show(Post $post)
     {
         $this->authorize('view', Post::class);
+
         return view('admin.posts.show', compact('post'));
     }
 
@@ -25,6 +27,7 @@ class PostController extends Controller
         $this->authorize('delete', Post::class);
 
         $post->delete();
+
         return to_route('posts.index')->with('success', 'Post deleted successfully.');
     }
 }

@@ -23,7 +23,7 @@ class UpdateProfileRequest extends FormRequest
     {
         return [
             'name' => 'required|string|max:255',
-            'email' => 'required|email|max:255|unique:clients,email,' . $this->user()->id,
+            'email' => 'required|email|max:255|unique:clients,email,'.$this->user()->id,
             'phone' => 'string|max:15',
             'd_o_b' => 'required|date',
             'last_donation_date' => 'nullable|date',

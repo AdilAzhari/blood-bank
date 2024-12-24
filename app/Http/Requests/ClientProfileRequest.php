@@ -23,7 +23,7 @@ class ClientProfileRequest extends FormRequest
     {
         return [
             'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:clients,email,' . auth()->id()],
+            'email' => ['required', 'string', 'email', 'max:255', 'unique:clients,email,'.auth()->id()],
             'phone' => ['required', 'string', 'max:255'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
         ];

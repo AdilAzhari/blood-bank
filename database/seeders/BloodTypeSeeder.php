@@ -2,9 +2,7 @@
 
 namespace Database\Seeders;
 
-use App\Models\Blood_type;
 use App\Models\BloodType;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
 class BloodTypeSeeder extends Seeder

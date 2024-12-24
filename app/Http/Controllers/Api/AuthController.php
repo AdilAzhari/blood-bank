@@ -4,27 +4,28 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Requests\CheckAuthLoginPhoneRequest;
 use App\Http\Requests\ClientPasswordResetRequest;
-use App\Http\Requests\StoreAuthLoginRequest;
 use App\Http\Requests\UpdateProfileRequest;
-use Illuminate\Support\Facades\Notification;
 use App\Http\Resources\ClientResource;
 use App\Models\BloodType;
-use App\Models\City;
 use App\Models\Client;
-use App\Models\DonationRequest;
-use App\Models\Notification as ModelsNotification;
 use App\Models\Token;
 use App\Notifications\SendResetPasswordNotification;
 use App\Traits\ApiResponser;
+use Illuminate\Contracts\Container\BindingResolutionException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Str;
 use Knuckles\Scribe\Attributes\Endpoint;
 
 class AuthController
 {
     use ApiResponser;
-    #[Endpoint('Get Categories', <<<DESC
+
+    /**
+     * @throws BindingResolutionException
+     */
+    #[Endpoint('Get Categories', <<<'DESC'
         Getting the list of the categories
     DESC)]
     public function register(request $request)
@@ -41,7 +42,7 @@ class AuthController
             'email' => 'required|string|email|max:255|unique:clients',
             'phone' => 'required|string|max:255|unique:clients',
             'city_id' => 'required|exists:cities,id',
-            'blood_type_id' => 'required'
+            'blood_type_id' => 'required',
         ]);
 
         $request->merge([
@@ -63,13 +64,13 @@ class AuthController
             'blood_type_id'
         ));
 
-        if (!$client) {
+        if (! $client) {
             return $this->errorResponse('Failed to create client', 401);
         }
 
         Auth::guard('client')->login($client);
 
-            // $api_token = $client->createToken('api_token')->plainTextToken;
+        // $api_token = $client->createToken('api_token')->plainTextToken;
         // $api_token = $client->createToken('token')->plainTextToken;
         $client->api_token = str::random(60);
 
@@ -84,7 +85,8 @@ class AuthController
             'client' => new ClientResource($client),
         ], 'Client Created Successfully', 201);
     }
-    #[Endpoint('Login', <<<DESC
+
+    #[Endpoint('Login', <<<'DESC'
         Login the client
         DESC)]
     public function login(Request $request)
@@ -109,7 +111,8 @@ class AuthController
 
         return $this->errorResponse('Invalid Credentials', 401);
     }
-    #[Endpoint('Send Reset Code', <<<DESC
+
+    #[Endpoint('Send Reset Code', <<<'DESC'
         Send the reset code to the client
         DESC)]
     public function sendResetCode(CheckAuthLoginPhoneRequest $request)
@@ -122,26 +125,27 @@ class AuthController
             $update = $client->update(['pin_code' => $resetPassCode]);
 
             if ($update) {
-                Notification::send($client, new SendResetPasswordNotification($client,$resetPassCode,$request->phone));
+                Notification::send($client, new SendResetPasswordNotification($client, $resetPassCode, $request->phone));
 
                 return response()->json(['message' => 'Reset code sent successfully'], 200);
             }
+
             return $this->errorResponse('Failed to send reset code', 401);
         }
 
         return $this->errorResponse('Invalid Phone Number', 401);
     }
-    #[Endpoint('Profile', <<<DESC
+
+    #[Endpoint('Profile', <<<'DESC'
         Get the client profile
         DESC)]
     public function profile(UpdateProfileRequest $request)
     {
-        dd($request->all());
-        // $client = Auth::guard('sanctum')->user();
-        // dd($client);
+//        $client = user::
         return $this->successResponse(new ClientResource($client), 'Client Profile', 200);
     }
-    #[Endpoint('Update Profile', <<<DESC
+
+    #[Endpoint('Update Profile', <<<'DESC'
         Update the client profile
         DESC)]
     public function profileUpdate(Request $request)
@@ -151,8 +155,8 @@ class AuthController
 
         $request->validate([
             'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:clients,email,' . $client->id,
-            'phone' => 'required|string|max:15|unique:clients,phone,' . $client->id,
+            'email' => 'required|string|email|max:255|unique:clients,email,'.$client->id,
+            'phone' => 'required|string|max:15|unique:clients,phone,'.$client->id,
             'password' => 'required|string|min:8|confirmed',
             'd_o_b' => 'required|date|before:today',
             'last_donation_date' => 'sometimes|date|before:today',
@@ -180,7 +184,8 @@ class AuthController
         return $this->successResponse(new ClientResource($client), 'Client Updated Successfully', 200);
 
     }
-    #[Endpoint('Reset Password', <<<DESC
+
+    #[Endpoint('Reset Password', <<<'DESC'
         Reset the client password
         DESC)]
     public function resetPassword(ClientPasswordResetRequest $request)
@@ -195,14 +200,15 @@ class AuthController
             : $this->errorResponse('Failed to update password', 401))
             : $this->errorResponse('This Code Isn\'t Valid', 401);
     }
-    #[Endpoint('Update FCM Token', <<<DESC
+
+    #[Endpoint('Update FCM Token', <<<'DESC'
         Update the client FCM token
         DESC)]
     public function updateFcmToken(Request $request)
     {
         $validate = validator()->make($request->all(), [
             'client_id' => 'required|exists:clients,id',
-            'fcm_token' => 'required|string'
+            'fcm_token' => 'required|string',
         ]);
 
         if ($validate->fails()) {
@@ -218,9 +224,11 @@ class AuthController
 
         return $this->successResponse(null, 'FCM Token updated successfully', 200);
     }
+
     public function logout(Request $request)
     {
         $request->user()->tokens()->delete();
+
         return $this->successResponse(null, 'Logged out successfully', 200);
     }
 }

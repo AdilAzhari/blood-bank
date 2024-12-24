@@ -14,11 +14,12 @@ class ClientAuthenticate
      *
      * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
      */
-    public function handle(Request $request, Closure $next,$guard = 'client'): Response
+    public function handle(Request $request, Closure $next, $guard = 'client'): Response
     {
-        if (!Auth::guard($guard)->check()) {
+        if (! Auth::guard($guard)->check()) {
             return redirect()->route('Sign-in');
         }
+
         return $next($request);
     }
 }

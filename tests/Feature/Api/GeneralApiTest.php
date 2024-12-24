@@ -4,9 +4,9 @@ namespace Tests\Feature\Api;
 
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Laravel\Sanctum\Sanctum;
 use Tests\TestCase;
+
 class GeneralApiTest extends TestCase
 {
     use RefreshDatabase;
@@ -19,7 +19,7 @@ class GeneralApiTest extends TestCase
         $response = $this->getJson('/api/v1/posts');
         $response->assertStatus(401);
 
-        $response = $this->getJson('/api/v1/donation-request/create',[
+        $response = $this->getJson('/api/v1/donation-request/create', [
             'blood_type_id' => 1,
             'city_id' => 1,
             'details' => 'Test details',
@@ -31,11 +31,12 @@ class GeneralApiTest extends TestCase
             'patient_phone_number' => '0123456789',
             'latitude' => '30.123456',
             'longitude' => '31.123456',
-            'client_id' => 1
+            'client_id' => 1,
         ]);
 
         $response->assertStatus(401);
     }
+
     public function test_can_get_governorates()
     {
         $user = User::factory()->create();
